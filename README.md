@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.8.0, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.9.0, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -32,6 +32,14 @@ Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige,
 **Nintendo-Links:** Startseite (Abschnitt "Mehr über Nintendo": offizielle Seite je Sprache, Firmengeschichte, Unternehmensinformationen), Fußzeile, Zertifikat (Webadresse und Marke "NINTENDO QUEST") sowie Link auf Ergebnis- und Zertifikatsseite. Alle öffnen im gleichen Tab.
 
 Spielmechanik: 10 Münzen je richtiger Antwort, 1 bis 3 Sterne je Lektion (50 %, 75 %, 100 %), 5 Ränge von "Pilz-Praktikant" bis "Legende", Konfetti bei bestandenem Level, Fortschritt im Browser gespeichert (`localStorage`), Hell- und Dunkelmodus, Tastaturbedienung, "weniger Bewegung" wird beachtet.
+
+## PWA (installierbare App, offline)
+Nintendo Quest ist eine Progressive Web App: Auf Handy und Rechner lässt sie sich wie eine App installieren (Chrome/Edge: "Installieren" auf der Startseite oder im Browser-Menü; iPhone/Safari: Teilen, dann "Zum Home-Bildschirm"), startet im eigenen Fenster mit eigenem Icon und läuft nach dem ersten Laden **ohne Internet**.
+- **Dateien (alle ins Hauptverzeichnis bzw. `icons/` des Repositories):** `index.html`, `manifest.webmanifest`, `sw.js`, `icons/icon-192.png`, `icons/icon-512.png`, `icons/icon-maskable-512.png`, `favicon.png`, `favicon.svg`, `apple-touch-icon.png`, `nintendo_vorschau.jpg`. Die Seite muss über HTTPS laufen (GitHub Pages tut das).
+- **Offline:** Der Service Worker (`sw.js`) legt die Kerndateien in den Cache `nintendo-quest-<Version>`. Seiten werden zuerst aus dem Netz geholt (4 s Zeitlimit), sonst aus dem Cache.
+- **Updates:** Gibt es eine neue Version, erscheint unten "Neue Version verfügbar" mit Knopf "Aktualisieren". Nach dem Klick lädt die App neu, der alte Cache wird gelöscht. **Bei jeder neuen Version `VERSION` in `index.html` und in `sw.js` gleichzeitig erhöhen** (sonst wird nichts aktualisiert).
+- **Fortschritt:** Name, Sprache und Fortschritt liegen im Browser-Speicher (`localStorage`, Schlüssel `nintendo_quest_v1`) und bleiben nach Tagen, Neustart, Schließen des Tabs und App-Updates erhalten. Der Browser-Speicher gehört zur Adresse: Wer die Seite im Browser und als installierte App nutzt, hat zwei getrennte Speicherstände. Wird der Browser-Speicher für die Seite gelöscht, ist der Fortschritt weg.
+- **Kopfzeile:** unter dem Namen steht "Inoffizielles Lernprojekt von Leonie Szpak".
 
 ## Veröffentlichung und Link-Vorschau
 Geplante Adresse: https://nosz.github.io/nintendo/ (GitHub Pages, Repository `nintendo`, Dateien `index.html` und `nintendo_vorschau.jpg` ins Hauptverzeichnis legen). Die Vorschau (Open Graph / Twitter Card) zeigt `nintendo_vorschau.jpg` (1200 x 630, bunte Spielkarten, Sterne, Münze, kurze Fragen auf Deutsch, Englisch und Japanisch) mit dreisprachigem Kurztitel und Kurzbeschreibung. Die Bild-Adresse trägt `?v=2`, damit Messenger das neue Bild statt eines zwischengespeicherten laden (bei der nächsten Bildänderung auf `?v=3` hochzählen). Wichtig: Die Bild-Adresse in den Tags ist absolut und gilt nur unter dieser Adresse; Messenger und Netzwerke speichern Vorschauen zwischen (nach dem Hochladen ggf. mit dem Debugger der jeweiligen Plattform neu einlesen). Vor einer öffentlichen Freigabe Management/Legal einbeziehen (siehe Grenzen).
@@ -60,6 +68,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.
+- 1.9.0 (14.10.2026): Professionelle PWA: Manifest (Name, Icons 192/512/maskable, Shortcuts, Kategorien), Service Worker mit Offline-Cache und Update-Hinweis, Installieren-Karte (iPhone-Hinweis), Offline-Bereit-Meldung, Safe-Area für Geräte mit Notch. Kopfzeile: 'Inoffizielles Lernprojekt von Leonie Szpak' unter dem Namen; Münzzähler auf dem Handy ausgeblendet (steht in der Startseiten-Kachel).
 - 1.8.0 (14.10.2026): Startseite professioneller (Statistik-Kacheln für Rang, Münzen, Sterne; kompakte Lektionsliste auf dem Handy mit markierter nächster Lektion und Fortschrittszähler; Namen-ändern-Knopf). Ganz oben eine Zeile 'Inoffizielles Lernprojekt von Leonie Szpak' (auch auf dem Zertifikat), in DE/EN/JA.
 - 1.7.1 (14.10.2026): Benutzerführung: Zurück-Knopf mit klarem Pfeil-Symbol (44 px, Rahmen) und kurzer Beschriftung (Übersicht / Zur Lektion) plus Lektionstitel als Kontext; Ergebnisseite mit eindeutigem Hauptknopf (Nächste Lektion, sonst Wiederholen/Speichern), übrige Knöpfe zurückhaltend.
 - 1.7.0 (14.10.2026): Eigenes Pixel-Gamepad als Logo (Kopfzeile, Zertifikat-Siegel, Tab-Icon, Apple-Icon) statt Stern.

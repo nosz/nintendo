@@ -2,7 +2,13 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="Nintendo Quest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nintendo Quest">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Nintendo Quest</title>
 <meta name="description" content="DE: 7 Level, Zertifikate, Humor. EN: 7 levels, certificates, fun. 日本語: 7ステージ、証明書、ユーモア。">
 <meta name="color-scheme" content="light dark">
@@ -69,7 +75,7 @@ button{font:inherit;cursor:pointer}
 .topin{max-width:1060px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:1.15rem;letter-spacing:.2px;min-height:44px;background:none;border:0;padding:0}
 .brand .dot svg{width:24px;height:auto;display:block}.brand .dot{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--red-d);display:grid;place-items:center;font-size:1.2rem;box-shadow:0 2px 0 rgba(0,0,0,.2)}
-.brand small{display:block;font-weight:600;font-size:.72rem;opacity:.92;letter-spacing:.4px}
+.brand{text-align:left;line-height:1.2}.brand small{display:block;font-weight:600;font-size:.75rem;opacity:.95;letter-spacing:.2px;margin-top:1px}
 .spacer{flex:1}
 .pill{background:rgba(0,0,0,.2);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem;white-space:nowrap}
 .lang{display:flex;gap:6px}
@@ -171,8 +177,8 @@ footer p{margin:6px 0}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 @media(max-width:560px){
-  .topin .lang{order:3;flex:1 1 100%}.lang button{flex:1;min-width:0}.spacer{display:none}.pill{margin-left:auto}.chip{padding:3px 11px;font-size:.84rem;min-height:40px}button.chip{min-height:40px}.stats{gap:8px}.hero::before{width:130px;height:130px;right:-46px;top:-46px;opacity:.75}.hero{padding:16px;gap:12px}.ring{width:72px;height:72px}.ring span{width:54px;height:54px;font-size:1rem}.hero p{font-size:.95rem}
-  .topin{padding:8px 12px}.brand small{display:none}
+  .brand{flex:1 1 0;min-width:0}.brand small{white-space:normal}.pill{display:none}.topin .lang{order:3;flex:1 1 100%}.lang button{flex:1;min-width:0}.spacer{display:none}.pill{margin-left:auto}.chip{padding:3px 11px;font-size:.84rem;min-height:40px}button.chip{min-height:40px}.stats{gap:8px}.hero::before{width:130px;height:130px;right:-46px;top:-46px;opacity:.75}.hero{padding:16px;gap:12px}.ring{width:72px;height:72px}.ring span{width:54px;height:54px;font-size:1rem}.hero p{font-size:.95rem}
+  .topin{padding:8px 12px}
   main{padding:14px 12px 90px}
 }
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px}
@@ -193,8 +199,13 @@ footer p{margin:6px 0}
 button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-height:40px}
 .nlink{display:inline-flex;align-items:center;min-height:44px;font-weight:800;color:var(--blue)}
 .pitch{text-align:center;color:var(--mute);margin:10px 0 0;font-weight:700}
-@media(max-width:560px){.choices{grid-template-columns:1fr}.res .row,.main>.row{flex-direction:column;align-items:stretch}.res~.row{flex-direction:column;align-items:stretch}.res~.row .btn,.certbox~.row .btn{width:100%}}.byline{background:var(--red-l);color:var(--ink);text-align:center;font-weight:700;font-size:.85rem;padding:7px 12px;border-bottom:2px solid var(--line)}
-.brand small{display:none}
+@media(max-width:560px){.choices{grid-template-columns:1fr}.res .row,.main>.row{flex-direction:column;align-items:stretch}.res~.row{flex-direction:column;align-items:stretch}.res~.row .btn,.certbox~.row .btn{width:100%}}.top{padding-top:env(safe-area-inset-top)}
+.snack{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:60;max-width:520px;margin:0 auto;background:#26272e;color:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.35);animation:pop .4s both}
+.snack span{flex:1;font-weight:700}
+.snack button{min-height:44px;padding:8px 16px;border-radius:999px;border:0;background:#ffc800;color:#3b2d00;font-weight:800}
+.instcard{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px 18px;margin:26px 0 0;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.instcard .ii{font-size:1.8rem}.instcard div{flex:1;min-width:200px}.instcard b{display:block}.instcard small{color:var(--mute)}
+.byline{background:var(--red-l);color:var(--ink);text-align:center;font-weight:700;font-size:.85rem;padding:7px 12px;border-bottom:2px solid var(--line)}
 .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin-top:2px;grid-column:1/-1}
 .stat{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:8px 10px;min-width:0}
 .stat .sv{display:block;font-weight:800;font-size:.98rem;line-height:1.25;overflow-wrap:anywhere}
@@ -240,13 +251,12 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
   <div class="lang" role="group" id="langs"></div>
   <button type="button" class="theme" id="theme" aria-label="Hell/Dunkel">◐</button>
 </div></header>
-<div class="byline" id="by"></div>
 <main id="main" tabindex="-1"></main>
 <footer id="foot"></footer>
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.8.0", STAND = "14.10.2026";
+const VERSION = "1.9.0", STAND = "14.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -288,6 +298,13 @@ const S = {
  gateSkip:["Weiter ohne Namen","Continue without a name","名前なしで続ける"],
  by:["Inoffizielles Lernprojekt von Leonie Szpak","Unofficial learning project by Leonie Szpak","Leonie Szpak による非公式の学習プロジェクト"],
  introH:["In 20 Minuten vom Pilz-Praktikanten zur Legende. Für Neue, Erfahrene und die Chefetage.","In 20 minutes from mushroom intern to legend. For newcomers, veterans and the executive floor.","20分でキノコ見習いからレジェンドへ。新入社員にもベテランにも、経営陣にも。"],
+ instT:["Als App installieren","Install as an app","アプリとしてインストール"],
+ instS:["Startet wie eine App und läuft auch ohne Internet.","Opens like an app and works without internet.","アプリのように起動し、インターネットなしでも使えます。"],
+ instB:["Installieren","Install","インストール"],
+ instIos:["Auf dem iPhone: Teilen-Symbol antippen, dann „Zum Home-Bildschirm“.","On iPhone: tap the Share icon, then “Add to Home Screen”.","iPhone：共有ボタンをタップし、「ホーム画面に追加」を選びます。"],
+ updT:["Neue Version verfügbar","New version available","新しいバージョンがあります"],
+ updB:["Aktualisieren","Update","更新"],
+ offT:["Bereit für den Offline-Betrieb ✓","Ready for offline use ✓","オフライン利用の準備ができました ✓"],
  moreN:["Mehr über Nintendo entdecken","Discover more about Nintendo","任天堂についてもっと知る"],
  contB:["Weiter geht's","Keep going","つづきから"],
  pitch:["Auch Chefs fangen klein an: 1889 mit Spielkarten.","Even bosses start small: in 1889 with playing cards.","社長も最初は小さく：1889年は花札から。"], lessons:["Deine Lektionen","Your lessons","レッスン一覧"],
@@ -637,6 +654,7 @@ h("div", {class:"stats", role:"list"},
   });
   m.append(g);
   m.append(certList());
+  m.append(installCard());
   m.append(nintendoLinks());
   m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
 }
@@ -855,7 +873,7 @@ function render(keepScroll){
 function chrome(){
   document.documentElement.lang = LANGS[li][0];
   document.title = t("title");
-  $(".brand .dot").innerHTML = logoSvg(); $("#by").textContent = t("by"); $("#bt").textContent = t("title"); $("#bs").textContent = t("sub"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
+  $(".brand .dot").innerHTML = logoSvg(); $("#bt").textContent = t("title"); $("#bs").textContent = t("by"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
   $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL"));
   const T = totals(); $("#coins").textContent = "¢ " + T.co;
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
@@ -864,6 +882,38 @@ function chrome(){
 $("#brand").onclick = () => go("home");
 $("#theme").onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
 window.addEventListener("hashchange", () => { fromHash(); render(); });
+/* ---------- PWA: Installieren, Offline, Updates ---------- */
+let deferredInstall = null;
+const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+function installCard(){
+  if(isStandalone()) return h("span");
+  if(!deferredInstall && !isIOS()) return h("span");
+  const c = h("section", {class:"instcard", "aria-labelledby":"it"}, h("span", {class:"ii", "aria-hidden":"true"}, "📲"),
+    h("div", null, h("b", {id:"it", text:t("instT")}), h("small", {text:deferredInstall ? t("instS") : t("instIos")})));
+  if(deferredInstall) c.append(h("button", {type:"button", class:"btn", onclick:async () => { const e = deferredInstall; deferredInstall = null; e.prompt(); try{ await e.userChoice; }catch(x){} render(true); }}, t("instB")));
+  return c;
+}
+function snack(text, btn, fn, ms){
+  const old = document.querySelector(".snack"); if(old) old.remove();
+  const s = h("div", {class:"snack", role:"status"}, h("span", {text}));
+  if(btn) s.append(h("button", {type:"button", onclick:() => { fn(); s.remove(); }}, btn));
+  document.body.append(s); if(ms) setTimeout(() => s.remove(), ms);
+}
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; if(view.v === "home" && !editName) render(true); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; if(view.v === "home") render(true); });
+if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
+  let reloading = false, hadController = !!navigator.serviceWorker.controller;
+  navigator.serviceWorker.addEventListener("controllerchange", () => { if(!hadController){ hadController = true; return; } if(reloading) return; reloading = true; location.reload(); });
+  window.addEventListener("load", () => {
+    const first = !navigator.serviceWorker.controller;
+    navigator.serviceWorker.register("sw.js").then(reg => {
+      const upd = w => snack(t("updT"), t("updB"), () => w.postMessage("SKIP_WAITING"));
+      if(reg.waiting && navigator.serviceWorker.controller) upd(reg.waiting);
+      reg.addEventListener("updatefound", () => { const w = reg.installing; if(w) w.addEventListener("statechange", () => { if(w.state === "installed"){ if(navigator.serviceWorker.controller) upd(w); else snack(t("offT"), null, null, 4500); } }); });
+    }).catch(() => {});
+  });
+}
 fromHash(); render();
 </script>
 </body>

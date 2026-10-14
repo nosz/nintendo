@@ -1,0 +1,71 @@
+{
+    "name":  "Nintendo Quest – Lernprojekt von Leonie Szpak",
+    "short_name":  "Nintendo Quest",
+    "description":  "Inoffizielles Lernprojekt von Leonie Szpak: Nintendo-Wissen in 7 kurzen Leveln mit Quiz und Zertifikaten. Deutsch, English, 日本語. Läuft auch offline.",
+    "id":  "./",
+    "start_url":  "./",
+    "scope":  "./",
+    "display":  "standalone",
+    "display_override":  [
+                             "standalone",
+                             "minimal-ui"
+                         ],
+    "orientation":  "any",
+    "background_color":  "#ffffff",
+    "theme_color":  "#e60012",
+    "lang":  "de",
+    "dir":  "ltr",
+    "categories":  [
+                       "education",
+                       "games"
+                   ],
+    "prefer_related_applications":  false,
+    "icons":  [
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "192x192",
+                      "src":  "icons/icon-192.png"
+                  },
+                  {
+                      "purpose":  "any",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-512.png"
+                  },
+                  {
+                      "purpose":  "maskable",
+                      "type":  "image/png",
+                      "sizes":  "512x512",
+                      "src":  "icons/icon-maskable-512.png"
+                  }
+              ],
+    "shortcuts":  [
+                      {
+                          "url":  "./#lesson-boss",
+                          "description":  "Direkt in die Bossrunde",
+                          "name":  "Bossrunde",
+                          "icons":  [
+                                        {
+                                            "type":  "image/png",
+                                            "sizes":  "192x192",
+                                            "src":  "icons/icon-192.png"
+                                        }
+                                    ],
+                          "short_name":  "Boss"
+                      },
+                      {
+                          "url":  "./#home",
+                          "description":  "Zur Übersicht mit deinen Zertifikaten",
+                          "name":  "Zertifikate",
+                          "icons":  [
+                                        {
+                                            "type":  "image/png",
+                                            "sizes":  "192x192",
+                                            "src":  "icons/icon-192.png"
+                                        }
+                                    ],
+                          "short_name":  "Zertifikate"
+                      }
+                  ]
+}
