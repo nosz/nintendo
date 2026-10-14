@@ -1,5 +1,5 @@
 /* Nintendo Quest - Service Worker. VERSION muss mit VERSION in index.html uebereinstimmen. */
-const VERSION = "1.9.0";
+const VERSION = "1.9.1";
 const CACHE = "nintendo-quest-" + VERSION;
 const CORE = ["./", "index.html", "manifest.webmanifest", "favicon.png", "favicon.svg", "apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "nintendo_vorschau.jpg"];
 self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); });

@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.9.0, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.9.1, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -68,6 +68,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.
+- 1.9.1 (14.10.2026): Hinweis in der Fußzeile nennt Leonie Szpak (DE/EN/JA).
 - 1.9.0 (14.10.2026): Professionelle PWA: Manifest (Name, Icons 192/512/maskable, Shortcuts, Kategorien), Service Worker mit Offline-Cache und Update-Hinweis, Installieren-Karte (iPhone-Hinweis), Offline-Bereit-Meldung, Safe-Area für Geräte mit Notch. Kopfzeile: 'Inoffizielles Lernprojekt von Leonie Szpak' unter dem Namen; Münzzähler auf dem Handy ausgeblendet (steht in der Startseiten-Kachel).
 - 1.8.0 (14.10.2026): Startseite professioneller (Statistik-Kacheln für Rang, Münzen, Sterne; kompakte Lektionsliste auf dem Handy mit markierter nächster Lektion und Fortschrittszähler; Namen-ändern-Knopf). Ganz oben eine Zeile 'Inoffizielles Lernprojekt von Leonie Szpak' (auch auf dem Zertifikat), in DE/EN/JA.
 - 1.7.1 (14.10.2026): Benutzerführung: Zurück-Knopf mit klarem Pfeil-Symbol (44 px, Rahmen) und kurzer Beschriftung (Übersicht / Zur Lektion) plus Lektionstitel als Kontext; Ergebnisseite mit eindeutigem Hauptknopf (Nächste Lektion, sonst Wiederholen/Speichern), übrige Knöpfe zurückhaltend.
