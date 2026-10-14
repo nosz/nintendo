@@ -4,7 +4,7 @@
 
 # NINTENDO: Nintendo Quest (inoffizielles internes Lernprojekt)
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.7.0, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.7.1, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -58,6 +58,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.
+- 1.7.1 (14.10.2026): Benutzerführung: Zurück-Knopf mit klarem Pfeil-Symbol (44 px, Rahmen) und kurzer Beschriftung (Übersicht / Zur Lektion) plus Lektionstitel als Kontext; Ergebnisseite mit eindeutigem Hauptknopf (Nächste Lektion, sonst Wiederholen/Speichern), übrige Knöpfe zurückhaltend.
 - 1.7.0 (14.10.2026): Eigenes Pixel-Gamepad als Logo (Kopfzeile, Zertifikat-Siegel, Tab-Icon, Apple-Icon) statt Stern.
 - 1.6.0 (14.10.2026): Beim ersten Quiz fragt ein kurzer Boxenstopp nach dem Namen (falls noch keiner gesetzt ist, einmalig, überspringbar). Vorschaubild und Vorschautexte dreisprachig (DE/EN/JA) und kürzer.
 - 1.5.0 (14.10.2026): Namensabfrage am Start, Personalisierung (Begrüßung, Quiz, Ergebnis, Zertifikat), kompakter Handy-Kopf mit Segment-Sprachwahl, feste Aktionsleiste in Lektionen, volle Knopfbreite auf Ergebnis- und Zertifikatsseite, Namensbreite auf der Urkunde berechnet.

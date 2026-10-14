@@ -107,8 +107,11 @@ h2.sec{margin:28px 0 12px;font-size:1.3rem}
 .btn:hover{filter:brightness(1.08)}
 .btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
 .btn.ghost{background:var(--card)!important;color:var(--ink);border:2px solid var(--line);box-shadow:0 3px 0 rgba(0,0,0,.08)}
-.crumb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
-.back{min-height:44px;background:none;border:0;color:var(--blue);font-weight:800;padding:6px 4px}
+.crumb{display:flex;gap:12px;flex-wrap:nowrap;align-items:center;margin:0 0 16px;min-width:0}
+.ctx{flex:1;min-width:0;color:var(--mute);font-weight:700;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.back{display:inline-flex;align-items:center;gap:4px;flex:none;min-height:44px;padding:8px 16px 8px 8px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-weight:800;box-shadow:0 3px 0 rgba(0,0,0,.08);transition:transform .12s}
+.back svg{color:var(--red);flex:none}
+.back:hover{transform:translateX(-2px)}.back:active{transform:translateY(2px);box-shadow:none}
 /* Lektion */
 .lhead{display:flex;gap:14px;align-items:center;margin-bottom:14px}
 .lhead .big{font-size:3rem;animation:wob 2.4s ease-in-out infinite}
@@ -218,7 +221,7 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.7.0", STAND = "14.10.2026";
+const VERSION = "1.7.1", STAND = "14.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -268,7 +271,8 @@ const S = {
  starsOf:["Sterne","stars","スター"],
  start:["Los geht's","Let's go","はじめる"],
  cont:["Nochmal spielen","Play again","もう一度"],
- back:["← Übersicht","← Overview","← 一覧へ"],
+ back:["Übersicht","Overview","一覧へ"],
+ backL:["Zur Lektion","Back to lesson","レッスンへ"],
  intro2:["Kurz & knackig","Short & sweet","ポイント"],
  pro:["Für Kenner: Bonuswissen","For veterans: bonus knowledge","ベテラン向け：おまけ知識"],
  fun:["Humor-Pause","Joke break","ひと息ネタ"],
@@ -609,10 +613,16 @@ function renderHome(){
   m.append(nintendoLinks());
   m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
 }
+function crumbBar(label, fn, ctx){
+  const b = h("button", {type:"button", class:"back", "aria-label":label + (ctx ? ": " + ctx : ""), onclick:fn});
+  b.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  b.append(h("span", {text:label}));
+  const bar = h("div", {class:"crumb"}, b); if(ctx) bar.append(h("span", {class:"ctx", "aria-hidden":"true", text:ctx})); return bar;
+}
 function renderLesson(l){
   const m = $("#main"); m.replaceChildren(); const i = idxOf(l.id);
   m.style.setProperty("--c", l.c);
-  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("home")}, t("back"))));
+  m.append(crumbBar(t("back"), () => go("home")));
   m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", {text:l.sub[li]}))));
   l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h2", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
   m.append(h("details", {class:"pro", style:"--c:" + l.c}, h("summary", {text:t("pro")}), h("p", {text:l.pro[li]})));
@@ -627,7 +637,7 @@ function startQuiz(l){
 }
 function renderGate(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
-  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("lesson", l.id)}, "← " + l.t[li])));
+  m.append(crumbBar(t("backL"), () => go("lesson", l.id), l.t[li]));
   const inp = h("input", {id:"nmg", type:"text", maxlength:"40", autocomplete:"given-name", placeholder:t("nameP2"), value:nm});
   const go2 = skip => { if(!skip) nm = inp.value.trim().slice(0, 40); ach.askedQuiz = true; if(nm) ach.skip = false; save(); beginQuiz(l); };
   const form = h("form", {class:"nameq", "aria-labelledby":"h1"},
@@ -643,7 +653,7 @@ function beginQuiz(l){ view = {v:"quiz", id:l.id, n:0, right:0, qs:l.q.map(q => 
 function renderQuiz(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
   const Q = l.q[view.n], st = view.qs[view.n], total = l.q.length; const done = st.picked !== null;
-  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("lesson", l.id)}, "← " + l.t[li])));
+  m.append(crumbBar(t("backL"), () => go("lesson", l.id), l.t[li]));
   m.append(h("div", {class:"dots", role:"img", "aria-label": t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}, view.qs.map((s, i) => h("i", {class: s.picked !== null ? (s.order[s.picked] === 0 ? "on" : "no") : i === view.n ? "cur" : ""}))));
   m.append(h("p", {style:"margin:0 0 4px;color:var(--mute);font-weight:700", text:t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}));
   if(hasName() && (view.n === 0 || view.n === total - 1)) m.append(h("p", {class:"qp", text:"🎯 " + fill(t(view.n === 0 && total > 1 ? "qFirst" : view.n === 0 ? "qFirst" : "qLast"))}));
@@ -683,12 +693,12 @@ function renderResult(l){
     h("h1", {id:"h1", text:hasName() ? fill(t(pass ? "passN" : "tryN")) : (pass ? t("pass") : t("tryAgain"))}),
     h("p", {text:t("res") + ": " + view.right + " " + t("of") + " " + n + " · " + view.right*10 + " " + t("coins")})));
   if(pass){ m.append(h("p", {class:"pitch", style:"margin:0 0 6px", text:"🏅 " + t("certNow")})); certBlock(m, l); }
-  m.append(h("div", {class:"row"},
-    pass ? h("button", {type:"button", class:"btn", onclick:() => savePng(certSVG(l), "nintendo_quest_" + l.id + "_" + (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_") + ".png")}, "⬇ " + t("dl")) : null,
-    nxt && pass ? h("button", {type:"button", class:"btn", onclick:() => go("lesson", nxt.id)}, t("nextL") + " →") : null,
-    h("button", {type:"button", class:"btn ghost", onclick:() => startQuiz(l)}, "↺ " + t("retry")),
-    h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"))));
-  m.append(nLink());
+  const save1 = () => savePng(certSVG(l), "nintendo_quest_" + l.id + "_" + (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_") + ".png");
+  const bNext = nxt && pass ? h("button", {type:"button", class:"btn", onclick:() => go("lesson", nxt.id)}, t("nextL") + " →") : null;
+  const bSave = pass ? h("button", {type:"button", class:"btn" + (bNext ? " ghost" : ""), onclick:save1}, "⬇ " + t("dl")) : null;
+  const bRetry = h("button", {type:"button", class:"btn" + (pass ? " ghost" : ""), onclick:() => startQuiz(l)}, "↺ " + t("retry"));
+  const bHome = h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"));
+  m.append(h("div", {class:"row"}, bNext, bSave, bRetry, bHome));  m.append(nLink());
   if(pass) confetti();
 }
 const NHIST = "https://www.nintendo.co.jp/en/corporate/en/history/index.html", NCORP = "https://www.nintendo.co.jp/corporate/en/index.html";
@@ -774,7 +784,7 @@ function certSVG(l){
 }
 function renderCert(l){
   const m = $("#main"); m.replaceChildren(); const M = !l;
-  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("home")}, t("back"))));
+  m.append(crumbBar(t("back"), () => go("home")));
   m.append(h("h1", {id:"h1", text:"🏅 " + (M ? t("master") : t("certOf") + ": " + l.t[li])}));
   const box = null; certBlock(m, l);
   const nameSafe = (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_");
