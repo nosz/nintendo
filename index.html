@@ -258,7 +258,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.9.2", STAND = "14.10.2026";
+const VERSION = "1.9.3", STAND = "14.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -288,6 +288,7 @@ const S = {
  nameOk:["Das bin ich","That's me","これが私です"],
  nameSkip:["Lieber anonym bleiben","Stay anonymous","匿名のままにする"],
  nameChange:["Name ändern","Change name","名前を変更"],
+ nameAdd:["Name eintragen","Add your name","名前を入力"],
  helloN:["Hey {n}, was weißt du über Nintendo?","Hey {n}, what do you know about Nintendo?","{n}さん、任天堂のこと、どれくらい知ってる？"],
  greetN:["Schön, dich zu sehen, {n}. Die Münzen warten schon.","Nice to meet you, {n}. The coins are already waiting.","はじめまして、{n}さん。コインが待っています。"],
  qFirst:["Los geht's, {n}!","Here we go, {n}!","{n}さん、いくよ！"],
@@ -619,7 +620,7 @@ function renderHome(){
     h("div", null,
       h("h1", {id:"h1", text:hasName() ? fill(t("helloN")) : t("hello")}),
       h("p", {text:t("introH")}),
-      hasName() ? h("button", {type:"button", class:"linkbtn namebtn", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; render(true); }}, "✎ " + fname() + " · " + t("nameChange")) : null),
+      hasName() ? h("button", {type:"button", class:"linkbtn namebtn", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; render(true); }}, "✎ " + fname() + " · " + t("nameChange")) : (!editName ? h("button", {type:"button", class:"linkbtn namebtn", onclick:() => { editName = true; render(true); }}, "✎ " + t("nameAdd")) : null)),
     h("div", {class:"ring", style:"--p:" + pct, role:"img", "aria-label": T.dn + " / " + LESSONS.length + " " + t("done")}, h("span", {text:T.dn + "/" + LESSONS.length})),
 h("div", {class:"stats", role:"list"},
         h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"🏅 " + rankName(T.st)}), h("span", {class:"sl", text:t("rank")})),
