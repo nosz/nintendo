@@ -1,6 +1,10 @@
+**🎮 Live ansehen: [https://nosz.github.io/nintendo](https://nosz.github.io/nintendo)**
+
+[![Nintendo Quest: Was weißt du über Nintendo? / What do you know about Nintendo? / 任天堂、どれくらい知ってる？](nintendo_vorschau.jpg)](https://nosz.github.io/nintendo)
+
 # NINTENDO: Nintendo Quest (inoffizielles internes Lernprojekt)
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.3.1, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.7.0, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -21,10 +25,17 @@ Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige,
 
 **Schnelle Erfolge:** Lektion 1 und 2 sind bewusst winzig (je 2 Karten, 2 Fragen, ca. 1 bis 2 Minuten). Schon die erste richtige Antwort löst den Erfolg "Erster Treffer" aus, und auf der Ergebnisseite erscheint das Zertifikat sofort, mit Namensfeld und Speichern-Knopf. Mehr Details der gekürzten Lektionen stehen im Kenner-Bonus.
 
+**Name und Personalisierung:** Beim ersten Start fragt die App kurz "Wie dürfen wir dich nennen?" (Eingabe optional, "Lieber anonym bleiben" möglich). Der Name wird nur lokal im Browser (`localStorage`) gespeichert, nie übertragen. Er steckt in Begrüßung, erster und letzter Quizfrage, Rückmeldungen (Treffer und Fehlversuch), Ergebnis und Zertifikat (Name plus persönlicher Spruch). Namen lassen sich über den Namens-Chip oder auf der Zertifikatsseite ändern. Ohne Namen laufen die neutralen Texte.
+
+**Nintendo-Links:** Startseite (Abschnitt "Mehr über Nintendo": offizielle Seite je Sprache, Firmengeschichte, Unternehmensinformationen), Fußzeile, Zertifikat (Webadresse und Marke "NINTENDO QUEST") sowie Link auf Ergebnis- und Zertifikatsseite. Alle öffnen im gleichen Tab.
+
 Spielmechanik: 10 Münzen je richtiger Antwort, 1 bis 3 Sterne je Lektion (50 %, 75 %, 100 %), 5 Ränge von "Pilz-Praktikant" bis "Legende", Konfetti bei bestandenem Level, Fortschritt im Browser gespeichert (`localStorage`), Hell- und Dunkelmodus, Tastaturbedienung, "weniger Bewegung" wird beachtet.
 
 ## Veröffentlichung und Link-Vorschau
-Geplante Adresse: https://nosz.github.io/nintendo/ (GitHub Pages, Repository `nintendo`, Dateien `index.html` und `nintendo_vorschau.jpg` ins Hauptverzeichnis legen). Die Vorschau (Open Graph / Twitter Card) zeigt `nintendo_vorschau.jpg` (1200 x 630, bunte Spielkarten, Sterne, Münze) mit Titel und Beschreibung. Wichtig: Die Bild-Adresse in den Tags ist absolut und gilt nur unter dieser Adresse; Messenger und Netzwerke speichern Vorschauen zwischen (nach dem Hochladen ggf. mit dem Debugger der jeweiligen Plattform neu einlesen). Vor einer öffentlichen Freigabe Management/Legal einbeziehen (siehe Grenzen).
+Geplante Adresse: https://nosz.github.io/nintendo/ (GitHub Pages, Repository `nintendo`, Dateien `index.html` und `nintendo_vorschau.jpg` ins Hauptverzeichnis legen). Die Vorschau (Open Graph / Twitter Card) zeigt `nintendo_vorschau.jpg` (1200 x 630, bunte Spielkarten, Sterne, Münze, kurze Fragen auf Deutsch, Englisch und Japanisch) mit dreisprachigem Kurztitel und Kurzbeschreibung. Die Bild-Adresse trägt `?v=2`, damit Messenger das neue Bild statt eines zwischengespeicherten laden (bei der nächsten Bildänderung auf `?v=3` hochzählen). Wichtig: Die Bild-Adresse in den Tags ist absolut und gilt nur unter dieser Adresse; Messenger und Netzwerke speichern Vorschauen zwischen (nach dem Hochladen ggf. mit dem Debugger der jeweiligen Plattform neu einlesen). Vor einer öffentlichen Freigabe Management/Legal einbeziehen (siehe Grenzen).
+
+## Logo und Icons
+Eigenes Logo: ein Pixel-Gamepad (original gezeichnet, kein Nintendo-Logo und keine Nintendo-Figur). Es steht in der Kopfzeile, im Siegel der Zertifikate und als Tab-Icon. Dateien im Hauptverzeichnis mit hochladen: `favicon.png` (64 px), `apple-touch-icon.png` (180 px); das SVG-Icon ist in `index.html` eingebettet (`favicon.svg` liegt zusätzlich bei). Das offizielle Nintendo-Logo und Figuren wie die Pixel-Figur aus dem Tab-Beispiel sind absichtlich nicht enthalten (Marken- und Urheberrecht); sie kämen nur nach Freigabe durch Management/Legal und mit gelieferter Originaldatei in Frage.
 
 ## Marke und Look
 Stil angelehnt an die Ausrichtung von Nintendo (Rot/Weiß, runde Karten, verspielte Animationen). Es werden **keine Logos, Figurenbilder oder kopierten Texte** verwendet. Die Seite nintendo.com/de-de war in dieser Umgebung gesperrt und wurde nicht ausgewertet; der Look beruht auf allgemeinen Gestaltungsmerkmalen, nicht auf einem Abgleich mit der Seite. Gern Screenshot oder Farbwerte liefern, dann lässt sich der Look nachschärfen.
@@ -47,5 +58,9 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.
+- 1.7.0 (14.10.2026): Eigenes Pixel-Gamepad als Logo (Kopfzeile, Zertifikat-Siegel, Tab-Icon, Apple-Icon) statt Stern.
+- 1.6.0 (14.10.2026): Beim ersten Quiz fragt ein kurzer Boxenstopp nach dem Namen (falls noch keiner gesetzt ist, einmalig, überspringbar). Vorschaubild und Vorschautexte dreisprachig (DE/EN/JA) und kürzer.
+- 1.5.0 (14.10.2026): Namensabfrage am Start, Personalisierung (Begrüßung, Quiz, Ergebnis, Zertifikat), kompakter Handy-Kopf mit Segment-Sprachwahl, feste Aktionsleiste in Lektionen, volle Knopfbreite auf Ergebnis- und Zertifikatsseite, Namensbreite auf der Urkunde berechnet.
+- 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
