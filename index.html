@@ -193,7 +193,31 @@ footer p{margin:6px 0}
 button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-height:40px}
 .nlink{display:inline-flex;align-items:center;min-height:44px;font-weight:800;color:var(--blue)}
 .pitch{text-align:center;color:var(--mute);margin:10px 0 0;font-weight:700}
-@media(max-width:560px){.choices{grid-template-columns:1fr}.res .row,.main>.row{flex-direction:column;align-items:stretch}.res~.row{flex-direction:column;align-items:stretch}.res~.row .btn,.certbox~.row .btn{width:100%}}.certbox{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:10px;box-shadow:var(--shadow);margin:14px 0;animation:pop .5s both}
+@media(max-width:560px){.choices{grid-template-columns:1fr}.res .row,.main>.row{flex-direction:column;align-items:stretch}.res~.row{flex-direction:column;align-items:stretch}.res~.row .btn,.certbox~.row .btn{width:100%}}.byline{background:var(--red-l);color:var(--ink);text-align:center;font-weight:700;font-size:.85rem;padding:7px 12px;border-bottom:2px solid var(--line)}
+.brand small{display:none}
+.stats{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin-top:2px;grid-column:1/-1}
+.stat{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:8px 10px;min-width:0}
+.stat .sv{display:block;font-weight:800;font-size:.98rem;line-height:1.25;overflow-wrap:anywhere}
+.stat .sl{display:block;font-size:.78rem;color:var(--mute);font-weight:700;margin-top:2px}
+.namebtn{padding:6px 0;min-height:44px;text-decoration:none;color:var(--mute);font-weight:700}
+.namebtn:hover{text-decoration:underline}
+h2.secrow{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
+.lcard.nextup{box-shadow:0 0 0 3px var(--red),var(--shadow)}
+.lcard.done .nr::after{content:" ✓";color:var(--ok)}
+@media(max-width:560px){
+ .grid{grid-template-columns:1fr;gap:10px}
+ .lcard{display:grid;grid-template-columns:44px 1fr auto;grid-template-areas:"ico title foot" "ico sub foot";column-gap:12px;row-gap:2px;align-items:center;min-height:78px;padding:12px 14px;border-top:2px solid var(--line);border-left:8px solid var(--c)}
+ .lcard:hover{transform:none}
+ .lcard .ico{grid-area:ico;font-size:1.9rem;text-align:center}
+ .lcard .nr{display:none}
+ .lcard h3{grid-area:title;font-size:1rem}
+ .lcard p{grid-area:sub;font-size:.84rem}
+ .lcard .foot{grid-area:foot;flex-direction:column;align-items:flex-end;gap:2px;margin:0;font-size:.8rem}
+ .stats{grid-template-columns:1.6fr 1fr 1fr;gap:6px}.stat{padding:7px 8px}
+}
+@media print{.byline{display:none}}
+.certbox{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:10px;box-shadow:var(--shadow);margin:14px 0;animation:pop .5s both}
 .certbox svg{display:block;width:100%;height:auto;border-radius:12px}
 .field{display:grid;gap:6px;margin:14px 0}
 .field label{font-weight:800}
@@ -216,12 +240,13 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
   <div class="lang" role="group" id="langs"></div>
   <button type="button" class="theme" id="theme" aria-label="Hell/Dunkel">◐</button>
 </div></header>
+<div class="byline" id="by"></div>
 <main id="main" tabindex="-1"></main>
 <footer id="foot"></footer>
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.7.1", STAND = "14.10.2026";
+const VERSION = "1.8.0", STAND = "14.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -261,6 +286,8 @@ const S = {
  gateS:["Wie heißt du eigentlich? Dann wird dein Zertifikat gleich viel persönlicher. Der Name bleibt auf diesem Gerät.","What's your name? It makes your certificate much more personal. Your name stays on this device.","お名前を教えてください。証明書がぐっと特別になります。名前はこの端末にのみ保存されます。"],
  gateGo:["Los geht's","Let's go","スタート"],
  gateSkip:["Weiter ohne Namen","Continue without a name","名前なしで続ける"],
+ by:["Inoffizielles Lernprojekt von Leonie Szpak","Unofficial learning project by Leonie Szpak","Leonie Szpak による非公式の学習プロジェクト"],
+ introH:["In 20 Minuten vom Pilz-Praktikanten zur Legende. Für Neue, Erfahrene und die Chefetage.","In 20 minutes from mushroom intern to legend. For newcomers, veterans and the executive floor.","20分でキノコ見習いからレジェンドへ。新入社員にもベテランにも、経営陣にも。"],
  moreN:["Mehr über Nintendo entdecken","Discover more about Nintendo","任天堂についてもっと知る"],
  contB:["Weiter geht's","Keep going","つづきから"],
  pitch:["Auch Chefs fangen klein an: 1889 mit Spielkarten.","Even bosses start small: in 1889 with playing cards.","社長も最初は小さく：1889年は花札から。"], lessons:["Deine Lektionen","Your lessons","レッスン一覧"],
@@ -572,13 +599,13 @@ function renderHome(){
   m.append(h("section", {class:"hero", "aria-labelledby":"h1"},
     h("div", null,
       h("h1", {id:"h1", text:hasName() ? fill(t("helloN")) : t("hello")}),
-      h("p", {text:t("intro")}),
-      h("div", {class:"stats"},
-        hasName() ? h("button", {type:"button", class:"chip", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; render(true); }}, "✎ " + fname()) : null,
-        h("span", {class:"chip"}, "🏅 " + rankName(T.st)),
-        h("span", {class:"chip coin"}, h("b", {"aria-hidden":"true"}, "¢"), T.co),
-        h("span", {class:"chip"}, "★ " + T.st + " / " + LESSONS.length*3))),
-    h("div", {class:"ring", style:"--p:" + pct, role:"img", "aria-label": T.dn + " / " + LESSONS.length + " " + t("done")}, h("span", {text:T.dn + "/" + LESSONS.length}))));
+      h("p", {text:t("introH")}),
+      hasName() ? h("button", {type:"button", class:"linkbtn namebtn", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; render(true); }}, "✎ " + fname() + " · " + t("nameChange")) : null),
+    h("div", {class:"ring", style:"--p:" + pct, role:"img", "aria-label": T.dn + " / " + LESSONS.length + " " + t("done")}, h("span", {text:T.dn + "/" + LESSONS.length})),
+h("div", {class:"stats", role:"list"},
+        h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"🏅 " + rankName(T.st)}), h("span", {class:"sl", text:t("rank")})),
+        h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"¢ " + T.co}), h("span", {class:"sl", text:t("coins")})),
+        h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"★ " + T.st + "/" + LESSONS.length*3}), h("span", {class:"sl", text:t("starsOf")})))));
   if((!hasName() && !ach.skip) || editName){
     const inp = h("input", {id:"nmq", type:"text", maxlength:"40", autocomplete:"given-name", placeholder:t("nameP2"), value:nm});
     const done = v => { nm = v.trim().slice(0, 40); editName = false; ach.skip = !nm; save(); render(true); };
@@ -597,11 +624,11 @@ function renderHome(){
     m.append(h("div", {class:"choices"}, first, vet));
     m.append(h("p", {class:"pitch", text:"✨ " + (hasName() ? fill(t("greetN")) : t("pitch"))}));
   }  if(T.dn === LESSONS.length) m.append(h("div", {class:"bubble", role:"status"}, h("small", {text:"🎉"}), t("allDone")));
-  m.append(h("h2", {class:"sec", text:t("lessons")}));
+  m.append(h("h2", {class:"sec secrow"}, h("span", {text:t("lessons")}), h("span", {class:"cnt", text:T.dn + " / " + LESSONS.length + " " + t("done")})));
   const g = h("div", {class:"grid"});
   LESSONS.forEach((l, i) => {
     const p = prog[l.id], s = starsOf(p, l.q.length);
-    const b = h("button", {type:"button", class:"lcard", style:"--c:" + l.c + ";animation-delay:" + i*60 + "ms", onclick:() => go("lesson", l.id)},
+    const b = h("button", {type:"button", class:"lcard" + (s >= 1 ? " done" : "") + (nextL === l ? " nextup" : ""), style:"--c:" + l.c + ";animation-delay:" + i*60 + "ms", onclick:() => go("lesson", l.id)},
       h("span", {class:"ico", "aria-hidden":"true"}, l.ico),
       h("span", {class:"nr", text:(i+1) + " / " + LESSONS.length}),
       h("h3", {text:l.t[li]}), h("p", {text:l.sub[li]}),
@@ -733,7 +760,7 @@ const CT = {
  rankL:["Rang","Rank","ランク"],
  date:["Datum","Date","日付"],
  sign:["Der Quest-Rat (inoffiziell)","The Quest Council (unofficial)","クエスト評議会（非公式）"],
- foot:["Inoffizielles, internes Lern-Zertifikat · kein Nintendo-Produkt","Unofficial internal learning certificate · not a Nintendo product","非公式の社内学習証明書・任天堂の製品ではありません"]
+ foot:["Inoffizielles Lernprojekt von Leonie Szpak · kein Nintendo-Produkt","Unofficial learning project by Leonie Szpak · not a Nintendo product","Leonie Szpak による非公式の学習プロジェクト・任天堂の製品ではありません"]
 };
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 function wrap(s, n){
@@ -828,7 +855,7 @@ function render(keepScroll){
 function chrome(){
   document.documentElement.lang = LANGS[li][0];
   document.title = t("title");
-  $(".brand .dot").innerHTML = logoSvg(); $("#bt").textContent = t("title"); $("#bs").textContent = t("sub"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
+  $(".brand .dot").innerHTML = logoSvg(); $("#by").textContent = t("by"); $("#bt").textContent = t("title"); $("#bs").textContent = t("sub"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
   $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL"));
   const T = totals(); $("#coins").textContent = "¢ " + T.co;
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
