@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.9.1, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.9.2, Stand 14.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -35,7 +35,8 @@ Spielmechanik: 10 Münzen je richtiger Antwort, 1 bis 3 Sterne je Lektion (50 %,
 
 ## PWA (installierbare App, offline)
 Nintendo Quest ist eine Progressive Web App: Auf Handy und Rechner lässt sie sich wie eine App installieren (Chrome/Edge: "Installieren" auf der Startseite oder im Browser-Menü; iPhone/Safari: Teilen, dann "Zum Home-Bildschirm"), startet im eigenen Fenster mit eigenem Icon und läuft nach dem ersten Laden **ohne Internet**.
-- **Dateien (alle ins Hauptverzeichnis bzw. `icons/` des Repositories):** `index.html`, `manifest.webmanifest`, `sw.js`, `icons/icon-192.png`, `icons/icon-512.png`, `icons/icon-maskable-512.png`, `favicon.png`, `favicon.svg`, `apple-touch-icon.png`, `nintendo_vorschau.jpg`. Die Seite muss über HTTPS laufen (GitHub Pages tut das).
+- **Dateien (alle ins Hauptverzeichnis des Repositories, ohne Unterordner):** `index.html`, `manifest.webmanifest`, `sw.js`, `icon-192.png`, `icon-512.png`, `icon-maskable-512.png`, `favicon.png`, `favicon.svg`, `apple-touch-icon.png`, `nintendo_vorschau.jpg`. Die Seite muss über HTTPS laufen (GitHub Pages tut das).
+- **Wenn auf dem Handy statt des Icons nur ein Buchstabe (z. B. "G") erscheint:** Die Icon-Dateien (icon-192.png, icon-512.png, icon-maskable-512.png, pple-touch-icon.png, avicon.png) fehlen auf dem Server (404). Alle Dateien der Liste oben hochladen, auf dem Handy die alte Verknüpfung löschen, die Seite neu laden (ggf. Browserdaten der Seite löschen) und die Verknüpfung bzw. die App neu anlegen. Prüfung: https://nosz.github.io/nintendo/icon-192.png muss ein Bild liefern.
 - **Offline:** Der Service Worker (`sw.js`) legt die Kerndateien in den Cache `nintendo-quest-<Version>`. Seiten werden zuerst aus dem Netz geholt (4 s Zeitlimit), sonst aus dem Cache.
 - **Updates:** Gibt es eine neue Version, erscheint unten "Neue Version verfügbar" mit Knopf "Aktualisieren". Nach dem Klick lädt die App neu, der alte Cache wird gelöscht. **Bei jeder neuen Version `VERSION` in `index.html` und in `sw.js` gleichzeitig erhöhen** (sonst wird nichts aktualisiert).
 - **Fortschritt:** Name, Sprache und Fortschritt liegen im Browser-Speicher (`localStorage`, Schlüssel `nintendo_quest_v1`) und bleiben nach Tagen, Neustart, Schließen des Tabs und App-Updates erhalten. Der Browser-Speicher gehört zur Adresse: Wer die Seite im Browser und als installierte App nutzt, hat zwei getrennte Speicherstände. Wird der Browser-Speicher für die Seite gelöscht, ist der Fortschritt weg.
@@ -68,6 +69,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.
+- 1.9.2 (14.10.2026): Icons liegen im Hauptverzeichnis (der Ordner icons/ war auf dem Server nicht vorhanden: Android zeigte nur einen Buchstaben statt des Icons, der Service Worker brach beim Installieren ab). Service Worker robuster: nur index.html und Manifest sind Pflicht, Icons und Bild sind optional. Zusätzliche Icon-Links (192, 512, 180) im Kopf.
 - 1.9.1 (14.10.2026): Hinweis in der Fußzeile nennt Leonie Szpak (DE/EN/JA).
 - 1.9.0 (14.10.2026): Professionelle PWA: Manifest (Name, Icons 192/512/maskable, Shortcuts, Kategorien), Service Worker mit Offline-Cache und Update-Hinweis, Installieren-Karte (iPhone-Hinweis), Offline-Bereit-Meldung, Safe-Area für Geräte mit Notch. Kopfzeile: 'Inoffizielles Lernprojekt von Leonie Szpak' unter dem Namen; Münzzähler auf dem Handy ausgeblendet (steht in der Startseiten-Kachel).
 - 1.8.0 (14.10.2026): Startseite professioneller (Statistik-Kacheln für Rang, Münzen, Sterne; kompakte Lektionsliste auf dem Handy mit markierter nächster Lektion und Fortschrittszähler; Namen-ändern-Knopf). Ganz oben eine Zeile 'Inoffizielles Lernprojekt von Leonie Szpak' (auch auf dem Zertifikat), in DE/EN/JA.

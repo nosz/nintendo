@@ -1,8 +1,9 @@
 /* Nintendo Quest - Service Worker. VERSION muss mit VERSION in index.html uebereinstimmen. */
-const VERSION = "1.9.1";
+const VERSION = "1.9.2";
 const CACHE = "nintendo-quest-" + VERSION;
-const CORE = ["./", "index.html", "manifest.webmanifest", "favicon.png", "favicon.svg", "apple-touch-icon.png", "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "nintendo_vorschau.jpg"];
-self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE))); });
+const CORE = ["./", "index.html", "manifest.webmanifest"];
+const OPTIONAL = ["favicon.png", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "nintendo_vorschau.jpg"];
+self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).then(() => Promise.allSettled(OPTIONAL.map(u => c.add(u)))))); });
 self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(n => n.startsWith("nintendo-quest-") && n !== CACHE).map(n => caches.delete(n)))).then(() => self.clients.claim())); });
 self.addEventListener("message", e => { if(e.data === "SKIP_WAITING") self.skipWaiting(); });
 const timeout = (p, ms) => new Promise((res, rej) => { const t = setTimeout(() => rej(new Error("timeout")), ms); p.then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); }); });
