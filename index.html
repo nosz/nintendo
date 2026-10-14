@@ -6,6 +6,26 @@
 <title>Nintendo Quest</title>
 <meta name="description" content="Inoffizielles Lernprojekt: Nintendo-Wissen in 7 Lektionen, auf Deutsch, Englisch und Japanisch.">
 <meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#e60012">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23e60012'/%3E%3Cpath d='M32 10l6.5 14 15 1.8-11.2 10.3 3 15L32 43.5 18.7 51l3-15L10.5 25.8l15-1.8z' fill='%23ffc800'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://nosz.github.io/nintendo/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Nintendo Quest">
+<meta property="og:title" content="Nintendo Quest: Hey, was weißt du über Nintendo?">
+<meta property="og:description" content="7 kurze Level, Zertifikate und jede Menge Humor. Für Neue, Erfahrene und die Chefetage. Auf Deutsch, Englisch und Japanisch. Inoffizielles Lernprojekt.">
+<meta property="og:url" content="https://nosz.github.io/nintendo/">
+<meta property="og:image" content="https://nosz.github.io/nintendo/nintendo_vorschau.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Nintendo Quest: bunte Spielkarten, Sterne und eine Münze mit dem Text Hey, was weißt du über Nintendo?">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nintendo Quest: Hey, was weißt du über Nintendo?">
+<meta name="twitter:description" content="7 kurze Level, Zertifikate und jede Menge Humor. DE, EN, 日本語. Inoffizielles Lernprojekt.">
+<meta name="twitter:image" content="https://nosz.github.io/nintendo/nintendo_vorschau.jpg">
 <style>
 :root{
   --red:#e60012;--red-d:#b5000e;--red-l:#ffe9eb;
@@ -94,7 +114,7 @@ h2.sec{margin:28px 0 12px;font-size:1.3rem}
 .lhead h1{margin:0;font-size:clamp(1.4rem,4.5vw,2rem);line-height:1.25}
 .lhead p{margin:0;color:var(--mute)}
 .card{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:0 0 14px;box-shadow:var(--shadow);animation:pop .5s both}
-.card h3{margin:0 0 6px;font-size:1.1rem}
+.card h2{margin:0 0 6px;font-size:1.1rem}
 .card p{margin:0}
 .card .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--red-d);color:#fff;font-weight:800;margin-right:8px;font-size:.9rem}
 .bubble{background:var(--gold);color:#3b2d00;border-radius:22px 22px 22px 6px;padding:14px 18px;margin:18px 0;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.12);animation:pop .5s .25s both}
@@ -188,7 +208,7 @@ footer p{margin:6px 0}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.3.0", STAND = "14.10.2026";
+const VERSION = "1.3.1", STAND = "14.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -529,7 +549,7 @@ function renderLesson(l){
   m.style.setProperty("--c", l.c);
   m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("home")}, t("back"))));
   m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", {text:l.sub[li]}))));
-  l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h3", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
+  l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h2", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
   m.append(h("details", {class:"pro", style:"--c:" + l.c}, h("summary", {text:t("pro")}), h("p", {text:l.pro[li]})));
   m.append(h("div", {class:"bubble"}, h("small", {text:"😄 " + t("fun")}), l.fun[li]));
   m.append(h("div", {class:"src"}, h("strong", {text:t("src")}), h("ul", null, l.src.map(s => h("li", null, h("a", {href:s[1], rel:"noopener"}, s[0]))))));
@@ -568,7 +588,7 @@ function answer(l, pos){
   render(true);
 }
 function finishQuiz(l){
-  const n = l.q.length, p = prog[l.id]; if(!p || view.right > p.best) prog[l.id] = {best:view.right}; save();
+  const n = l.q.length, p = prog[l.id]; if(view.right > (p ? p.best : 0)) prog[l.id] = {best:view.right}; save();
   view = {v:"result", id:l.id, right:view.right}; render();
 }
 function renderResult(l){
