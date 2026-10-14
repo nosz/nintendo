@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nintendo Quest</title>
+<meta name="description" content="Inoffizielles Lernprojekt: Nintendo-Wissen in 7 Lektionen, auf Deutsch, Englisch und Japanisch.">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{
+  --red:#e60012;--red-d:#b5000e;--red-l:#ffe9eb;
+  --bg:#f4f4f4;--card:#ffffff;--ink:#1f2026;--mute:#565860;--line:#e1e2e5;
+  --blue:#0b6aa8;--green:#1b7a3d;--gold:#ffc800;--gold-ink:#5a4500;--purple:#6b3fa0;
+  --ok:#157a3a;--okbg:#e6f6ec;--bad:#b3261e;--badbg:#fdecea;
+  --shadow:0 4px 0 rgba(0,0,0,.08),0 8px 22px rgba(0,0,0,.08);
+  --r:20px;
+  --font:"Trebuchet MS","Segoe UI","Hiragino Maru Gothic ProN","Yu Gothic UI","Meiryo",system-ui,-apple-system,sans-serif;
+}
+:root[data-theme="dark"]{
+  --red:#ff4d5d;--red-d:#e60012;--red-l:#3a1a1e;
+  --bg:#15161a;--card:#202228;--ink:#f1f2f4;--mute:#b4b6bd;--line:#34363e;
+  --blue:#5db8f0;--green:#5ccf86;--gold:#ffc800;--gold-ink:#ffe28a;--purple:#b794f0;
+  --ok:#5ccf86;--okbg:#17301f;--bad:#ff8a80;--badbg:#3a1d1b;
+  --shadow:0 4px 0 rgba(0,0,0,.35),0 8px 22px rgba(0,0,0,.35);
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --red:#ff4d5d;--red-d:#e60012;--red-l:#3a1a1e;
+    --bg:#15161a;--card:#202228;--ink:#f1f2f4;--mute:#b4b6bd;--line:#34363e;
+    --blue:#5db8f0;--green:#5ccf86;--gold:#ffc800;--gold-ink:#ffe28a;--purple:#b794f0;
+    --ok:#5ccf86;--okbg:#17301f;--bad:#ff8a80;--badbg:#3a1d1b;
+    --shadow:0 4px 0 rgba(0,0,0,.35),0 8px 22px rgba(0,0,0,.35);
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:1rem/1.6 var(--font);-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+button{font:inherit;cursor:pointer}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:10px;z-index:100}
+.skip:focus{left:8px}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+/* Kopf */
+.top{background:var(--red);color:#fff;position:sticky;top:0;z-index:20;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+:root[data-theme="dark"] .top{background:#b5000e}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .top{background:#b5000e}}
+.topin{max-width:1060px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-weight:800;font-size:1.15rem;letter-spacing:.2px;min-height:44px;background:none;border:0;padding:0}
+.brand .dot{width:34px;height:34px;border-radius:50%;background:#fff;color:var(--red-d);display:grid;place-items:center;font-size:1.2rem;box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.brand small{display:block;font-weight:600;font-size:.72rem;opacity:.92;letter-spacing:.4px}
+.spacer{flex:1}
+.pill{background:rgba(0,0,0,.2);border-radius:999px;padding:6px 12px;font-weight:700;font-size:.9rem;white-space:nowrap}
+.lang{display:flex;gap:6px}
+.lang button,.theme{min-height:44px;min-width:44px;padding:6px 12px;border-radius:999px;border:2px solid rgba(255,255,255,.7);background:transparent;color:#fff;font-weight:700}
+.lang button[aria-pressed="true"]{background:#fff;color:var(--red-d)}
+.theme{font-size:1.1rem;padding:6px}
+/* Layout */
+main{max-width:1060px;margin:0 auto;padding:20px 16px 90px;outline:none}
+.hero{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;position:relative;overflow:hidden;border:2px solid var(--line)}
+.hero::before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--red-l)}
+.hero>*{position:relative}
+.hero h1{margin:0 0 6px;font-size:clamp(1.5rem,4.5vw,2.2rem);line-height:1.2}
+.hero p{margin:0 0 12px;color:var(--mute)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border:2px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700}
+.chip.coin b{color:#3b2d00;background:var(--gold);border-radius:50%;width:22px;height:22px;display:grid;place-items:center;font-size:.8rem}
+.ring{--p:0;width:112px;height:112px;border-radius:50%;background:conic-gradient(var(--red) calc(var(--p)*1%),var(--line) 0);display:grid;place-items:center;transition:background .6s}
+.ring span{width:84px;height:84px;border-radius:50%;background:var(--card);display:grid;place-items:center;font-weight:800;font-size:1.3rem}
+h2.sec{margin:28px 0 12px;font-size:1.3rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.lcard{--c:var(--red);text-align:left;background:var(--card);border:2px solid var(--line);border-top:8px solid var(--c);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);color:var(--ink);display:flex;flex-direction:column;gap:6px;min-height:170px;transition:transform .18s,box-shadow .18s;animation:pop .5s both}
+.lcard:hover{transform:translateY(-4px) rotate(-.4deg)}
+.lcard:active{transform:translateY(1px)}
+.lcard .ico{font-size:2rem;line-height:1}
+.lcard h3{margin:0;font-size:1.08rem;line-height:1.3}
+.lcard p{margin:0;color:var(--mute);font-size:.92rem}
+.lcard .foot{margin-top:auto;display:flex;justify-content:space-between;align-items:center;font-size:.9rem;color:var(--mute);font-weight:700}
+.stars{letter-spacing:2px;font-size:1.15rem}
+.stars .off{opacity:.3;filter:grayscale(1)}
+.nr{font-weight:800;color:var(--c)}
+@keyframes pop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:10px 22px;border-radius:999px;border:0;background:var(--red-d);color:#fff;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.25);transition:transform .12s,box-shadow .12s;text-decoration:none}
+:root[data-theme="dark"] .btn{background:#d0101f}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{background:#d0101f}}
+.btn:hover{filter:brightness(1.08)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.25)}
+.btn.ghost{background:var(--card);color:var(--ink);border:2px solid var(--line);box-shadow:0 3px 0 rgba(0,0,0,.08)}
+.crumb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px}
+.back{min-height:44px;background:none;border:0;color:var(--blue);font-weight:800;padding:6px 4px}
+/* Lektion */
+.lhead{display:flex;gap:14px;align-items:center;margin-bottom:14px}
+.lhead .big{font-size:3rem;animation:wob 2.4s ease-in-out infinite}
+@keyframes wob{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg) translateY(-4px)}}
+.lhead h1{margin:0;font-size:clamp(1.4rem,4.5vw,2rem);line-height:1.25}
+.lhead p{margin:0;color:var(--mute)}
+.card{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:0 0 14px;box-shadow:var(--shadow);animation:pop .5s both}
+.card h3{margin:0 0 6px;font-size:1.1rem}
+.card p{margin:0}
+.card .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--red-d);color:#fff;font-weight:800;margin-right:8px;font-size:.9rem}
+.bubble{background:var(--gold);color:#3b2d00;border-radius:22px 22px 22px 6px;padding:14px 18px;margin:18px 0;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.12);animation:pop .5s .25s both}
+:root[data-theme="dark"] .bubble{color:#2a2000}
+.bubble small{display:block;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-size:.75rem;margin-bottom:2px}
+details.pro{background:var(--card);border:2px dashed var(--c,var(--red));border-radius:var(--r);padding:0;margin:0 0 14px}
+details.pro summary{min-height:48px;padding:12px 18px;font-weight:800;cursor:pointer;list-style:none;display:flex;gap:8px;align-items:center}
+details.pro summary::-webkit-details-marker{display:none}
+details.pro summary::before{content:"\1F3C6";font-size:1.2rem}
+details.pro[open] summary::before{content:"\2B50"}
+details.pro p{margin:0;padding:0 18px 16px}
+.src{font-size:.9rem;color:var(--mute);margin:16px 0}
+.src ul{margin:6px 0 0;padding-left:20px}
+.src li{margin:4px 0}
+.sticky{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom));display:flex;justify-content:center;margin-top:18px}
+/* Quiz */
+.dots{display:flex;gap:6px;margin:0 0 16px}
+.dots i{flex:1;height:10px;border-radius:99px;background:var(--line);transition:background .3s}
+.dots i.on{background:var(--ok)}
+.dots i.no{background:var(--bad)}
+.dots i.cur{background:var(--blue)}
+.qq{font-size:clamp(1.15rem,3.8vw,1.5rem);line-height:1.35;margin:0 0 16px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;min-height:56px;padding:12px 16px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);box-shadow:0 3px 0 rgba(0,0,0,.08);transition:transform .12s,border-color .12s}
+.opt:hover:not(:disabled){border-color:var(--blue);transform:translateX(3px)}
+.opt .k{flex:none;width:32px;height:32px;border-radius:50%;background:var(--bg);border:2px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:.9rem}
+.opt.right{background:var(--okbg);border-color:var(--ok);animation:hop .45s}
+.opt.wrong{background:var(--badbg);border-color:var(--bad);animation:shake .4s}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opt.dim{opacity:.7}
+@keyframes hop{30%{transform:scale(1.03) translateY(-4px)}}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{margin:16px 0 0;padding:14px 16px;border-radius:16px;font-weight:600}
+.fb.ok{background:var(--okbg);border:2px solid var(--ok)}
+.fb.bad{background:var(--badbg);border:2px solid var(--bad)}
+.fb b{display:block;margin-bottom:2px}
+.res{text-align:center;padding:10px 0}
+.res .bigstars{display:inline-block;font-size:2.6rem;line-height:1.3;letter-spacing:6px;color:#ffc800;background:#26272e;border-radius:999px;padding:2px 22px 0 28px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.res .bigstars span{display:inline-block;animation:star .6s both}
+.res .bigstars span:nth-child(2){animation-delay:.2s}.res .bigstars span:nth-child(3){animation-delay:.4s}
+.res .bigstars .off{animation:none;color:#8a8c92}
+@keyframes star{from{transform:scale(0) rotate(-180deg)}to{transform:none}}
+.res h1{margin:6px 0}
+.row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
+footer{max-width:1060px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font-size:.88rem}
+footer p{margin:6px 0}
+.conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+.conf i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall 2.2s linear forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+@media(max-width:560px){
+  .hero{padding:16px;gap:12px}.ring{width:72px;height:72px}.ring span{width:54px;height:54px;font-size:1rem}.hero p{font-size:.95rem}
+  .topin{padding:8px 12px}.brand small{display:none}
+  main{padding:14px 12px 90px}
+}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px}
+.choices:has(.choice:only-child){grid-template-columns:1fr}
+.choice{display:flex;gap:14px;align-items:center;text-align:left;min-height:84px;padding:14px 20px;border-radius:22px;border:2px solid var(--line);background:var(--card);color:var(--ink);box-shadow:var(--shadow);transition:transform .15s;animation:pop .5s .1s both}
+.choice:hover{transform:translateY(-3px)}
+.choice .ci{font-size:2.2rem;line-height:1}
+.choice b{display:block;font-size:1.15rem}
+.choice small{display:block;font-size:.92rem;opacity:.92}
+.choice.pri{background:var(--red-d);color:#fff;border-color:transparent}
+.ach{margin-top:10px;padding:10px 14px;border-radius:14px;background:var(--gold);color:#3b2d00;font-weight:800;animation:pop .5s both}
+.pitch{text-align:center;color:var(--mute);margin:10px 0 0;font-weight:700}
+@media(max-width:560px){.choices{grid-template-columns:1fr}}.certbox{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:10px;box-shadow:var(--shadow);margin:14px 0;animation:pop .5s both}
+.certbox svg{display:block;width:100%;height:auto;border-radius:12px}
+.field{display:grid;gap:6px;margin:14px 0}
+.field label{font-weight:800}
+.field input{min-height:48px;font:inherit;font-size:1rem;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
+.certlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.certlist .btn{justify-content:flex-start;text-align:left;border-radius:16px;min-height:52px;width:100%}
+.btn.mastercard{background:#ffc800!important;color:#3b2d00;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+@page{size:A4 landscape;margin:8mm}
+@media print{body{background:#fff}main>*:not(.certbox){display:none!important}.certbox{box-shadow:none;border:0;padding:0;margin:0}footer{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{.top,.sticky,.lang{display:none}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main" id="skip">Zum Inhalt</a>
+<header class="top"><div class="topin">
+  <button type="button" class="brand" id="brand" aria-label="Nintendo Quest"><span class="dot" aria-hidden="true">★</span><span><span id="bt">Nintendo Quest</span><small id="bs"></small></span></button>
+  <span class="spacer"></span>
+  <span class="pill" id="coins" aria-live="polite"></span>
+  <div class="lang" role="group" id="langs"></div>
+  <button type="button" class="theme" id="theme" aria-label="Hell/Dunkel">◐</button>
+</div></header>
+<main id="main" tabindex="-1"></main>
+<footer id="foot"></footer>
+<div id="live" class="sr" aria-live="polite"></div>
+<script>
+"use strict";
+const VERSION = "1.3.0", STAND = "14.10.2026";
+const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
+const KEY = "nintendo_quest_v1";
+let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
+try{ const s = JSON.parse(localStorage.getItem(KEY) || "{}"); prog = s.prog || {}; nm = s.name || ""; ach = s.ach || {}; li = Math.max(0, LANGS.findIndex(l => l[0] === s.lang)); if(!s.lang){ const n = (navigator.language||"de").slice(0,2); li = Math.max(0, LANGS.findIndex(l => l[0] === n)); } }catch(e){}
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify({prog, name:nm, ach, lang:LANGS[li][0]})); }catch(e){} }
+
+/* ---------- Oberflächentexte [DE, EN, JA] ---------- */
+const S = {
+ title:["Nintendo Quest","Nintendo Quest","任天堂クエスト"],
+ sub:["Inoffizielles Lernprojekt","Unofficial learning project","非公式の学習プロジェクト"],
+ hello:["Hey, was weißt du über Nintendo?","Hey, what do you know about Nintendo?","ねえ、任天堂のこと、どれくらい知ってる？"],
+ intro:["In 20 Minuten vom Pilz-Praktikanten zur Legende. Für Neue, Erfahrene und alle dazwischen, ja, auch für die Chefetage.","In 20 minutes from mushroom intern to legend. For newcomers, veterans and everyone in between, yes, even the executive floor.","20分でキノコ見習いからレジェンドへ。新入社員にもベテランにも、もちろん経営陣にも。"],
+ newB:["Ich bin neu hier","I'm new here","新人です"],
+ newS:["Dein erstes Zertifikat in 60 Sekunden","Your first certificate in 60 seconds","60秒で最初の証明書"],
+ oldB:["Ich bin schon lange dabei","I've been here a while","ベテランです"],
+ oldS:["Teste dich gleich in der Bossrunde","Take on the boss round right away","いきなりボス戦で腕試し"],
+ achFirst:["Erfolg freigeschaltet: Erster Treffer! Dein Zertifikat ist schon in Sichtweite.","Achievement unlocked: first hit! Your certificate is already in sight.","実績解除：最初の正解！証明書はもう目の前です。"],
+ certNow:["Dein Zertifikat ist fertig. Name eintragen, speichern, angeben!","Your certificate is ready. Add your name, save it, show it off!","証明書の完成です。名前を入れて保存して、自慢しましょう！"],
+ contB:["Weiter geht's","Keep going","つづきから"],
+ pitch:["Auch Chefs fangen klein an: 1889 mit Spielkarten.","Even bosses start small: in 1889 with playing cards.","社長も最初は小さく：1889年は花札から。"], lessons:["Deine Lektionen","Your lessons","レッスン一覧"],
+ min:["Min.","min","分"],
+ done:["geschafft","done","クリア"],
+ rank:["Dein Rang","Your rank","ランク"],
+ coins:["Münzen","coins","コイン"],
+ starsOf:["Sterne","stars","スター"],
+ start:["Los geht's","Let's go","はじめる"],
+ cont:["Nochmal spielen","Play again","もう一度"],
+ back:["← Übersicht","← Overview","← 一覧へ"],
+ intro2:["Kurz & knackig","Short & sweet","ポイント"],
+ pro:["Für Kenner: Bonuswissen","For veterans: bonus knowledge","ベテラン向け：おまけ知識"],
+ fun:["Humor-Pause","Joke break","ひと息ネタ"],
+ src:["Quellen (Stand 14.10.2026)","Sources (as of 14 Oct 2026)","出典（2026年10月14日時点）"],
+ quiz:["Quiz starten","Start quiz","クイズをはじめる"],
+ qof:["Frage","Question","問題"],
+ of:["von","of","/"],
+ next:["Weiter","Next","次へ"],
+ finish:["Ergebnis ansehen","See result","結果を見る"],
+ correct:["Richtig!","Correct!","正解！"],
+ wrong:["Knapp daneben!","Not quite!","おしい！"],
+ solution:["Richtig wäre:","The right answer is:","正解は："],
+ res:["Ergebnis","Result","結果"],
+ pass:["Level geschafft!","Level cleared!","ステージクリア！"],
+ tryAgain:["Fast! Noch ein Versuch?","Almost! One more try?","あと少し！もう一度？"],
+ retry:["Quiz wiederholen","Retry quiz","もう一度挑戦"],
+ nextL:["Nächste Lektion","Next lesson","次のレッスン"],
+ over:["Zur Übersicht","To overview","一覧へ戻る"],
+ reset:["Fortschritt zurücksetzen","Reset progress","進捗をリセット"],
+ resetQ:["Fortschritt wirklich löschen?","Really delete your progress?","進捗を本当に削除しますか？"],
+ allDone:["Alle Lektionen gemeistert – du bist offiziell ein Experte (inoffiziell).","All lessons mastered – you are officially an expert (unofficially).","全レッスンをマスター！あなたは（非公式に）エキスパートです。"],
+ disc:["Inoffizielles, internes Lernprojekt ohne Verbindung zu Nintendo. Nintendo und alle genannten Namen, Titel und Marken gehören ihren jeweiligen Inhabern; es werden keine Logos oder Originalbilder verwendet. Zahlen sind Momentaufnahmen aus den angegebenen Quellen und können sich ändern.","Unofficial internal learning project, not affiliated with Nintendo. Nintendo and all names, titles and trademarks mentioned belong to their respective owners; no logos or original artwork are used. Figures are snapshots from the cited sources and may change.","非公式の社内向け学習プロジェクトで、任天堂とは関係ありません。任天堂および記載の名称・タイトル・商標は各権利者に帰属し、ロゴや公式画像は使用していません。数値は出典時点のものであり、変更される場合があります。"],
+ trans:["Übersetzungshinweis: Die japanischen Texte sind sorgfältig erstellt, sollten aber vor einer breiten Nutzung von Muttersprachlern geprüft werden.","Translation note: the Japanese texts were written with care but should be reviewed by native speakers before wide use.","翻訳に関する注記：日本語の文章は丁寧に作成していますが、広く使う前にネイティブによる確認を推奨します。"],
+ skip:["Zum Inhalt","Skip to content","本文へ"],
+ ver:["Version","Version","バージョン"],
+ themeL:["Farbschema wechseln","Switch colour scheme","配色を切り替え"],
+ certBtn:["Zertifikat holen","Get your certificate","証明書をもらう"],
+ certs:["Deine Zertifikate","Your certificates","あなたの証明書"],
+ certsHint:["Jedes bestandene Level gibt eine Urkunde zum Angeben. Alle sieben gibt das Meister-Zertifikat.","Every cleared level earns a certificate to show off. All seven earn the Master certificate.","クリアしたステージごとに自慢できる証明書がもらえます。7つ全部でマスター証明書です。"],
+ master:["Meister-Zertifikat","Master certificate","マスター証明書"],
+ nameL:["Dein Name für die Urkunde","Your name for the certificate","証明書に書く名前"],
+ nameP:["Dein Name hier – sei stolz darauf!","Your name here – be proud of it!","ここにお名前をどうぞ！"],
+ dl:["Als Bild speichern (PNG)","Save as image (PNG)","画像として保存（PNG）"],
+ prt:["Drucken","Print","印刷"],
+ certOf:["Zertifikat","Certificate","証明書"],
+ certMasterBadge:["Alle 7 Level geschafft!","All 7 levels cleared!","全7ステージクリア！"]
+};
+const RANKS = [
+ [0,["Pilz-Praktikant","Mushroom Intern","キノコ見習い"]],
+ [3,["Münzen-Sammler","Coin Collector","コインコレクター"]],
+ [8,["Sterne-Sucher","Star Seeker","スターハンター"]],
+ [14,["Level-Boss","Level Boss","ステージボス"]],
+ [20,["Legende","Legend","レジェンド"]]
+];
+const OKS = [
+ ["Treffer! Schneller als ein Blauer Panzer.","Nailed it! Faster than a blue shell.","正解！青甲羅より速い！"],
+ ["Richtig! Dein Gehirn hat gerade ein Level-Up.","Right! Your brain just levelled up.","正解！脳がレベルアップしました。"],
+ ["Volltreffer! Die Münzen klingeln.","Bullseye! Hear those coins jingle.","大正解！コインがチャリンと鳴ります。"],
+ ["Sauber! Das gibt Bonuspunkte vom Chef.","Clean! That earns bonus points from the boss.","お見事！ボーナスポイントです。"]
+];
+const BADS = [
+ ["Autsch! Aber auch Profis fallen mal in die Lava.","Ouch! Even pros fall in lava sometimes.","あっ！ベテランでも溶岩に落ちることがあります。"],
+ ["Nicht schlimm: Respawn ist kostenlos.","No worries: respawning is free.","大丈夫、復活は無料です。"],
+ ["Knapp vorbei ist auch daneben, aber Übung macht den Meister.","A miss is a miss, but practice makes a master.","惜しい！練習すればきっと上達します。"],
+ ["Das war die Schummelfrage-Falle. Nächstes Mal klappt's.","That was the trick-question trap. You'll get it next time.","引っかけ問題でした。次はきっと大丈夫！"]
+];
+const t = k => S[k][li];
+
+
+/* ---------- Lektionen [DE, EN, JA] ---------- */
+const WP = "https://en.wikipedia.org/wiki/";
+const LESSONS = [
+{ id:"karten", ico:"🎴", c:"var(--red)", min:1,
+ t:["Blitzstart: 1889 in 60 Sekunden","Quick start: 1889 in 60 seconds","クイックスタート：60秒で1889年"],
+ sub:["Zwei Karten, zwei Fragen, ein Zertifikat","Two cards, two questions, one certificate","カード2枚、質問2つ、証明書1枚"],
+ cards:[
+  [["Ein Handwerker, ein Kartenspiel","One craftsman, one card game","ひとりの職人と一組のカード"],
+   ["1889 begann Fusajiro Yamauchi in Kyoto, japanische Spielkarten (Hanafuda) herzustellen und zu verkaufen. Das ist die Geburtsstunde von Nintendo, ganz ohne Steckdose.","In 1889, Fusajiro Yamauchi started making and selling Japanese playing cards (hanafuda) in Kyoto. That is Nintendo's birthday, no power outlet required.","1889年、山内房治郎が京都で日本の花札の製造・販売を始めました。これが任天堂の始まりです。電源コードは不要でした。"]],
+  [["Was heißt eigentlich „Nintendo“?","What does “Nintendo” actually mean?","「任天堂」の意味は？"],
+   ["Oft zu lesen: „Überlasse das Glück dem Himmel“. Historisch belegt ist das nicht, selbst die Nachfahren der Gründerfamilie wissen es laut Wikipedia nicht sicher. Ein Namensrätsel seit über 130 Jahren.","You often read: “leave luck to heaven”. That is not historically verified; according to Wikipedia even the founder's descendants are unsure. A naming mystery for over 130 years.","よく「運を天に任せる」と説明されますが、歴史的な裏付けはなく、ウィキペディアによれば創業家の子孫にも確かなことは分かっていません。130年以上続く名前の謎です。"]]
+ ],
+ pro:["Mehr für Kenner: 1902 kamen die ersten westlichen Spielkarten in Japan, 1947 wurde die Marufuku Co., Ltd. gegründet (Vorgängerin der Nintendo Co., Ltd.), 1950 übernahm Hiroshi Yamauchi die Präsidentschaft, und 1953 gelang als erstem Unternehmen in Japan die Massenproduktion von Plastik-Spielkarten.","More for veterans: in 1902 the first Western-style playing cards appeared in Japan, in 1947 Marufuku Co., Ltd. was founded (predecessor of Nintendo Co., Ltd.), in 1950 Hiroshi Yamauchi became president, and in 1953 the company was first in Japan to mass-produce plastic playing cards.","ベテラン向け：1902年に日本初の西洋式トランプを発売、1947年に任天堂の前身である丸福株式会社を設立、1950年に山内溥が社長に就任、1953年には日本で初めてプラスチック製トランプの大量生産に成功しました。"],
+ fun:["Eine Minute gelernt, Erfolg kassiert: effizienter wird Onboarding kaum.","One minute of learning, achievement unlocked: onboarding hardly gets more efficient.","1分学んで実績解除。これ以上効率のいいオンボーディングはなかなかありません。"],
+ src:[["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"],["Wikipedia: Nintendo",WP+"Nintendo"]],
+ q:[
+  {q:["Womit hat Nintendo 1889 angefangen?","What did Nintendo start with in 1889?","1889年に任天堂が始めたのは何でしょう？"],
+   a:[["Mit Hanafuda-Spielkarten","With hanafuda playing cards","花札"],["Mit Videospielkonsolen","With video game consoles","ビデオゲーム機"],["Mit Blech-Spielzeugautos","With tin toy cars","ブリキの自動車のおもちゃ"],["Mit Teegeschirr","With tea sets","茶器"]],
+   e:["Fusajiro Yamauchi stellte 1889 in Kyoto Hanafuda her.","Fusajiro Yamauchi made hanafuda in Kyoto in 1889.","山内房治郎が1889年に京都で花札を作り始めました。"]},
+  {q:["In welcher Stadt wurde Nintendo gegründet?","In which city was Nintendo founded?","任天堂が創業された都市はどこですか？"],
+   a:[["Kyoto","Kyoto","京都"],["Tokio","Tokyo","東京"],["Osaka","Osaka","大阪"],["Yokohama","Yokohama","横浜"]],
+   e:["Kyoto, genauer im Stadtbezirk Shimogyō-ku.","Kyoto, in the Shimogyō-ku ward to be exact.","京都、正確には下京区です。"]}
+ ]},
+{ id:"konsole", ico:"🕹️", c:"var(--blue)", min:2,
+ t:["Ab in den Fernseher: Famicom und Europa","Into the TV: Famicom and Europe","テレビの中へ：ファミコンとヨーロッパ"],
+ sub:["Zwei Karten, zwei Fragen, schon wieder ein Zertifikat","Two cards, two questions, another certificate","カード2枚、質問2つ、また証明書"],
+ cards:[
+  [["1983: Das Famicom startet","1983: The Famicom arrives","1983年：ファミコン登場"],
+   ["Im Juli 1983 erschien in Japan das Family Computer System, kurz Famicom. Im selben Jahr ging Nintendo an die Börse Tokio (First Section).","In July 1983 the Family Computer System, or Famicom, launched in Japan. The same year Nintendo listed on the Tokyo Stock Exchange (First Section).","1983年7月、日本でファミリーコンピュータ（ファミコン）が発売されました。同じ年に任天堂は東京証券取引所第一部に上場しました。"]],
+  [["Und Europa?","And Europe?","ヨーロッパは？"],
+   ["Nintendo of America gibt es seit 1979 (New York). Nintendo of Europe startete im Juni 1990 in Großostheim in Deutschland. Deutsche Kolleginnen und Kollegen sind also früh dabei gewesen.","Nintendo of America has existed since 1979 (New York). Nintendo of Europe opened in June 1990 in Großostheim, Germany. German colleagues were there early.","任天堂のアメリカ法人は1979年にニューヨークで設立されました。ヨーロッパ法人は1990年6月にドイツのグロースオストハイムで始まりました。ドイツは早くから関わっていました。"]]
+ ],
+ pro:["Mehr für Kenner: „Famicom“ steht für „Family Computer“. Außerhalb Japans hieß die Konsole Nintendo Entertainment System (NES) und kam 1985 in Nordamerika auf den Markt. Famicom und NES zusammen verkauften sich rund 62 Millionen Mal.","More for veterans: “Famicom” stands for “Family Computer”. Outside Japan the console was called the Nintendo Entertainment System (NES) and reached North America in 1985. Famicom and NES together sold about 62 million units.","ベテラン向け：「ファミコン」は「ファミリーコンピュータ」の略です。日本国外ではNESという名前で、1985年に北米で発売されました。ファミコンとNESの合計販売台数は約6,200万台です。"],
+ fun:["Vom Kartentisch zum Fernseher dauerte es nur etwa 94 Jahre. Für ein Traditionsunternehmen ist das Sprint-Tempo.","From card table to television took only about 94 years. For a traditional company that is sprint speed.","カードテーブルからテレビまで、たったの約94年。老舗企業としては短距離走のスピードです。"],
+ src:[["Wikipedia: Nintendo",WP+"Nintendo"],["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"]],
+ q:[
+  {q:["In welchem Jahr erschien das Famicom in Japan?","In which year was the Famicom released in Japan?","ファミコンが日本で発売されたのは何年ですか？"],
+   a:[["1983","1983","1983年"],["1975","1975","1975年"],["1989","1989","1989年"],["1996","1996","1996年"]],
+   e:["Juli 1983.","July 1983.","1983年7月です。"]},
+  {q:["Wo und wann startete Nintendo of Europe?","Where and when did Nintendo of Europe start?","ヨーロッパ法人はいつ、どこで始まりましたか？"],
+   a:[["1990 in Großostheim, Deutschland","1990 in Großostheim, Germany","1990年、ドイツのグロースオストハイム"],["1985 in London, Großbritannien","1985 in London, UK","1985年、イギリスのロンドン"],["1979 in Paris, Frankreich","1979 in Paris, France","1979年、フランスのパリ"],["1996 in Amsterdam, Niederlande","1996 in Amsterdam, Netherlands","1996年、オランダのアムステルダム"]],
+   e:["Juni 1990, Großostheim.","June 1990, Großostheim.","1990年6月、グロースオストハイムです。"]}
+ ]},{ id:"mario", ico:"🍄", c:"var(--green)", min:3,
+ t:["Der berühmteste Schnauzbart der Spielewelt","The most famous moustache in gaming","ゲーム界でいちばん有名なヒゲ"],
+ sub:["Mario von Donkey Kong bis heute","Mario from Donkey Kong until today","ドンキーコングから現在までのマリオ"],
+ cards:[
+  [["Debüt 1981","Debut in 1981","1981年のデビュー"],
+   ["Mario trat erstmals 1981 im Arcade-Spiel „Donkey Kong“ auf. In der englischen Anleitung hieß er „Jumpman“. Schöpfer ist Shigeru Miyamoto.","Mario first appeared in the 1981 arcade game “Donkey Kong”. The English instructions called him “Jumpman”. His creator is Shigeru Miyamoto.","マリオは1981年のアーケードゲーム『ドンキーコング』で初登場しました。英語の説明書では「ジャンプマン」と呼ばれていました。生みの親は宮本茂です。"]],
+  [["Der Klassiker 1985","The classic of 1985","1985年の名作"],
+   ["„Super Mario Bros.“ erschien 1985 für das NES und startete die Plattformer-Reihe. Prinzessin Peach löste dort Pauline als die zu rettende Figur ab. „Mario Bros.“ gab es schon 1983.","“Super Mario Bros.” came out in 1985 for the NES and began the platformer series. Princess Peach replaced Pauline as the one to be rescued. “Mario Bros.” had already appeared in 1983.","『スーパーマリオブラザーズ』は1985年にNES向けに発売され、プラットフォームゲームのシリーズが始まりました。ここでピーチ姫がポリーンに代わって救出される役になりました。『マリオブラザーズ』は1983年に登場済みでした。"]],
+  [["Stimme und Namensrätsel","Voice and name riddle","声と名前の謎"],
+   ["Charles Martinet sprach Mario von 1991 bis 2023, danach übernahm Kevin Afghani (ab „Super Mario Bros. Wonder“). Die Namensherkunft (Mario Segale) ist laut Wikipedia umstritten.","Charles Martinet voiced Mario from 1991 to 2023; Kevin Afghani took over from “Super Mario Bros. Wonder”. The origin of the name (Mario Segale) is disputed according to Wikipedia.","チャールズ・マルティネーが1991年から2023年までマリオの声を担当し、その後『スーパーマリオブラザーズ ワンダー』からケビン・アフガニが引き継ぎました。名前の由来（マリオ・セガール）は、ウィキペディアによると異論があります。"]]
+ ],
+ pro:["Die Jahresangabe 1991 bis 2023 stammt aus der Infobox von Wikipedia; der Text nennt als ersten offiziellen Sprechauftritt 1994. Quellen widersprechen sich also leicht.","The 1991 to 2023 span comes from the Wikipedia infobox; the article body names 1994 as the first official voice role. So sources differ slightly.","1991年から2023年という期間はウィキペディアの情報ボックスによるもので、本文では最初の公式な声の出演を1994年としています。出典の間で少し食い違いがあります。"],
+ fun:["Er springt seit 1981 und hat trotzdem keine Rückenprobleme. Respekt.","He has been jumping since 1981 and still has no back pain. Respect.","1981年からずっとジャンプしているのに腰痛なし。すごい。"],
+ src:[["Wikipedia: Mario",WP+"Mario"]],
+ q:[
+  {q:["In welchem Spiel hatte Mario seinen ersten Auftritt?","In which game did Mario first appear?","マリオが初めて登場したゲームは？"],
+   a:[["Donkey Kong","Donkey Kong","ドンキーコング"],["Super Mario Bros.","Super Mario Bros.","スーパーマリオブラザーズ"],["Mario Kart","Mario Kart","マリオカート"],["Super Mario 64","Super Mario 64","スーパーマリオ64"]],
+   e:["1981 im Arcade-Spiel Donkey Kong.","In the 1981 arcade game Donkey Kong.","1981年のアーケードゲーム『ドンキーコング』です。"]},
+  {q:["Wie hieß Mario in der englischen Donkey-Kong-Anleitung?","What was Mario called in the English Donkey Kong instructions?","英語版ドンキーコングの説明書でのマリオの名前は？"],
+   a:[["Jumpman","Jumpman","ジャンプマン"],["Mr. Plumber","Mr. Plumber","ミスター・プラマー"],["Hopper Joe","Hopper Joe","ホッパー・ジョー"],["Captain Cap","Captain Cap","キャプテン・キャップ"]],
+   e:["„Jumpman“, in der Entwicklung auch „Ossan“.","“Jumpman”, and “Ossan” during development.","「ジャンプマン」で、開発中は「おっさん」とも呼ばれていました。"]},
+  {q:["Wer hat Mario erschaffen?","Who created Mario?","マリオを生み出したのは誰ですか？"],
+   a:[["Shigeru Miyamoto","Shigeru Miyamoto","宮本茂"],["Satoru Iwata","Satoru Iwata","岩田聡"],["Hiroshi Yamauchi","Hiroshi Yamauchi","山内溥"],["Fusajiro Yamauchi","Fusajiro Yamauchi","山内房治郎"]],
+   e:["Miyamoto ist der Schöpfer; Yōichi Kotabe wird als Mitgestalter genannt.","Miyamoto is the creator; Yōichi Kotabe is credited as co-designer.","生みの親は宮本茂で、小田部羊一が共同デザイナーとされています。"]},
+  {q:["Wen löste Prinzessin Peach in „Super Mario Bros.“ (1985) als zu rettende Figur ab?","Whom did Princess Peach replace as the character to rescue in “Super Mario Bros.” (1985)?","『スーパーマリオブラザーズ』（1985年）でピーチ姫が救出される役として代わったのは誰ですか？"],
+   a:[["Pauline","Pauline","ポリーン"],["Daisy","Daisy","デイジー"],["Rosalina","Rosalina","ロゼッタ"],["Toadette","Toadette","キノピコ"]],
+   e:["Pauline stammt aus Donkey Kong.","Pauline comes from Donkey Kong.","ポリーンは『ドンキーコング』の登場人物です。"]}
+ ]},
+{ id:"zelda", ico:"🗡️", c:"var(--purple)", min:3,
+ t:["Link ist nicht Zelda","Link is not Zelda","リンクはゼルダではない"],
+ sub:["Hyrule, Held und Hauptmissverständnis","Hyrule, the hero and the classic mix-up","ハイラルと勇者、そして定番の勘違い"],
+ cards:[
+  [["Abenteuer ab 1986","Adventures since 1986","1986年からの冒険"],
+   ["„The Legend of Zelda“ erschien im Februar 1986 in Japan für das Famicom Disk System (21. Februar). Erfunden haben die Reihe Shigeru Miyamoto und Takashi Tezuka.","“The Legend of Zelda” was released in February 1986 in Japan for the Famicom Disk System (21 February). The series was created by Shigeru Miyamoto and Takashi Tezuka.","『ゼルダの伝説』は1986年2月（21日）に日本でファミリーコンピュータ ディスクシステム向けに発売されました。シリーズを生み出したのは宮本茂と手塚卓志です。"]],
+  [["Der Held heißt Link","The hero is called Link","主人公の名前はリンク"],
+   ["Hauptfigur ist fast immer Link, ein junger Hylianer. Zelda ist die Prinzessin und nur in „Echoes of Wisdom“ (2024) die spielbare Hauptfigur.","The main character is almost always Link, a young Hylian. Zelda is the princess and the playable lead only in “Echoes of Wisdom” (2024).","主人公はほとんどの場合、若いハイリア人のリンクです。ゼルダは姫であり、プレイヤーキャラクターの主役になるのは『知恵のかりもの』（2024年）だけです。"]],
+  [["Zwei Meilensteine","Two milestones","二つの節目"],
+   ["„Breath of the Wild“ erschien 2017, der Nachfolger „Tears of the Kingdom“ 2023. Die Reihe hat laut Wikipedia über 150 Millionen Exemplare verkauft (Stand September 2024).","“Breath of the Wild” came out in 2017, its sequel “Tears of the Kingdom” in 2023. According to Wikipedia the series has sold over 150 million copies (as of September 2024).","『ブレス オブ ザ ワイルド』は2017年、続編の『ティアーズ オブ ザ キングダム』は2023年に発売されました。ウィキペディアによると、シリーズの累計販売本数は1億5,000万本以上です（2024年9月時点）。"]]
+ ],
+ pro:["Exakte Erscheinungstage von „Breath of the Wild“ und „Tears of the Kingdom“ wurden hier nicht geprüft; angegeben sind deshalb nur die Jahre.","Exact release days of “Breath of the Wild” and “Tears of the Kingdom” were not verified here, so only the years are given.","『ブレス オブ ザ ワイルド』と『ティアーズ オブ ザ キングダム』の正確な発売日はここでは確認していないため、年のみを記載しています。"],
+ fun:["Wer „Zelda“ ruft und den Typen mit der grünen Mütze meint, wird in jeder Kantine höflich korrigiert.","Anyone who shouts “Zelda” while pointing at the guy in the green cap gets politely corrected in every canteen.","緑の帽子の人を指して「ゼルダ！」と叫ぶと、どの食堂でも優しく訂正されます。"],
+ src:[["Wikipedia: The Legend of Zelda",WP+"The_Legend_of_Zelda"]],
+ q:[
+  {q:["Wie heißt die Hauptfigur der meisten Zelda-Spiele?","What is the main character of most Zelda games called?","ゼルダシリーズのほとんどの作品の主人公の名前は？"],
+   a:[["Link","Link","リンク"],["Zelda","Zelda","ゼルダ"],["Ganon","Ganon","ガノン"],["Epona","Epona","エポナ"]],
+   e:["Link ist der Held, Zelda die Prinzessin.","Link is the hero, Zelda is the princess.","リンクが勇者で、ゼルダが姫です。"]},
+  {q:["In welchem Jahr erschien das erste „The Legend of Zelda“?","In which year was the first “The Legend of Zelda” released?","最初の『ゼルダの伝説』が発売されたのは何年ですか？"],
+   a:[["1986","1986","1986年"],["1979","1979","1979年"],["1991","1991","1991年"],["2001","2001","2001年"]],
+   e:["Februar 1986 in Japan.","February 1986 in Japan.","1986年2月、日本です。"]},
+  {q:["Wer hat die Zelda-Reihe geschaffen?","Who created the Zelda series?","ゼルダシリーズを作ったのは誰ですか？"],
+   a:[["Shigeru Miyamoto und Takashi Tezuka","Shigeru Miyamoto and Takashi Tezuka","宮本茂と手塚卓志"],["Satoru Iwata und Hiroshi Yamauchi","Satoru Iwata and Hiroshi Yamauchi","岩田聡と山内溥"],["Fusajiro Yamauchi und Shigeru Miyamoto","Fusajiro Yamauchi and Shigeru Miyamoto","山内房治郎と宮本茂"],["Takashi Tezuka und Satoru Iwata","Takashi Tezuka and Satoru Iwata","手塚卓志と岩田聡"]],
+   e:["Miyamoto und Tezuka.","Miyamoto and Tezuka.","宮本と手塚です。"]},
+  {q:["In welchem Jahr erschien „Breath of the Wild“?","In which year was “Breath of the Wild” released?","『ブレス オブ ザ ワイルド』が発売されたのは何年ですか？"],
+   a:[["2017","2017","2017年"],["2011","2011","2011年"],["2020","2020","2020年"],["2023","2023","2023年"]],
+   e:["2017; 2023 folgte „Tears of the Kingdom“.","2017; “Tears of the Kingdom” followed in 2023.","2017年です。2023年に『ティアーズ オブ ザ キングダム』が続きました。"]}
+ ]},
+{ id:"handheld", ico:"📱", c:"var(--red)", min:3,
+ t:["Taschenspiel & Taschenmonster","Pocket play & pocket monsters","ポケットで遊ぶ、ポケットのモンスター"],
+ sub:["Game Boy, DS und Pokémon","Game Boy, DS and Pokémon","ゲームボーイ、DS、ポケモン"],
+ cards:[
+  [["Game Boy 1989","Game Boy in 1989","1989年のゲームボーイ"],
+   ["Der Game Boy wurde 1988 konzipiert und erschien 1989. Game Boy und Game Boy Color zusammen verkauften sich über 118,6 Millionen Mal.","The Game Boy was conceived in 1988 and released in 1989. Game Boy and Game Boy Color together sold over 118.6 million units.","ゲームボーイは1988年に構想され、1989年に発売されました。ゲームボーイとゲームボーイカラーの合計販売台数は1億1,860万台以上です。"]],
+  [["Neue Handhelds","More handhelds","続くハンドヘルド"],
+   ["2001 kam der Game Boy Advance, 2004 der Nintendo DS. Nintendo hat Spiele also schon lange in die Hosentasche gesteckt.","The Game Boy Advance followed in 2001 and the Nintendo DS in 2004. Nintendo has been putting games into pockets for a long time.","2001年にゲームボーイアドバンス、2004年にニンテンドーDSが登場しました。任天堂は昔からゲームをポケットに入れてきました。"]],
+  [["Pokémon 1996","Pokémon in 1996","1996年のポケモン"],
+   ["„Pocket Monsters Rot und Grün“ erschienen im Februar 1996 in Japan für den Game Boy, entwickelt von Game Freak. International wurden daraus „Pokémon Rot und Blau“ mit 31,37 Millionen verkauften Exemplaren.","“Pocket Monsters Red and Green” came out in February 1996 in Japan for the Game Boy, developed by Game Freak. Internationally they became “Pokémon Red and Blue” with 31.37 million copies sold.","『ポケットモンスター 赤・緑』は1996年2月に日本でゲームボーイ向けに発売され、開発はゲームフリークです。海外では『ポケモン 赤・青』となり、3,137万本が売れました。"]]
+ ],
+ pro:["Die 118,6 Millionen gelten für Game Boy und Game Boy Color gemeinsam; die Quelle trennt die beiden nicht.","The 118.6 million covers Game Boy and Game Boy Color together; the source does not separate them.","1億1,860万台はゲームボーイとゲームボーイカラーの合計で、出典では両者が分けられていません。"],
+ fun:["Pokémon hat gezeigt: Taschen sind keine Größenbeschränkung, wenn das Monster nur klein genug ist.","Pokémon proved that pockets are no size limit as long as the monster is small enough.","ポケモンは、モンスターが十分小さければポケットは制限にならないことを証明しました。"],
+ src:[["Wikipedia: Nintendo",WP+"Nintendo"]],
+ q:[
+  {q:["In welchem Jahr erschien der Game Boy?","In which year was the Game Boy released?","ゲームボーイが発売されたのは何年ですか？"],
+   a:[["1989","1989","1989年"],["1983","1983","1983年"],["1996","1996","1996年"],["2001","2001","2001年"]],
+   e:["Konzipiert 1988, erschienen 1989.","Conceived in 1988, released in 1989.","1988年に構想され、1989年に発売されました。"]},
+  {q:["Welches Studio entwickelte die ersten Pokémon-Spiele?","Which studio developed the first Pokémon games?","最初のポケモンのゲームを開発したスタジオは？"],
+   a:[["Game Freak","Game Freak","ゲームフリーク"],["Rare","Rare","レア社"],["HAL Laboratory","HAL Laboratory","ハル研究所"],["Retro Studios","Retro Studios","レトロスタジオ"]],
+   e:["Game Freak entwickelte die Spiele für den Game Boy.","Game Freak developed the Game Boy games.","ゲームフリークがゲームボーイ向けに開発しました。"]},
+  {q:["In welchem Jahr erschienen die ersten Pokémon-Spiele in Japan?","In which year did the first Pokémon games launch in Japan?","最初のポケモンのゲームが日本で発売されたのは何年ですか？"],
+   a:[["1996","1996","1996年"],["1989","1989","1989年"],["2000","2000","2000年"],["1993","1993","1993年"]],
+   e:["Februar 1996.","February 1996.","1996年2月です。"]},
+  {q:["In welchem Jahr kam der Nintendo DS auf den Markt?","In which year did the Nintendo DS launch?","ニンテンドーDSが発売されたのは何年ですか？"],
+   a:[["2004","2004","2004年"],["2001","2001","2001年"],["2006","2006","2006年"],["2011","2011","2011年"]],
+   e:["2004; der Game Boy Advance war 2001 dran.","2004; the Game Boy Advance was 2001.","2004年です。ゲームボーイアドバンスは2001年でした。"]}
+ ]},
+{ id:"switch", ico:"🎮", c:"var(--blue)", min:3,
+ t:["Wii, Switch und die große Zwei","Wii, Switch and the big Two","Wii、Switch、そして大きな2"],
+ sub:["Von 2006 bis zur Switch 2","From 2006 to the Switch 2","2006年からSwitch 2まで"],
+ cards:[
+  [["Die Wii (2006)","The Wii (2006)","Wii（2006年）"],
+   ["2006 erschien die Wii und holte mit Bewegungssteuerung die ganze Familie vor den Fernseher.","The Wii launched in 2006 and used motion controls to bring the whole family to the TV.","2006年にWiiが発売され、モーションコントロールで家族みんなをテレビの前に集めました。"]],
+  [["Switch: 3. März 2017","Switch: 3 March 2017","Switch：2017年3月3日"],
+   ["Die Nintendo Switch erschien am 3. März 2017. Laut Presseberichten auf Basis der Quartalszahlen stand sie Ende Juni 2026 bei rund 156,6 Millionen verkauften Geräten.","The Nintendo Switch launched on 3 March 2017. According to press reports based on quarterly results it stood at about 156.6 million units by the end of June 2026.","ニンテンドースイッチは2017年3月3日に発売されました。四半期決算に基づく報道によると、2026年6月末時点で約1億5,660万台が販売されています。"]],
+  [["Switch 2 und ein Dorf voller Tiere","Switch 2 and a village full of animals","Switch 2と動物たちの村"],
+   ["Die Switch 2 kam am 5. Juni 2025. „Animal Crossing: New Horizons“ erschien am 20. März 2020 und verkaufte laut Wikipedia 50,29 Millionen Mal (Stand 30. Juni 2026).","The Switch 2 arrived on 5 June 2025. “Animal Crossing: New Horizons” released on 20 March 2020 and, per Wikipedia, sold 50.29 million copies (as of 30 June 2026).","Switch 2は2025年6月5日に発売されました。『あつまれ どうぶつの森』は2020年3月20日に発売され、ウィキペディアによると5,029万本が売れています（2026年6月30日時点）。"]]
+ ],
+ pro:["Verkaufszahlen ändern sich mit jedem Quartal. Für offizielle Zahlen den Investoren-Bereich von Nintendo prüfen, die Werte hier sind Momentaufnahmen aus Presse und Wikipedia.","Sales figures change every quarter. For official numbers check Nintendo's investor relations pages; the values here are snapshots from press and Wikipedia.","販売数は四半期ごとに変わります。公式の数値は任天堂のIR情報で確認してください。ここの値は報道とウィキペディアのスナップショットです。"],
+ fun:["Die Switch ist Konsole und Handheld in einem, also quasi das Schweizer Taschenmesser mit Joy-Con.","The Switch is a console and a handheld in one, basically the Swiss army knife with Joy-Cons.","Switchは据え置き機と携帯機の二刀流。いわばJoy-Con付きの十徳ナイフです。"],
+ src:[["VGC: Switch 2 Zahlen / sales","https://www.videogameschronicle.com/news/switch-2-continues-to-be-nintendos-fastest-selling-system-latest-financial-results-show/"],["Wikipedia: Animal Crossing",WP+"Animal_Crossing"],["Wikipedia: Nintendo",WP+"Nintendo"]],
+ q:[
+  {q:["Wann erschien die Switch 2?","When was the Switch 2 released?","Switch 2が発売されたのはいつですか？"],
+   a:[["5. Juni 2025","5 June 2025","2025年6月5日"],["3. März 2017","3 March 2017","2017年3月3日"],["20. März 2020","20 March 2020","2020年3月20日"],["1. Januar 2024","1 January 2024","2024年1月1日"]],
+   e:["Die erste Switch kam am 3. März 2017.","The first Switch came on 3 March 2017.","最初のSwitchは2017年3月3日でした。"]},
+  {q:["In welchem Jahr erschien die Wii?","In which year was the Wii released?","Wiiが発売されたのは何年ですか？"],
+   a:[["2006","2006","2006年"],["2001","2001","2001年"],["2012","2012","2012年"],["2017","2017","2017年"]],
+   e:["2006.","2006.","2006年です。"]},
+  {q:["Wann erschien „Animal Crossing: New Horizons“?","When was “Animal Crossing: New Horizons” released?","『あつまれ どうぶつの森』が発売されたのはいつですか？"],
+   a:[["20. März 2020","20 March 2020","2020年3月20日"],["5. Juni 2025","5 June 2025","2025年6月5日"],["14. April 2001","14 April 2001","2001年4月14日"],["3. März 2017","3 March 2017","2017年3月3日"]],
+   e:["Der erste Animal-Crossing-Teil kam 2001 auf dem Nintendo 64.","The first Animal Crossing came out in 2001 on the Nintendo 64.","最初のどうぶつの森は2001年にNINTENDO64で発売されました。"]},
+  {q:["Warum sind Verkaufszahlen in dieser App mit „Stand“ angegeben?","Why do sales figures in this app carry an “as of” date?","このアプリで販売数に「時点」が書かれているのはなぜですか？"],
+   a:[["Weil sie sich laufend ändern","Because they keep changing","常に変化するから"],["Weil sie geheim sind","Because they are secret","秘密だから"],["Weil sie erfunden sind","Because they are made up","作り話だから"],["Weil sie nur für Japan gelten","Because they only apply to Japan","日本だけの数字だから"]],
+   e:["Zahlen sind Momentaufnahmen und ändern sich quartalsweise.","Figures are snapshots and change every quarter.","数値はスナップショットで、四半期ごとに変わります。"]}
+ ]},
+{ id:"boss", ico:"👑", c:"var(--purple)", min:4,
+ t:["Bossrunde: Alles auf einmal","Boss round: everything at once","ボス戦：総復習"],
+ sub:["Dein Zeitstrahl und das große Finale","Your timeline and the grand finale","年表と最終決戦"],
+ cards:[
+  [["Der Zeitstrahl","The timeline","年表"],
+   ["1889 Gründung · 1979 Nintendo of America · 1983 Famicom · 1985 NES in den USA · 1989 Game Boy · 1990 Nintendo of Europe · 1996 Pokémon · 2006 Wii · 2017 Switch · 2025 Switch 2.","1889 founding · 1979 Nintendo of America · 1983 Famicom · 1985 NES in the US · 1989 Game Boy · 1990 Nintendo of Europe · 1996 Pokémon · 2006 Wii · 2017 Switch · 2025 Switch 2.","1889年 創業・1979年 米国法人・1983年 ファミコン・1985年 米国でNES・1989年 ゲームボーイ・1990年 欧州法人・1996年 ポケモン・2006年 Wii・2017年 Switch・2025年 Switch 2。"]],
+  [["Menschen hinter den Spielen","People behind the games","ゲームの裏の人々"],
+   ["Hiroshi Yamauchi war ab 1950 Präsident, Satoru Iwata von 2002 bis 2015. Shigeru Miyamoto schuf Mario und gemeinsam mit Takashi Tezuka Zelda.","Hiroshi Yamauchi was president from 1950, Satoru Iwata from 2002 to 2015. Shigeru Miyamoto created Mario and, with Takashi Tezuka, Zelda.","山内溥は1950年から社長を務め、岩田聡は2002年から2015年まで社長でした。宮本茂はマリオを、手塚卓志とともにゼルダを生み出しました。"]],
+  [["Bereit für den Boss?","Ready for the boss?","ボスに挑む準備はいい？"],
+   ["Fünf Fragen, quer durch alle Lektionen. Tipp: Wer die Kenner-Boxen gelesen hat, ist klar im Vorteil.","Five questions across all lessons. Tip: anyone who read the veteran boxes has a clear advantage.","全レッスンから5問。ヒント：ベテラン向けボックスを読んだ人が有利です。"]]
+ ],
+ pro:["Zum Schluss ein ehrlicher Hinweis: Alle Daten stammen aus den verlinkten Quellen und sind mit Stand versehen; bei Abweichungen gilt die offizielle Nintendo-Quelle.","A final honest note: all data comes from the linked sources and carries an as-of date; where they differ, the official Nintendo source applies.","最後に正直な注記：すべてのデータはリンク先の出典に基づき、時点を付けています。食い違う場合は任天堂の公式情報が優先されます。"],
+ fun:["Boss besiegt? Dann gilt: Der wahre Endgegner ist das Montags-Meeting.","Boss defeated? Then remember: the real final boss is the Monday meeting.","ボスを倒した？本当のラスボスは月曜朝の会議です。"],
+ src:[["Wikipedia: Nintendo",WP+"Nintendo"],["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"]],
+ q:[
+  {q:["Wer war von 2002 bis 2015 Präsident von Nintendo?","Who was Nintendo's president from 2002 to 2015?","2002年から2015年まで任天堂の社長だったのは誰ですか？"],
+   a:[["Satoru Iwata","Satoru Iwata","岩田聡"],["Hiroshi Yamauchi","Hiroshi Yamauchi","山内溥"],["Shigeru Miyamoto","Shigeru Miyamoto","宮本茂"],["Takashi Tezuka","Takashi Tezuka","手塚卓志"]],
+   e:["Iwata, davor war Hiroshi Yamauchi ab 1950 Präsident.","Iwata; before him Hiroshi Yamauchi was president from 1950.","岩田です。その前は1950年から山内溥が社長でした。"]},
+  {q:["In welcher Stadt eröffnete 1979 Nintendo of America?","In which city did Nintendo of America open in 1979?","1979年に任天堂のアメリカ法人が設立された都市は？"],
+   a:[["New York City","New York City","ニューヨーク"],["Seattle","Seattle","シアトル"],["Los Angeles","Los Angeles","ロサンゼルス"],["Chicago","Chicago","シカゴ"]],
+   e:["1979 in New York City.","1979 in New York City.","1979年にニューヨークで設立されました。"]},
+  {q:["Was kam zuerst?","Which came first?","どちらが先ですか？"],
+   a:[["Famicom (1983)","Famicom (1983)","ファミコン（1983年）"],["Game Boy (1989)","Game Boy (1989)","ゲームボーイ（1989年）"],["Nintendo DS (2004)","Nintendo DS (2004)","ニンテンドーDS（2004年）"],["Wii (2006)","Wii (2006)","Wii（2006年）"]],
+   e:["1983, 1989, 2004, 2006: so die Reihenfolge.","1983, 1989, 2004, 2006: that is the order.","1983年、1989年、2004年、2006年の順です。"]},
+  {q:["Wie viele Exemplare verkauften „Pokémon Rot und Blau“ laut Quelle?","How many copies did “Pokémon Red and Blue” sell according to the source?","出典によると『ポケモン 赤・青』は何本売れましたか？"],
+   a:[["31,37 Millionen","31.37 million","3,137万本"],["3,1 Millionen","3.1 million","310万本"],["313 Millionen","313 million","3億1,300万本"],["1 Million","1 million","100万本"]],
+   e:["31,37 Millionen Exemplare.","31.37 million copies.","3,137万本です。"]},
+  {q:["Wer ist die Hauptfigur der meisten Zelda-Spiele?","Who is the main character of most Zelda games?","ゼルダシリーズのほとんどの作品の主人公は？"],
+   a:[["Link","Link","リンク"],["Zelda","Zelda","ゼルダ"],["Mario","Mario","マリオ"],["Pauline","Pauline","ポリーン"]],
+   e:["Link. Ja, wirklich.","Link. Yes, really.","リンクです。本当に。"]}
+ ]}
+];
+
+/* ---------- Hilfen ---------- */
+const $ = s => document.querySelector(s);
+function h(tag, o, ...kids){
+  const e = document.createElement(tag);
+  if(o) for(const k in o){ if(o[k] == null) continue; if(k === "class") e.className = o[k]; else if(k === "text") e.textContent = o[k]; else if(k.startsWith("on")) e[k] = o[k]; else e.setAttribute(k, o[k]); }
+  kids.flat().forEach(c => { if(c == null) return; e.append(c.nodeType ? c : document.createTextNode(c)); });
+  return e;
+}
+const starsOf = (p, n) => !p ? 0 : p.best === n ? 3 : p.best / n >= .75 ? 2 : p.best / n >= .5 ? 1 : 0;
+function totals(){
+  let st = 0, co = 0, dn = 0;
+  LESSONS.forEach(l => { const p = prog[l.id]; const s = starsOf(p, l.q.length); st += s; co += p ? p.best * 10 : 0; if(s >= 1) dn++; });
+  return {st, co, dn};
+}
+const rankName = st => { let r = RANKS[0]; RANKS.forEach(x => { if(st >= x[0]) r = x; }); return r[1][li]; };
+const starRow = n => h("span", {class:"stars", "aria-label": n + " / 3 " + t("starsOf")}, [0,1,2].map(i => h("span", {class: i < n ? "" : "off", "aria-hidden":"true"}, "★")));
+const announce = m => { $("#live").textContent = ""; setTimeout(() => { $("#live").textContent = m; }, 30); };
+function focusMain(){ const m = $("#main"); m.focus({preventScroll:true}); window.scrollTo({top:0, behavior:"auto"}); }
+function confetti(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const w = h("div", {class:"conf", "aria-hidden":"true"}); const cols = ["#e60012","#0b6aa8","#ffc800","#1b7a3d","#6b3fa0"];
+  for(let i = 0; i < 36; i++){ const s = h("i"); s.style.left = Math.random()*100 + "%"; s.style.background = cols[i % cols.length]; s.style.animationDelay = Math.random()*.6 + "s"; s.style.animationDuration = 1.6 + Math.random()*1.2 + "s"; w.append(s); }
+  document.body.append(w); setTimeout(() => w.remove(), 3400);
+}
+const idxOf = id => LESSONS.findIndex(l => l.id === id);
+
+/* ---------- Ansichten ---------- */
+function renderHome(){
+  const T = totals(), pct = Math.round(T.dn / LESSONS.length * 100); const m = $("#main"); m.replaceChildren();
+  const nextL = LESSONS.find(l => !earned(l)), boss = LESSONS[LESSONS.length-1], started = T.dn > 0;
+  m.append(h("section", {class:"hero", "aria-labelledby":"h1"},
+    h("div", null,
+      h("h1", {id:"h1", text:t("hello")}),
+      h("p", {text:t("intro")}),
+      h("div", {class:"stats"},
+        h("span", {class:"chip"}, "🏅 " + rankName(T.st)),
+        h("span", {class:"chip coin"}, h("b", {"aria-hidden":"true"}, "¢"), T.co),
+        h("span", {class:"chip"}, "★ " + T.st + " / " + LESSONS.length*3))),
+    h("div", {class:"ring", style:"--p:" + pct, role:"img", "aria-label": T.dn + " / " + LESSONS.length + " " + t("done")}, h("span", {text:T.dn + "/" + LESSONS.length}))));
+  if(nextL){
+    const first = started ? h("button", {type:"button", class:"choice pri", onclick:() => go("lesson", nextL.id)}, h("span", {class:"ci", "aria-hidden":"true"}, nextL.ico), h("span", null, h("b", {text:t("contB")}), h("small", {text:nextL.t[li]})))
+                          : h("button", {type:"button", class:"choice pri", onclick:() => go("lesson", LESSONS[0].id)}, h("span", {class:"ci", "aria-hidden":"true"}, "🌱"), h("span", null, h("b", {text:t("newB")}), h("small", {text:t("newS")})));
+    const vet = nextL === boss ? null : h("button", {type:"button", class:"choice", onclick:() => go("lesson", boss.id)}, h("span", {class:"ci", "aria-hidden":"true"}, "🏆"), h("span", null, h("b", {text:t("oldB")}), h("small", {text:t("oldS")})));
+    m.append(h("div", {class:"choices"}, first, vet));
+    m.append(h("p", {class:"pitch", text:"✨ " + t("pitch")}));
+  }  if(T.dn === LESSONS.length) m.append(h("div", {class:"bubble", role:"status"}, h("small", {text:"🎉"}), t("allDone")));
+  m.append(h("h2", {class:"sec", text:t("lessons")}));
+  const g = h("div", {class:"grid"});
+  LESSONS.forEach((l, i) => {
+    const p = prog[l.id], s = starsOf(p, l.q.length);
+    const b = h("button", {type:"button", class:"lcard", style:"--c:" + l.c + ";animation-delay:" + i*60 + "ms", onclick:() => go("lesson", l.id)},
+      h("span", {class:"ico", "aria-hidden":"true"}, l.ico),
+      h("span", {class:"nr", text:(i+1) + " / " + LESSONS.length}),
+      h("h3", {text:l.t[li]}), h("p", {text:l.sub[li]}),
+      h("span", {class:"foot"}, h("span", {text:"⏱ " + l.min + " " + t("min")}), p ? starRow(s) : h("span", {text:t("start") + " →"})));
+    g.append(b);
+  });
+  m.append(g);
+  m.append(certList());
+  m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
+}
+function renderLesson(l){
+  const m = $("#main"); m.replaceChildren(); const i = idxOf(l.id);
+  m.style.setProperty("--c", l.c);
+  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("home")}, t("back"))));
+  m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", {text:l.sub[li]}))));
+  l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h3", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
+  m.append(h("details", {class:"pro", style:"--c:" + l.c}, h("summary", {text:t("pro")}), h("p", {text:l.pro[li]})));
+  m.append(h("div", {class:"bubble"}, h("small", {text:"😄 " + t("fun")}), l.fun[li]));
+  m.append(h("div", {class:"src"}, h("strong", {text:t("src")}), h("ul", null, l.src.map(s => h("li", null, h("a", {href:s[1], rel:"noopener"}, s[0]))))));
+  m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => startQuiz(l)}, (prog[l.id] ? t("cont") : t("quiz")) + " →")));
+}
+function shuffle(n){ const a = [...Array(n).keys()]; for(let i = n-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+function startQuiz(l){ view = {v:"quiz", id:l.id, n:0, right:0, qs:l.q.map(q => ({order:shuffle(q.a.length), picked:null}))}; location.hash = "quiz-" + l.id; render(); }
+function renderQuiz(l){
+  const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
+  const Q = l.q[view.n], st = view.qs[view.n], total = l.q.length; const done = st.picked !== null;
+  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("lesson", l.id)}, "← " + l.t[li])));
+  m.append(h("div", {class:"dots", role:"img", "aria-label": t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}, view.qs.map((s, i) => h("i", {class: s.picked !== null ? (s.order[s.picked] === 0 ? "on" : "no") : i === view.n ? "cur" : ""}))));
+  m.append(h("p", {style:"margin:0 0 4px;color:var(--mute);font-weight:700", text:t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}));
+  m.append(h("h1", {class:"qq", id:"h1", text:Q.q[li]}));
+  const box = h("div", {class:"opts", role:"group", "aria-labelledby":"h1"});
+  st.order.forEach((ai, pos) => {
+    const cls = ["opt"]; if(done){ if(ai === 0) cls.push("right"); else if(pos === st.picked) cls.push("wrong"); else cls.push("dim"); }
+    const b = h("button", {type:"button", class:cls.join(" "), disabled: done ? "" : null, "data-pos":pos, onclick:() => answer(l, pos)}, h("span", {class:"k", "aria-hidden":"true"}, "ABCD"[pos]), h("span", {text:Q.a[ai][li]}));
+    if(done) b.disabled = true;
+    box.append(b);
+  });
+  m.append(box);
+  if(done){
+    const ok = st.order[st.picked] === 0; const f = h("div", {class:"fb " + (ok ? "ok" : "bad"), role:"status"}, h("b", {text:(ok ? "✅ " + t("correct") : "❌ " + t("wrong")) + " " + st.msgSet[li]}));
+    if(!ok) f.append(h("div", null, t("solution") + " " + Q.a[0][li]));
+    f.append(h("div", {style:"margin-top:6px;font-weight:500", text:Q.e[li]}));
+    if(st.firstHit) f.append(h("div", {class:"ach", text:"🏆 " + t("achFirst")}));
+    m.append(f);
+    const last = view.n === total - 1;
+    m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"nx", onclick:() => { if(last){ finishQuiz(l); } else { view.n++; render(); } }}, (last ? t("finish") : t("next")) + " →")));
+  }
+}
+function answer(l, pos){
+  const st = view.qs[view.n]; if(st.picked !== null) return; st.picked = pos; const ok = st.order[pos] === 0; if(ok) view.right++; if(ok && !ach.first){ ach.first = true; save(); st.firstHit = true; }
+  st.msgSet = (ok ? OKS : BADS)[Math.floor(Math.random()*4)];
+  render(true);
+}
+function finishQuiz(l){
+  const n = l.q.length, p = prog[l.id]; if(!p || view.right > p.best) prog[l.id] = {best:view.right}; save();
+  view = {v:"result", id:l.id, right:view.right}; render();
+}
+function renderResult(l){
+  const m = $("#main"); m.replaceChildren(); const n = l.q.length, s = view.right === n ? 3 : view.right/n >= .75 ? 2 : view.right/n >= .5 ? 1 : 0;
+  const i = idxOf(l.id), nxt = LESSONS[i+1]; const pass = s >= 1;
+  m.append(h("section", {class:"res"},
+    h("div", {class:"bigstars", role:"img", "aria-label": s + " / 3 " + t("starsOf")}, [0,1,2].map(k => h("span", {class:k < s ? "" : "off"}, "★"))),
+    h("h1", {id:"h1", text:pass ? t("pass") : t("tryAgain")}),
+    h("p", {text:t("res") + ": " + view.right + " " + t("of") + " " + n + " · " + view.right*10 + " " + t("coins")})));
+  if(pass){ m.append(h("p", {class:"pitch", style:"margin:0 0 6px", text:"🏅 " + t("certNow")})); certBlock(m, l); }
+  m.append(h("div", {class:"row"},
+    pass ? h("button", {type:"button", class:"btn", onclick:() => savePng(certSVG(l), "nintendo_quest_" + l.id + "_" + (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_") + ".png")}, "⬇ " + t("dl")) : null,
+    nxt && pass ? h("button", {type:"button", class:"btn", onclick:() => go("lesson", nxt.id)}, t("nextL") + " →") : null,
+    h("button", {type:"button", class:"btn ghost", onclick:() => startQuiz(l)}, "↺ " + t("retry")),
+    h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"))));
+  if(pass) confetti();
+}
+function certBlock(m, l){
+  const fld = h("div", {class:"field"}, h("label", {for:"nm", text:t("nameL")}), h("input", {id:"nm", type:"text", maxlength:"40", autocomplete:"name", placeholder:t("nameP"), value:nm}));
+  const box = h("div", {class:"certbox"}); box.innerHTML = certSVG(l);
+  fld.querySelector("input").oninput = e => { nm = e.target.value; save(); box.innerHTML = certSVG(l); };
+  m.append(fld, box);
+}
+/* ---------- Zertifikate ---------- */
+const CT = {
+ head:["ZERTIFIKAT","CERTIFICATE","証明書"],
+ headM:["MEISTER-ZERTIFIKAT","MASTER CERTIFICATE","マスター証明書"],
+ conf:["Hiermit wird feierlich und mit Konfetti bestätigt, dass","It is hereby solemnly and confettily confirmed that","ここに紙吹雪とともに厳かに証明します"],
+ did:["die Lektion gemeistert hat:","has mastered the lesson:","次のレッスンをマスターしました："],
+ didM:["alle sieben Lektionen gemeistert hat und damit Nintendo-Wissen auf Profi-Niveau besitzt.","has mastered all seven lessons and now holds pro-level Nintendo knowledge.","全7レッスンをマスターし、任天堂の知識をプロ級に身につけました。"],
+ score:["richtig","correct","正解"],
+ lines:[["Geschafft! Jede Legende hat mal als Pilz-Praktikant angefangen.","Done! Every legend started out as a mushroom intern.","クリア！どんな伝説もキノコ見習いから始まります。"],
+        ["Stark! Das nächste Level wartet schon auf dich.","Strong! The next level is already waiting for you.","お見事！次のステージがあなたを待っています。"],
+        ["Perfekt! Die Münzen klingeln immer noch.","Perfect! The coins are still jingling.","パーフェクト！コインがまだチャリンと鳴っています。"]],
+ lineM:["Du bist offiziell ein Experte (inoffiziell). Zeit für einen Snack!","You are officially an expert (unofficially). Time for a snack!","あなたは（非公式に）エキスパート。おやつの時間です！"],
+ rankL:["Rang","Rank","ランク"],
+ date:["Datum","Date","日付"],
+ sign:["Der Quest-Rat (inoffiziell)","The Quest Council (unofficial)","クエスト評議会（非公式）"],
+ foot:["Inoffizielles, internes Lern-Zertifikat · kein Nintendo-Produkt","Unofficial internal learning certificate · not a Nintendo product","非公式の社内学習証明書・任天堂の製品ではありません"]
+};
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+function wrap(s, n){
+  if(s.length <= n) return [s];
+  if(/\s/.test(s)){ const w = s.split(/\s+/), out = []; let cur = ""; w.forEach(x => { if((cur + " " + x).trim().length > n && cur){ out.push(cur); cur = x; } else cur = (cur + " " + x).trim(); }); if(cur) out.push(cur); return out.slice(0, 3); }
+  const out = []; for(let i = 0; i < s.length; i += n) out.push(s.slice(i, i + n)); return out.slice(0, 3);
+}
+const earned = l => starsOf(prog[l.id], l.q.length) >= 1;
+const allEarned = () => LESSONS.every(earned);
+function certSVG(l){
+  const M = !l, g = k => CT[k][li], n = nm.trim();
+  const T = totals(), st = M ? T.st : starsOf(prog[l.id], l.q.length), right = M ? 0 : prog[l.id].best;
+  const d = new Date().toLocaleDateString(({de:"de-DE", en:"en-GB", ja:"ja-JP"})[LANGS[li][0]], {day:"2-digit", month:"long", year:"numeric"});
+  const F = 'font-family="Trebuchet MS, Segoe UI, Hiragino Maru Gothic ProN, Yu Gothic UI, Meiryo, sans-serif"';
+  const nsz = n ? Math.max(28, Math.min(64, Math.floor(820 / Math.max(8, n.length) * 1.7))) : 34;
+  const ja = LANGS[li][0] === "ja", tl = M ? wrap(g("didM"), ja ? 30 : 52) : wrap(l.t[li], ja ? 22 : 38);
+  const stars = [0,1,2].map(k => '<text x="' + (561.5 + (k-1)*70) + '" y="' + (M ? 575 : 585) + '" font-size="58" text-anchor="middle" fill="' + (M || k < st ? "#ffc800" : "#d9d9de") + '" stroke="' + (M || k < st ? "#b58900" : "#b8b9bd") + '" stroke-width="2">★</text>').join("");
+  const band = ["#e60012","#0b6aa8","#ffc800","#1b7a3d","#6b3fa0"].map((c, i) => '<rect x="' + (60 + i*200.6) + '" y="36" width="200.6" height="16" fill="' + c + '"/>').join("");
+  const conf = [[110,150,"#0b6aa8"],[1010,170,"#ffc800"],[130,640,"#1b7a3d"],[1000,650,"#6b3fa0"],[90,330,"#ffc800"],[1030,360,"#e60012"],[160,230,"#e60012"],[960,250,"#1b7a3d"]].map(a => '<rect x="' + a[0] + '" y="' + a[1] + '" width="16" height="16" rx="3" transform="rotate(' + (a[0]%40-20) + ' ' + a[0] + ' ' + a[1] + ')" fill="' + a[2] + '"/>').join("");
+  const head = M ? g("headM") : g("head");
+  const hs = Math.min(72, Math.floor(860 / (head.length * 0.78)));
+  const line = M ? g("lineM") : CT.lines[Math.max(0, st-1)][li];
+  const rank = rankName(T.st);
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1123 794" width="1123" height="794" role="img" aria-label="' + esc(head + (n ? " – " + n : "") + (M ? "" : " – " + l.t[li])) + '">'
+   + '<rect width="1123" height="794" rx="28" fill="#ffffff"/>'
+   + '<rect x="14" y="14" width="1095" height="766" rx="22" fill="none" stroke="#e60012" stroke-width="10"/>'
+   + '<rect x="34" y="34" width="1055" height="726" rx="14" fill="none" stroke="#e1e2e5" stroke-width="2" stroke-dasharray="10 8"/>'
+   + band + conf
+   + '<text x="561.5" y="140" text-anchor="middle" font-size="' + hs + '" font-weight="800" letter-spacing="4" fill="#e60012" ' + F + '>' + esc(head) + '</text>'
+   + '<text x="561.5" y="190" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("conf")) + '</text>'
+   + '<text x="561.5" y="270" text-anchor="middle" font-size="' + nsz + '" font-weight="800" fill="' + (n ? "#1f2026" : "#b8b9bd") + '" ' + F + '>' + esc(n || t("nameP")) + '</text>'
+   + '<line x1="250" y1="290" x2="873" y2="290" stroke="#e60012" stroke-width="4" stroke-linecap="round"/>'
+   + (M ? '' : '<text x="561.5" y="338" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("did")) + '</text>')
+   + tl.map((x, i) => '<text x="561.5" y="' + ((M ? 350 : 392) + i*40) + '" text-anchor="middle" font-size="' + (M ? 26 : 34) + '" font-weight="700" fill="#0b6aa8" ' + F + '>' + esc(x) + '</text>').join("")
+   + (M ? '<text x="561.5" y="440" text-anchor="middle" font-size="26" font-weight="800" fill="#1b7a3d" ' + F + '>' + esc(t("certMasterBadge")) + '</text>' : '<text x="561.5" y="' + (392 + (tl.length-1)*40 + 50) + '" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2026" ' + F + '>' + esc(right + " / " + l.q.length + " " + g("score")) + '</text>')
+   + stars
+   + '<text x="561.5" y="640" text-anchor="middle" font-size="22" font-style="italic" fill="#4d4f54" ' + F + '>' + esc(line) + '</text>'
+   + '<text x="110" y="712" font-size="15" fill="#565860" ' + F + '>' + esc(g("date") + ": " + d) + '</text>'
+   + '<text x="110" y="736" font-size="15" fill="#565860" ' + F + '>' + esc(g("rankL") + ": " + rank) + '</text>'
+   + '<circle cx="561.5" cy="705" r="40" fill="#ffc800" stroke="#b58900" stroke-width="5"/><text x="561.5" y="722" text-anchor="middle" font-size="46" fill="#e60012">★</text>'
+   + '<text x="1013" y="712" text-anchor="end" font-size="16" font-style="italic" fill="#1f2026" ' + F + '>' + esc(g("sign")) + '</text>'
+   + '<line x1="760" y1="720" x2="1013" y2="720" stroke="#1f2026" stroke-width="1.5"/>'
+   + '<text x="561.5" y="772" text-anchor="middle" font-size="12" fill="#6b6d73" ' + F + '>' + esc(g("foot") + " · v" + VERSION) + '</text>'
+   + '</svg>';
+}
+function renderCert(l){
+  const m = $("#main"); m.replaceChildren(); const M = !l;
+  m.append(h("div", {class:"crumb"}, h("button", {type:"button", class:"back", onclick:() => go("home")}, t("back"))));
+  m.append(h("h1", {id:"h1", text:"🏅 " + (M ? t("master") : t("certOf") + ": " + l.t[li])}));
+  const box = null; certBlock(m, l);
+  const nameSafe = (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_");
+  m.append(h("div", {class:"row"},
+    h("button", {type:"button", class:"btn", onclick:() => savePng(certSVG(l), "nintendo_quest_" + (M ? "master" : l.id) + "_" + nameSafe + ".png")}, "⬇ " + t("dl")),
+    h("button", {type:"button", class:"btn ghost", onclick:() => window.print()}, "🖨 " + t("prt")),
+    h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"))));
+  if(!matchMedia("(prefers-reduced-motion: reduce)").matches) confetti();
+}
+function savePng(svg, name){
+  const url = URL.createObjectURL(new Blob([svg], {type:"image/svg+xml;charset=utf-8"})), img = new Image();
+  img.onload = () => { const c = document.createElement("canvas"); c.width = 1123; c.height = 794; const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 1123, 794); x.drawImage(img, 0, 0); URL.revokeObjectURL(url); c.toBlob(b => { const a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = name; document.body.append(a); a.click(); a.remove(); }); };
+  img.src = url;
+}
+function certList(){
+  const got = LESSONS.filter(earned); const w = h("section", {"aria-labelledby":"ch"}); 
+  w.append(h("h2", {class:"sec", id:"ch", text:"🏅 " + t("certs")}), h("p", {style:"margin:0 0 12px;color:var(--mute)", text:t("certsHint")}));
+  const g = h("div", {class:"certlist"});
+  if(allEarned()) g.append(h("button", {type:"button", class:"btn mastercard", onclick:() => go("cert", "master")}, "👑 " + t("master")));
+  got.forEach(l => g.append(h("button", {type:"button", class:"btn ghost", onclick:() => go("cert", l.id)}, l.ico + " " + l.t[li])));
+  w.append(g); return got.length ? w : h("section");
+}/* ---------- Routing ---------- */
+function go(v, id){ view = {v, id}; location.hash = v === "home" ? "home" : v + "-" + id; render(); }
+function fromHash(){
+  const x = (location.hash || "").slice(1); const m = x.match(/^(lesson|quiz|cert)-(.+)$/); const known = m && LESSONS.some(l => l.id === m[2]);
+  if(m && m[1] === "cert" && (m[2] === "master" ? allEarned() : known && earned(LESSONS[idxOf(m[2])]))) view = {v:"cert", id:m[2]};
+  else if(known && m[1] === "quiz"){ if(view.v !== "quiz" && view.v !== "result") view = {v:"lesson", id:m[2]}; }
+  else if(known && m[1] === "lesson") view = {v:"lesson", id:m[2]};
+  else view = {v:"home"};
+}let lastKey = "";
+function render(keepScroll){
+  const l = view.id ? LESSONS[idxOf(view.id)] : null;
+  if(view.v === "lesson") renderLesson(l); else if(view.v === "quiz") renderQuiz(l); else if(view.v === "result") renderResult(l); else if(view.v === "cert") renderCert(l); else renderHome();
+  chrome();
+  const key = view.v + (view.id || "") + (view.n || 0);
+  if(keepScroll === true){ const nb = $("#nx"); if(nb) nb.scrollIntoView({block:"nearest"}); const fb = $(".fb"); if(fb) announce(fb.textContent); }
+  else if(key !== lastKey){ focusMain(); }
+  lastKey = key;
+}
+function chrome(){
+  document.documentElement.lang = LANGS[li][0];
+  document.title = t("title");
+  $("#bt").textContent = t("title"); $("#bs").textContent = t("sub"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
+  $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL"));
+  const T = totals(); $("#coins").textContent = "¢ " + T.co;
+  const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
+  const f = $("#foot"); f.replaceChildren(h("p", {text:t("disc")}), h("p", {text:t("trans")}), h("p", {text:t("ver") + " " + VERSION + " · " + STAND}));
+}
+$("#brand").onclick = () => go("home");
+$("#theme").onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
+window.addEventListener("hashchange", () => { fromHash(); render(); });
+fromHash(); render();
+</script>
+</body>
+</html>
