@@ -83,7 +83,7 @@ button{font:inherit;cursor:pointer}
 .lang{display:flex;gap:6px}
 .lang button,.theme{min-height:44px;min-width:44px;padding:6px 12px;border-radius:999px;border:2px solid rgba(255,255,255,.7);background:transparent;color:#fff;font-weight:700}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--red-d)}
-.theme{font-size:1.1rem;padding:6px}
+.theme{font-size:1.1rem;padding:0;display:inline-flex;align-items:center;justify-content:center;line-height:1}.theme svg{display:block;flex:none}
 /* Layout */
 main{max-width:1060px;margin:0 auto;padding:20px 16px 90px;outline:none}
 .hero{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;position:relative;overflow:hidden;border:2px solid var(--line)}
@@ -263,7 +263,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.12.0", STAND = "15.10.2026";
+const VERSION = "1.12.2", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -674,8 +674,6 @@ h("div", {class:"stats", role:"list"},
   });
   m.append(g);
   m.append(certList());
-+
-
   m.append(installCard());
   m.append(nintendoLinks());
   m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
@@ -932,8 +930,6 @@ function shareCard(){
   const txt = t("shMsg"), enc = encodeURIComponent;
   const c = h("section", {class:"sharecard", "aria-labelledby":"sht"}, h("div", {class:"sh"}, h("span", {class:"si", "aria-hidden":"true"}, "🔗"), h("div", null, h("b", {id:"sht", text:t("shT")}), h("small", {text:t("shS")}))));
   const row = h("div", {class:"sharerow"});
-+
-
   row.append(h("a", {class:"btn", href:"https://wa.me/?text=" + enc(txt + " " + SHARE_URL), target:"_blank", rel:"noopener noreferrer"}, "💬 " + t("shWa")));
   row.append(h("a", {class:"btn ghost", href:"mailto:?subject=" + enc(t("shSubj")) + "&body=" + enc(txt + "\r\n\r\n" + SHARE_URL)}, "✉️ " + t("shMail")));
   row.append(h("button", {type:"button", class:"btn ghost", onclick:async () => {
