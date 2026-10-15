@@ -1,5 +1,5 @@
 /* Nintendo Quest - Service Worker. VERSION muss mit VERSION in index.html uebereinstimmen. */
-const VERSION = "1.11.1";
+const VERSION = "1.12.0";
 const CACHE = "nintendo-quest-" + VERSION;
 const CORE = ["./", "index.html", "manifest.webmanifest"];
 const OPTIONAL = ["favicon.png", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "nintendo_vorschau.jpg"];
