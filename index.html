@@ -206,6 +206,7 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
 .snack span{flex:1;font-weight:700}
 .snack button{min-height:44px;padding:8px 16px;border-radius:999px;border:0;background:#ffc800;color:#3b2d00;font-weight:800}
 .instcard{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px 18px;margin:26px 0 0;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.instol{margin:10px 0 0;padding-left:22px}.instol li{margin:8px 0}
 .instcard .ii{font-size:1.8rem}.instcard div{flex:1;min-width:200px}.instcard b{display:block}.instcard small{color:var(--mute)}
 .byline{background:var(--red-l);color:var(--ink);text-align:center;font-weight:700;font-size:.85rem;padding:7px 12px;border-bottom:2px solid var(--line)}
 .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin-top:2px;grid-column:1/-1}
@@ -263,7 +264,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.13.0", STAND = "15.10.2026";
+const VERSION = "1.14.1", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -319,7 +320,15 @@ const S = {
  instT:["Als App installieren","Install as an app","アプリとしてインストール"],
  instS:["Startet wie eine App und läuft auch ohne Internet.","Opens like an app and works without internet.","アプリのように起動し、インターネットなしでも使えます。"],
  instB:["Installieren","Install","インストール"],
- instIos:["Auf dem iPhone: Teilen-Symbol antippen, dann „Zum Home-Bildschirm“.","On iPhone: tap the Share icon, then “Add to Home Screen”.","iPhone：共有ボタンをタップし、「ホーム画面に追加」を選びます。"],
+ instIos:["Auf dem iPhone geht das über das Teilen-Menü von Safari. Tippe auf „So geht’s“.","On iPhone this works through Safari’s Share menu. Tap “How to”.","iPhoneではSafariの共有メニューから追加します。「手順」をタップしてください。"],
+ instHow:["So geht’s","How to","手順"],
+ instIosT:["App auf dem iPhone installieren","Install the app on iPhone","iPhoneにアプリをインストール"],
+ instI1:["Tippe in Safari auf das Teilen-Symbol des Browsers (Quadrat mit Pfeil nach oben, in der unteren oder oberen Leiste).","In Safari, tap the browser’s Share icon (square with an arrow pointing up, in the bottom or top bar).","Safariでブラウザの共有ボタン（四角から上向きの矢印）をタップします。"],
+ instI2:["Scrolle im Menü und wähle „Zum Home-Bildschirm“.","Scroll the menu and choose “Add to Home Screen”.","メニューをスクロールして「ホーム画面に追加」を選びます。"],
+ instI3:["Tippe oben rechts auf „Hinzufügen“. Danach startet Nintendo Quest wie eine App.","Tap “Add” at the top right. Nintendo Quest then opens like an app.","右上の「追加」をタップします。以後はアプリのように起動します。"],
+ instINote:["Hinweis: Gemeint ist das Teilen-Symbol von Safari, nicht das Symbol oben in der App.","Note: this is Safari’s Share icon, not the icon at the top of the app.","注意：アプリ上部のアイコンではなく、Safariの共有ボタンです。"],
+ instCancel:["Installation abgebrochen? Öffne das Browser-Menü (⋮) und wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“.","Installation cancelled? Open the browser menu (⋮) and choose “Install app” or “Add to Home screen”.","インストールをやめましたか？ブラウザのメニュー（⋮）から「アプリをインストール」または「ホーム画面に追加」を選べます。"],
+ instMenu:["Öffne das Browser-Menü (⋮) und wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“.","Open the browser menu (⋮) and choose “Install app” or “Add to Home screen”.","ブラウザのメニュー（⋮）から「アプリをインストール」または「ホーム画面に追加」を選びます。"],
  updT:["Neue Version verfügbar","New version available","新しいバージョンがあります"],
  updB:["Aktualisieren","Update","更新"],
  offT:["Bereit für den Offline-Betrieb ✓","Ready for offline use ✓","オフライン利用の準備ができました ✓"],
@@ -912,15 +921,36 @@ $("#share").onclick = openShare;
 $("#theme").onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
 window.addEventListener("hashchange", () => { fromHash(); render(); });
 /* ---------- PWA: Installieren, Offline, Updates ---------- */
-let deferredInstall = null;
+let deferredInstall = null, installState = "", noEventHint = false;   // installState: "" | "cancelled" | "done"
 const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const isAndroid = () => /android/i.test(navigator.userAgent);
+function iosHelp(){
+  document.querySelectorAll(".shdlg").forEach(d => d.remove());
+  const d = h("dialog", {class:"shdlg", "aria-labelledby":"iht"}, h("button", {type:"button", class:"shx", "aria-label":t("shX"), onclick:() => d.close()}, "✕"),
+    h("p", {class:"shh"}, h("b", {id:"iht", text:t("instIosT")})),
+    h("ol", {class:"instol"}, h("li", {text:t("instI1")}), h("li", {text:t("instI2")}), h("li", {text:t("instI3")})),
+    h("p", {class:"shh"}, h("small", {text:t("instINote")})));
+  d.addEventListener("click", ev => { if(ev.target === d) d.close(); }); d.addEventListener("close", () => d.remove());
+  document.body.append(d); d.showModal();
+}
+async function doInstall(){
+  const e = deferredInstall; if(!e) return; let res = null;
+  try{ await e.prompt(); res = await e.userChoice; }catch(x){}
+  deferredInstall = null; installState = res && res.outcome === "accepted" ? "done" : "cancelled"; render(true);
+}
 function installCard(){
-  if(isStandalone()) return h("span");
-  if(!deferredInstall && !isIOS()) return h("span");
+  if(isStandalone() || installState === "done") return h("span");
+  const ios = isIOS();
+  if(!deferredInstall && !ios && installState !== "cancelled" && !(noEventHint && isAndroid())) return h("span");
+  let sub, act = null;
+  if(deferredInstall){ sub = t("instS"); act = h("button", {type:"button", class:"btn", onclick:doInstall}, t("instB")); }
+  else if(installState === "cancelled"){ sub = t("instCancel"); }
+  else if(ios){ sub = t("instIos"); act = h("button", {type:"button", class:"btn", onclick:iosHelp}, t("instHow")); }
+  else { sub = t("instMenu"); }
   const c = h("section", {class:"instcard", "aria-labelledby":"it"}, h("span", {class:"ii", "aria-hidden":"true"}, "📲"),
-    h("div", null, h("b", {id:"it", text:t("instT")}), h("small", {text:deferredInstall ? t("instS") : t("instIos")})));
-  if(deferredInstall) c.append(h("button", {type:"button", class:"btn", onclick:async () => { const e = deferredInstall; deferredInstall = null; e.prompt(); try{ await e.userChoice; }catch(x){} render(true); }}, t("instB")));
+    h("div", null, h("b", {id:"it", text:t("instT")}), h("small", {text:sub})));
+  if(act) c.append(act);
   return c;
 }
 const SHARE_URL = "https://nosz.github.io/nintendo/";
@@ -953,7 +983,8 @@ function snack(text, btn, fn, ms){
   document.body.append(s); if(ms) setTimeout(() => s.remove(), ms);
 }
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredInstall = e; if(view.v === "home" && !editName) render(true); });
-window.addEventListener("appinstalled", () => { deferredInstall = null; if(view.v === "home") render(true); });
+window.addEventListener("appinstalled", () => { deferredInstall = null; installState = "done"; if(view.v === "home") render(true); });
+window.addEventListener("load", () => setTimeout(() => { if(!deferredInstall && isAndroid() && !isStandalone() && !installState){ noEventHint = true; if(view.v === "home" && !editName) render(true); } }, 4000));
 if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
   let reloading = false, hadController = !!navigator.serviceWorker.controller;
   navigator.serviceWorker.addEventListener("controllerchange", () => { if(!hadController){ hadController = true; return; } if(reloading) return; reloading = true; location.reload(); });

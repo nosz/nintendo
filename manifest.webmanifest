@@ -2,7 +2,7 @@
     "name":  "Nintendo Quest – Lernprojekt von Leonie Szpak",
     "short_name":  "Nintendo Quest",
     "description":  "Inoffizielles Lernprojekt von Leonie Szpak: Nintendo-Wissen in 7 kurzen Leveln mit Quiz und Zertifikaten. Deutsch, English, 日本語. Läuft auch offline.",
-    "id":  "./",
+    "id":  "/nintendo/",
     "start_url":  "./",
     "scope":  "./",
     "display":  "standalone",
