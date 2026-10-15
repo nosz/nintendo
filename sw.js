@@ -1,39 +1,20 @@
-/* Service Worker – WAS MACHE ICH WENN APP (Scope: dieser Ordner) */
-const VERSION = "1.1.34";
-const CACHE = "natbarth-app-" + VERSION;
-const CORE = ["./app.html", "manifest.webmanifest"];
-const OPTIONAL = ["./", "index.html", "favicon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "apple-touch-icon.png", "vorschau_app.jpg"];
-self.addEventListener("install", e => {
-  e.waitUntil((async () => {
-    const c = await caches.open(CACHE);
-    await c.addAll(CORE);
-    await Promise.all(OPTIONAL.map(u => c.add(u).catch(() => {})));
-  })());
-});
-self.addEventListener("activate", e => {
-  e.waitUntil((async () => { for (const k of await caches.keys()) if (k.startsWith("natbarth-app-") && k !== CACHE) await caches.delete(k); await self.clients.claim(); })());
-});
-self.addEventListener("message", e => { if (e.data === "SKIP_WAITING") self.skipWaiting(); });
+/* Nintendo Quest - Service Worker. VERSION muss mit VERSION in index.html uebereinstimmen. */
+const VERSION = "1.23.0";
+const CACHE = "nintendo-quest-" + VERSION;
+const CORE = ["./", "index.html", "manifest.webmanifest"];
+const OPTIONAL = ["favicon.png", "favicon.svg", "apple-touch-icon.png", "icon-192.png", "icon-512.png", "icon-maskable-512.png", "nintendo_vorschau.jpg"];
+self.addEventListener("install", e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE).then(() => Promise.allSettled(OPTIONAL.map(u => c.add(u)))))); });
+self.addEventListener("activate", e => { e.waitUntil(caches.keys().then(k => Promise.all(k.filter(n => n.startsWith("nintendo-quest-") && n !== CACHE).map(n => caches.delete(n)))).then(() => self.clients.claim())); });
+self.addEventListener("message", e => { if(e.data === "SKIP_WAITING") self.skipWaiting(); });
+const timeout = (p, ms) => new Promise((res, rej) => { const t = setTimeout(() => rej(new Error("timeout")), ms); p.then(v => { clearTimeout(t); res(v); }, e => { clearTimeout(t); rej(e); }); });
 self.addEventListener("fetch", e => {
-  const req = e.request; if (req.method !== "GET") return;
-  const url = new URL(req.url); if (url.origin !== location.origin) return;
-  if (req.mode === "navigate") {
-    e.respondWith((async () => {
-      const c = await caches.open(CACHE);
-      try {
-        const r = await Promise.race([fetch(req), new Promise((_, no) => setTimeout(no, 4000))]);
-        if (r && r.ok) c.put(req, r.clone());
-        return r;
-      } catch (_) {
-        return (await c.match(req, { ignoreSearch: true })) || (await c.match("./app.html")) || Response.error();
-      }
-    })());
+  const r = e.request; if(r.method !== "GET") return; const u = new URL(r.url); if(u.origin !== location.origin) return;
+  if(r.mode === "navigate"){
+    e.respondWith(timeout(fetch(r), 4000).then(res => { const cp = res.clone(); caches.open(CACHE).then(c => c.put("index.html", cp)); return res; }).catch(() => caches.match("index.html", {ignoreSearch:true}).then(x => x || caches.match("./"))));
     return;
   }
-  e.respondWith((async () => {
-    const c = await caches.open(CACHE);
-    const hit = await c.match(req, { ignoreSearch: true });
-    const net = fetch(req).then(r => { if (r && r.ok) c.put(req, r.clone()); return r; }).catch(() => null);
-    return hit || (await net) || Response.error();
-  })());
+  e.respondWith(caches.match(r, {ignoreSearch:true}).then(hit => {
+    const net = fetch(r).then(res => { if(res && res.ok){ const cp = res.clone(); caches.open(CACHE).then(c => c.put(r, cp)); } return res; }).catch(() => hit);
+    return hit || net;
+  }));
 });

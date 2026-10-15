@@ -230,7 +230,31 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
 .namebtn{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 16px;border-radius:999px;border:2px solid var(--blue);background:var(--card);color:var(--blue);font-weight:800;font-size:.92rem;text-decoration:none;max-width:100%}.namebtn span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .namebtn:hover{background:var(--blue);color:#fff}
 .herobar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px}
-#ch{scroll-margin-top:90px}@media (max-width:640px){#ch{scroll-margin-top:152px}}
+html{scroll-padding-top:calc(var(--hh,70px) + var(--nh,0px) + 10px)}
+.stickynav{position:sticky;top:var(--hh,70px);z-index:15;background:var(--bg);padding:8px 0 4px;margin:0 0 12px;border-bottom:1px solid transparent;transition:box-shadow .2s,border-color .2s}
+.stickynav.stuck{border-bottom-color:var(--line);box-shadow:0 10px 16px -12px rgba(0,0,0,.35)}
+.stickynav .crumb{margin:0 0 8px}.stickynav .steps{margin:0 0 6px}
+.ctxs{display:none}
+.fhome{display:flex;justify-content:center;margin:0 0 14px}.fhome .btn{gap:10px;min-width:min(100%,320px)}
+.qrow{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.qcount{margin:0;color:var(--mute);font-weight:700;font-size:.92rem}
+.stickynav .dots{margin:0;flex:1 1 90px;min-width:90px}.stickynav .qrow{flex-wrap:nowrap}.stickynav .qcount{flex:none}
+.mobonly{display:none}
+@media (max-width:560px){
+  .mobonly{display:inline}
+  .stickynav:has(.steps){display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 8px}
+  .stickynav:has(.steps) .crumb{margin:0;flex:0 1 auto;min-width:0}
+  .stickynav:has(.steps) .crumb .ctxs{display:inline;flex:none;font-weight:700;font-size:.86rem;color:var(--mute)}
+  .stickynav:has(.steps) .crumb{gap:8px}
+  .stickynav:has(.steps) .crumb .ctx,.stickynav .steps li:not(.cur) .sl{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .stickynav .steps{margin:0;gap:6px;flex-wrap:nowrap;flex:0 0 auto}
+  .stickynav .steps li{font-size:.84rem}
+  .stickynav .steps .si{padding:3px 10px 3px 4px}
+  .stickynav .steps li:not(.cur) .si{padding:3px 8px 3px 6px;width:auto;min-width:40px;justify-content:center}
+  .stickynav .steps li:not(.cur){min-width:44px;justify-content:center}
+  .stickynav .qrow{flex:1 1 100%}
+}
+@media print{.stickynav{position:static;box-shadow:none}}
 @media (max-width:480px){.herobar{gap:6px}.herobar .namebtn{padding:6px 10px;gap:6px;font-size:.84rem}.herobar .bpre{display:none}}
 .shdlg{border:2px solid var(--line);border-radius:var(--r);padding:18px;background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.35);width:min(92vw,460px);max-width:none}.shdlg::backdrop{background:rgba(0,0,0,.5)}.shdlg .shx{float:right;min-height:44px;min-width:44px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:1.1rem}.sharecard{margin:0}
 .sharecard .sh{display:flex;gap:14px;align-items:center}.sharecard .si{font-size:1.8rem}.sharecard b{display:block}.sharecard small{color:var(--mute)}
@@ -259,7 +283,12 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 .certlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .certlist .btn{justify-content:flex-start;text-align:left;border-radius:16px;min-height:52px;width:100%}
 .steps{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0 0 16px}
-.steps li{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 6px;border-radius:999px;background:var(--card);border:2px solid var(--line);font-weight:800;font-size:.9rem;color:var(--mute)}
+.steps li{display:flex;border-radius:999px;background:var(--card);border:2px solid var(--line);font-weight:800;font-size:.9rem;color:var(--mute);overflow:hidden}
+.steps .si{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 6px;min-height:40px;width:100%;background:none;border:0;font:inherit;color:inherit;text-align:left}
+.steps button.si{cursor:pointer;transition:background .15s}.steps button.si:hover:not(:disabled){background:rgba(0,0,0,.06)}
+.steps button.si:focus-visible{outline-offset:-4px;border-radius:999px}
+.steps .sn{display:grid;place-items:center;width:28px;height:28px}.steps .sn svg{width:16px;height:16px;display:block}
+.steps li.lock{border-style:dashed}.steps li.lock button.si{cursor:not-allowed}
 .steps .sn{width:24px;height:24px;border-radius:50%;background:var(--line);color:var(--ink);display:grid;place-items:center;font-size:.8rem}
 .steps li.cur{border-color:var(--red);color:var(--ink)}
 .steps li.cur .sn{background:var(--red-d);color:#fff}
@@ -317,7 +346,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.21.2", STAND = "15.10.2026";
+const VERSION = "1.23.0", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -395,7 +424,8 @@ const S = {
  starsOf:["Sterne","stars","スター"],
  start:["Los geht's","Let's go","はじめる"],
  cont:["Nochmal spielen","Play again","もう一度"],
- back:["Übersicht","Overview","一覧へ"],
+ back:["Startseite","Home","ホーム"],
+ toHome:["Zur Startseite","Back to start","スタートへ戻る"],
  backL:["Zur Lektion","Back to lesson","レッスンへ"],
  intro2:["Kurz & knackig","Short & sweet","ポイント"],
  pro:["Für Kenner: Bonuswissen","For veterans: bonus knowledge","ベテラン向け：おまけ知識"],
@@ -437,6 +467,7 @@ const S = {
  stRead:["Lesen","Read","読む"],
  stQuiz:["Quiz","Quiz","クイズ"],
  stCert:["Pokal","Trophy","トロフィー"],
+ stLock:["Erst das Quiz bestehen","Pass the quiz first","まずクイズに合格しよう"],
  lessonN:["Lektion {a} von {b}","Lesson {a} of {b}","レッスン {a} / {b}"],
  dTitle:["Geschafft! Dein Pokal ist fertig.","Cleared! Your trophy is ready.","クリア！トロフィーができています。"],
  dSub:["Du kannst es ansehen, speichern oder drucken. Mit „Nochmal spielen“ holst du dir mehr Sterne.","View, save or print it. “Play again” lets you earn more stars.","表示・保存・印刷ができます。「もう一度」で星を増やせます。"],
@@ -763,13 +794,32 @@ function crumbBar(label, fn, ctx){
   const b = h("button", {type:"button", class:"back", "aria-label":label + (ctx ? ": " + ctx : ""), onclick:fn});
   b.innerHTML = '<svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   b.append(h("span", {text:label}));
-  const bar = h("div", {class:"crumb"}, b); if(ctx) bar.append(h("span", {class:"ctx", "aria-hidden":"true", text:ctx})); return bar;
+  const bar = h("div", {class:"crumb"}, b); if(ctx){ const mm = /(\d+)\D+(\d+)/.exec(ctx); bar.append(h("span", {class:"ctx", "aria-hidden":"true", text:ctx})); if(mm) bar.append(h("span", {class:"ctxs", "aria-hidden":"true", text:mm[1] + "/" + mm[2]})); } return bar;
+}
+function stickynav(...kids){ return h("div", {class:"stickynav"}, kids.flat().filter(Boolean)); }
+const STEPPATH = {
+  book:'<path d="M2 5.5C2 4.7 2.7 4 3.5 4H10a2 2 0 0 1 2 2v14a2 2 0 0 0-2-2H3.5A1.5 1.5 0 0 1 2 16.5z"/><path d="M22 5.5c0-.8-.7-1.5-1.5-1.5H14a2 2 0 0 0-2 2v14a2 2 0 0 1 2-2h6.5a1.5 1.5 0 0 0 1.5-1.5z"/>',
+  quiz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.6a2.6 2.6 0 1 1 3.7 2.3c-.8.4-1.2 1-1.2 1.8"/><path d="M12 17.2h.01"/>',
+  award:'<circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-3 5 3-1.5-7.5"/>',
+  trophy:'<path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  check:'<path d="M5 12.5l4.5 4.5L19 7.5"/>'
+};
+/* Symbol im Schritt: Haken = erledigt, Schloss = gesperrt, sonst Buch (Lesen), Fragezeichen (Quiz), Pokal/Auszeichnung (Nachweis) */
+function stepIcon(i, erledigt, gesperrt){
+  const name = erledigt ? "check" : gesperrt ? "lock" : ["book", "quiz", "trophy"][i], s = h("span", {class:"sn", "aria-hidden":"true"});
+  s.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" focusable="false">' + STEPPATH[name] + '</svg>';
+  return s;
 }
 function stepper(n){
-  const S = [t("stRead"), t("stQuiz"), t("stCert")];
+  const S = [t("stRead"), t("stQuiz"), t("stCert")], l = view.id ? LESSONS[idxOf(view.id)] : null;
+  const ziel = l ? [() => go("lesson", l.id), () => startQuiz(l), () => go("cert", l.id)] : [];
+  const frei = [true, true, !!l && earned(l)];
   return h("ol", {class:"steps", "aria-label":S.join(" · ")}, S.map((x, i) => {
-    const at = {class: i + 1 === n ? "cur" : (i + 1 < n ? "done" : "")}; if(i + 1 === n) at["aria-current"] = "step";
-    return h("li", at, h("span", {class:"sn", "aria-hidden":"true", text: i + 1 < n ? "✓" : String(i + 1)}), x);
+    const cur = i + 1 === n, at = {class:(cur ? "cur" : (i + 1 < n ? "done" : "")) + (!cur && !frei[i] ? " lock" : "")}; if(cur) at["aria-current"] = "step";
+    const inner = [stepIcon(i, i + 1 < n, !cur && !frei[i]), h("span", {class:"sl", text:x})];
+    if(cur || !l) return h("li", at, h("span", {class:"si"}, inner));
+    return h("li", at, h("button", {type:"button", class:"si", disabled: frei[i] ? null : "", title: frei[i] ? x : t("stLock"), "aria-label": frei[i] ? x : x + " (" + t("stLock") + ")", onclick: ziel[i]}, inner));
   }));
 }
 const lessonNo = l => t("lessonN").replace("{a}", idxOf(l.id) + 1).replace("{b}", LESSONS.length);
@@ -777,8 +827,8 @@ function toCerts(){ go("home"); setTimeout(() => { const c = $("#ch"); if(c){ co
 function renderLesson(l){
   const m = $("#main"); m.replaceChildren(); const i = idxOf(l.id);
   m.style.setProperty("--c", l.c);
-  m.append(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(1));
-  m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", {text:l.sub[li]}))));
+  m.append(stickynav(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(1)));
+  m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", null, h("span", {class:"mobonly", text:lessonNo(l) + " · "}), l.sub[li]))));
   if(earned(l)){
     const sN = starsOf(prog[l.id], l.q.length);
     m.append(h("section", {class:"donecard", "aria-labelledby":"dcT"},
@@ -800,7 +850,7 @@ function startQuiz(l){
 }
 function renderGate(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
-  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(2));
+  m.append(stickynav(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(2)));
   const inp = h("input", {id:"nmg", type:"text", maxlength:"40", autocomplete:"given-name", placeholder:t("nameP2"), value:nm});
   const go2 = skip => { if(!skip) nm = inp.value.trim().slice(0, 40); ach.askedQuiz = true; if(nm) ach.skip = false; save(); beginQuiz(l); };
   const form = h("form", {class:"nameq", "aria-labelledby":"h1"},
@@ -816,9 +866,8 @@ function beginQuiz(l){ view = {v:"quiz", id:l.id, n:0, right:0, qs:l.q.map(q => 
 function renderQuiz(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
   const Q = l.q[view.n], st = view.qs[view.n], total = l.q.length; const done = st.picked !== null;
-  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(2));
-  m.append(h("div", {class:"dots", role:"img", "aria-label": t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}, view.qs.map((s, i) => h("i", {class: s.picked !== null ? (s.order[s.picked] === 0 ? "on" : "no") : i === view.n ? "cur" : ""}))));
-  m.append(h("p", {style:"margin:0 0 4px;color:var(--mute);font-weight:700", text:t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}));
+  m.append(stickynav(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(2),
+    h("div", {class:"qrow"}, h("p", {class:"qcount", text:t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}), h("div", {class:"dots", role:"img", "aria-label": t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}, view.qs.map((s, i) => h("i", {class: s.picked !== null ? (s.order[s.picked] === 0 ? "on" : "no") : i === view.n ? "cur" : ""}))))));
   if(hasName() && (view.n === 0 || view.n === total - 1)) m.append(h("p", {class:"qp", text:"🎯 " + fill(t(view.n === 0 && total > 1 ? "qFirst" : view.n === 0 ? "qFirst" : "qLast"))}));
   m.append(h("h1", {class:"qq", id:"h1", text:Q.q[li]}));
   const box = h("div", {class:"opts", role:"group", "aria-labelledby":"h1"});
@@ -851,7 +900,7 @@ function finishQuiz(l){
 function renderResult(l){
   const m = $("#main"); m.replaceChildren(); const n = l.q.length, s = view.right === n ? 3 : view.right/n >= .75 ? 2 : view.right/n >= .5 ? 1 : 0;
   const i = idxOf(l.id), nxt = LESSONS[i+1]; const pass = s >= 1;
-  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(pass ? 3 : 2));
+  m.append(stickynav(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(pass ? 3 : 2)));
   m.append(h("section", {class:"res"},
     h("div", {class:"bigstars", role:"img", "aria-label": s + " / 3 " + t("starsOf")}, [0,1,2].map(k => h("span", {class:k < s ? "" : "off"}, "★"))),
     h("h1", {id:"h1", text:hasName() ? fill(t(pass ? "passN" : "tryN")) : (pass ? t("pass") : t("tryAgain"))}),
@@ -948,8 +997,8 @@ function certSVG(l){
 }
 function renderCert(l){
   const m = $("#main"); m.replaceChildren(); const M = !l;
-  if(M) m.append(crumbBar(t("back"), () => go("home"), t("master")));
-  else m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(3));
+  if(M) m.append(stickynav(crumbBar(t("back"), () => go("home"), t("master"))));
+  else m.append(stickynav(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(3)));
   m.append(h("h1", {id:"h1", text:"🏆 " + (M ? t("master") : t("certOf") + ": " + l.t[li])}));
   const box = null; certBlock(m, l);
   const nameSafe = (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_");
@@ -1001,11 +1050,12 @@ function chrome(){
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
   const sl = view.id ? LESSONS[idxOf(view.id)] : null;
   const f = $("#foot"); f.replaceChildren(...[
-    (sl && view.v !== "home") ? h("section", {class:"srccard", "aria-labelledby":"srcT"},
+    (sl && view.v !== "home" && view.v !== "quiz") ? h("section", {class:"srccard", "aria-labelledby":"srcT"},
       h("div", {class:"srch"}, h("span", {class:"si", "aria-hidden":"true"}, "📚"), h("b", {id:"srcT", text:t("src")})),
       h("ul", {class:"srclist"}, sl.src.map(s => h("li", null, h("a", {href:s[1], rel:"noopener"}, s[0]))))) : null,
-    h("div", {class:"fcard"}, h("span", {class:"fic", "aria-hidden":"true"}, "ℹ️"), h("div", null, h("p", {class:"fdisc", text:t("disc")}), h("p", {class:"ftrans", text:t("trans")}))),
-    h("p", {class:"fver"}, h("span", {text:t("ver") + " " + VERSION + " · " + STAND}))].filter(Boolean));
+    view.v !== "home" ? h("div", {class:"fhome"}, h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, (() => { const s = h("span", {"aria-hidden":"true"}); s.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-6h4v6"/></svg>'; return s; })(), h("span", {text:t("toHome")}))) : null,
+    view.v === "home" ? h("div", {class:"fcard"}, h("span", {class:"fic", "aria-hidden":"true"}, "ℹ️"), h("div", null, h("p", {class:"fdisc", text:t("disc")}), h("p", {class:"ftrans", text:t("trans")}))) : null,
+    view.v === "home" ? h("p", {class:"fver"}, h("span", {text:t("ver") + " " + VERSION + " · " + STAND})) : null].filter(Boolean));   // Info und Version nur auf der ersten Seite
 }
 $("#brand").onclick = () => {
   if(view.v === "home"){ const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0, behavior: rm ? "auto" : "smooth"}); $("#main").focus({preventScroll:true}); }
@@ -1560,6 +1610,23 @@ if(/[?&]diag\b/.test(location.search)){
     let erster = test === undefined; for(;;){ await auftritt(test || (erster && R() < .5 ? "hallo" : undefined)); erster = false; await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
   })();
 })();
+/* Feste Orientierungsleiste: Hoehen messen, Schatten nur wenn festgeheftet */
+function syncHH(){
+  const r = document.documentElement.style, e = document.querySelector(".top"), n = document.querySelector(".stickynav");
+  if(e) r.setProperty("--hh", e.getBoundingClientRect().height + "px");
+  r.setProperty("--nh", n ? n.getBoundingClientRect().height + "px" : "0px");
+  stuckPruefen();
+}
+function stuckPruefen(){
+  const n = document.querySelector(".stickynav"); if(!n) return;
+  const top = parseFloat(getComputedStyle(n).top) || 0;
+  n.classList.toggle("stuck", scrollY > 2 && n.getBoundingClientRect().top <= top + 1);
+}
+addEventListener("resize", syncHH);
+let stuckBusy = false;
+addEventListener("scroll", () => { if(stuckBusy) return; stuckBusy = true; requestAnimationFrame(() => { stuckBusy = false; stuckPruefen(); }); }, {passive:true});
+{ const _render = render; render = function(...a){ const r = _render.apply(this, a); syncHH(); return r; }; }
+syncHH();
 </script>
 </body>
 </html>
