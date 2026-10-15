@@ -172,8 +172,14 @@ details.pro p{margin:0;padding:0 18px 16px}
 @keyframes star{from{transform:scale(0) rotate(-180deg)}to{transform:none}}
 .res h1{margin:6px 0}
 .row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:18px}
-footer{max-width:1060px;margin:0 auto;padding:0 16px 40px;color:var(--mute);font-size:.88rem}
+footer{max-width:1060px;margin:34px auto 0;padding:0 16px 40px;color:var(--mute);font-size:.88rem}
 footer p{margin:6px 0}
+.fcard{display:flex;gap:14px;align-items:flex-start;background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px 20px;box-shadow:var(--shadow)}
+.fcard .fic{font-size:1.5rem;line-height:1.3;flex:none}
+.fcard p{margin:0 0 8px;line-height:1.55}.fcard p:last-child{margin-bottom:0}
+.fcard .ftrans{padding-top:8px;border-top:1px dashed var(--line)}
+footer .fver{text-align:center;margin:14px 0 0;font-size:.82rem}
+footer .fver span{display:inline-block;background:var(--card);border:2px solid var(--line);border-radius:999px;padding:4px 16px;font-weight:700}
 .conf{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
 .conf i{position:absolute;top:-20px;width:10px;height:16px;border-radius:2px;animation:fall 2.2s linear forwards}
 @keyframes fall{to{transform:translateY(110vh) rotate(720deg);opacity:.9}}
@@ -264,7 +270,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.14.1", STAND = "15.10.2026";
+const VERSION = "1.15.1", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -911,7 +917,9 @@ function chrome(){
   $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL")); $("#share").setAttribute("aria-label", t("shT")); $("#share").setAttribute("title", t("shT"));
   const T = totals(); $("#coins").textContent = "¢ " + T.co;
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
-  const f = $("#foot"); f.replaceChildren(h("p", null, "🎮 ", h("a", {href:NURL[li][0], rel:"noopener", text:t("nSite") + " (" + NURL[li][1] + ")"})), h("p", {text:t("disc")}), h("p", {text:t("trans")}), h("p", {text:t("ver") + " " + VERSION + " · " + STAND}));
+  const f = $("#foot"); f.replaceChildren(
+    h("div", {class:"fcard"}, h("span", {class:"fic", "aria-hidden":"true"}, "ℹ️"), h("div", null, h("p", {class:"fdisc", text:t("disc")}), h("p", {class:"ftrans", text:t("trans")}))),
+    h("p", {class:"fver"}, h("span", {text:t("ver") + " " + VERSION + " · " + STAND})));
 }
 $("#brand").onclick = () => {
   if(view.v === "home"){ const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0, behavior: rm ? "auto" : "smooth"}); $("#main").focus({preventScroll:true}); }
@@ -998,6 +1006,39 @@ if("serviceWorker" in navigator && /^https?:$/.test(location.protocol)){
   });
 }
 fromHash(); render();
+/* Diagnose: nur sichtbar mit ?diag=1 hinter der Adresse. Zeigt, warum der Browser die Installation anbietet oder nicht. */
+if(/[?&]diag\b/.test(location.search)){
+  const box = h("pre", {style:"white-space:pre-wrap;word-break:break-word;font:12px/1.5 ui-monospace,Consolas,monospace;background:#111;color:#9f9;padding:12px;margin:10px;border-radius:12px;position:relative;z-index:5"});
+  document.body.prepend(box);
+  const t0 = Date.now(); let bip = "NEIN (bisher nicht eingetroffen)", man = null, icons = [];
+  window.addEventListener("beforeinstallprompt", () => { bip = "JA, nach " + Math.round((Date.now() - t0)/1000) + " s"; });
+  window.addEventListener("appinstalled", () => { bip += " | appinstalled-Ereignis erhalten"; });
+  (async () => {
+    try{
+      const l = document.querySelector('link[rel="manifest"]'); const r = await fetch(l.href, {cache:"reload"}); man = await r.json(); man._url = l.href; man._status = r.status;
+      for(const i of (man.icons || [])){ const im = new Image(); const pr = new Promise((ok, no) => { im.onload = ok; im.onerror = no; setTimeout(no, 5000); }); im.src = new URL(i.src, l.href).href; try{ await pr; icons.push(i.src + " " + im.naturalWidth + "x" + im.naturalHeight + " (" + i.purpose + ")"); }catch(e){ icons.push(i.src + " FEHLT/NICHT LESBAR"); } }
+    }catch(e){ man = {_fehler:String(e)}; }
+  })();
+  const show = async () => {
+    const reg = "serviceWorker" in navigator ? await navigator.serviceWorker.getRegistration() : null;
+    const L = [
+      "Nintendo Quest, Version " + VERSION + " (Diagnose)",
+      "Adresse: " + location.href,
+      "Sicherer Kontext (HTTPS): " + (window.isSecureContext ? "ja" : "NEIN"),
+      "Als App geoeffnet (standalone): " + (isStandalone() ? "JA" : "nein"),
+      "Service Worker: " + (reg ? "registriert, Bereich " + reg.scope + ", Status " + (reg.active ? reg.active.state : "nicht aktiv") : "NICHT registriert") + " | steuert Seite: " + (navigator.serviceWorker && navigator.serviceWorker.controller ? "ja" : "nein"),
+      "Manifest: " + (man ? (man._fehler ? "FEHLER " + man._fehler : "HTTP " + man._status + ", id=" + man.id + ", start_url=" + man.start_url + ", scope=" + man.scope + ", display=" + man.display) : "wird geladen ..."),
+      "Icons: " + (icons.length ? icons.join(" | ") : "..."),
+      "Installationsangebot des Browsers (beforeinstallprompt): " + bip,
+      "App-Karte in der Seite: " + (document.querySelector(".instcard") ? "sichtbar" : "nicht sichtbar") + " | Zustand: " + (installState || "-") + " | Android-Hinweis: " + (noEventHint ? "ja" : "nein"),
+      "Browser: " + navigator.userAgent,
+      "",
+      "Wenn beforeinstallprompt NEIN bleibt (mindestens 10 s warten): Der Browser haelt die App fuer bereits installiert oder fuer nicht installierbar. Dann im Browser-Menue (3 Punkte) nachsehen, ob dort 'App installieren' oder 'App oeffnen' steht."
+    ];
+    box.textContent = L.join("\n");
+  };
+  show(); setInterval(show, 1500);
+}
 </script>
 </body>
 </html>
