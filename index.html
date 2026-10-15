@@ -285,6 +285,12 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 .btn.mastercard{background:#ffc800!important;color:#3b2d00;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2)}
 @page{size:A4 landscape;margin:8mm}
 @media print{body{background:#fff}main>*:not(.certbox){display:none!important}.certbox{box-shadow:none;border:0;padding:0;margin:0}footer{display:none}}
+.runner{position:fixed;left:0;top:0;width:39px;height:48px;z-index:40;pointer-events:none;will-change:transform}
+.runner svg{display:block;width:100%;height:100%;animation:runbob .22s steps(2) infinite}
+.runner.stand svg{animation-play-state:paused}
+@keyframes runbob{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
+.runbub{position:fixed;z-index:41;pointer-events:none;background:#fff;color:#222;border:2px solid #222;border-radius:12px;padding:4px 10px;font-family:inherit;font-weight:800;font-size:.85rem;line-height:1.25;white-space:nowrap;max-width:80vw;box-shadow:0 2px 0 rgba(0,0,0,.2);animation:pop .3s both}
+@media print{.runner,.runbub{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.top,.sticky,.lang{display:none}}
 </style>
@@ -304,7 +310,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.18.7", STAND = "15.10.2026";
+const VERSION = "1.19.0", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -778,8 +784,7 @@ function renderLesson(l){
   l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h2", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
   m.append(h("details", {class:"pro", style:"--c:" + l.c}, h("summary", {text:t("pro")}), h("p", {text:l.pro[li]})));
   m.append(h("div", {class:"bubble"}, h("small", {text:"😄 " + t("fun")}), l.fun[li]));
-  if(earned(l)) m.append(h("div", {class:"sticky two"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => go("cert", l.id)}, "🏆 " + t("certView")), h("button", {type:"button", class:"btn ghost", onclick:() => startQuiz(l)}, "↺ " + t("cont"))));
-  else m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => startQuiz(l)}, (prog[l.id] ? t("cont") : t("quiz")) + " →")));
+  if(!earned(l)) m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => startQuiz(l)}, (prog[l.id] ? t("cont") : t("quiz")) + " →")));
 }
 function shuffle(n){ const a = [...Array(n).keys()]; for(let i = n-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function startQuiz(l){
@@ -1113,6 +1118,178 @@ if(/[?&]diag\b/.test(location.search)){
   };
   show(); setInterval(show, 1500);
 }
+/* Ab und zu schaut eine kleine Pixel-Figur vorbei: Zufallssystem mit vielen verschiedenen Auftritten (rein dekorativ, nicht klickbar). Test: Adresse mit ?lauf=quer|umkehr|wand|rundherum|gucken|huepfer */
+(function(){
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const MAP = ["....RRRRR....","...RRRRRRRRR.","...HHHSSHS...","..HSHSSSHSSS.","..HSHHSSSHSSS","..HHSSSSHHHH.","....SSSSSSS..","...RRBRRR....","..RRRBRRBRRR.",".RRRRBBBBRRRR",".SSRBYBBYBRSS",".SSSBBBBBBSSS","..SBBBBBBBBS.","...BBB..BBB..","..HHH....HHH.",".HHHH....HHHH"];
+  const COL = {R:"#e52521", B:"#2c4fd8", S:"#ffc08a", H:"#6b3d12", Y:"#ffd400"};
+  const NS = "http://www.w3.org/2000/svg";
+  const R = Math.random, pick = a => a[Math.floor(R() * a.length)], rnd = (a, b) => a + R() * (b - a);
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const SAG = [["Hoppla!","Oops!","おっと！"],["Yahoo!","Yahoo!","ヤッホー！"],["Falsche Richtung!","Wrong way!","逆だった！"],["Wo ist der Pokal?","Where is the trophy?","トロフィーはどこ？"],["Hier ist ja was los!","Busy place!","ここ、にぎやかだね！"],["Kurze Pause.","Quick break.","ちょっと休憩。"]];
+  const PEEK = [["Nur kurz gucken …","Just a quick peek …","ちょっとのぞいてみました"],["Huhu!","Peekaboo!","いないいないばあ！"],["Alles in Ordnung hier?","Everything okay here?","ここは大丈夫？"]];
+  const aktiv = [];
+  function figur(){
+    const s = document.createElementNS(NS, "svg");
+    s.setAttribute("viewBox", "0 0 13 16"); s.setAttribute("shape-rendering", "crispEdges"); s.setAttribute("aria-hidden", "true");
+    MAP.forEach((row, y) => [...row].forEach((c, x) => { if(COL[c]){ const r = document.createElementNS(NS, "rect"); r.setAttribute("x", x); r.setAttribute("y", y); r.setAttribute("width", 1); r.setAttribute("height", 1); r.setAttribute("fill", COL[c]); s.appendChild(r); } }));
+    return s;
+  }
+  function dim(){ const t = document.querySelector(".top"); return {W: document.documentElement.clientWidth, H: innerHeight, hb: t ? t.getBoundingClientRect().bottom : 0}; }
+  /* Zustand der Figur: Mittelpunkt x/y, Drehung r (0 Boden, 180 Decke, 90 linke Wand, -90 rechte Wand), Blickrichtung f (1 rechts, -1 links) */
+  function T(s){ return "translate(" + (s.x - 19.5) + "px," + (s.y - 24) + "px) rotate(" + s.r + "deg) scaleX(" + s.f + ")"; }
+  function abbruch(){ return document.hidden || (view && view.v === "quiz"); }
+  function neu(s){
+    const el = document.createElement("div"); el.className = "runner"; el.setAttribute("aria-hidden", "true"); el.appendChild(figur());
+    el.style.transform = T(s); document.body.appendChild(el); aktiv.push(el);
+    return {el, s: Object.assign({}, s)};
+  }
+  function setze(g, p){ g.s = Object.assign({}, g.s, p); g.el.style.transform = T(g.s); }
+  async function anim(g, kf, ms, ende){
+    if(abbruch()) throw new Error("stop");
+    const a = g.el.animate(kf, {duration: ms, easing: "linear", fill: "forwards"});
+    g.s = ende; await a.finished; g.el.style.transform = T(g.s); a.cancel();
+  }
+  function blick(g, dx, dy){
+    const r = g.s.r; let f = g.s.f;
+    if(r === 0 || r === 180){ if(Math.abs(dx) > 1){ const d = Math.sign(dx); f = r === 180 ? -d : d; } }
+    else if(Math.abs(dy) > 1){ const d = Math.sign(dy); f = r === 90 ? d : -d; }
+    return f;
+  }
+  async function gehe(g, x, y, v){
+    const s0 = g.s, e = {x: x === undefined ? s0.x : x, y: y === undefined ? s0.y : y, r: s0.r};
+    e.f = blick(g, e.x - s0.x, e.y - s0.y); setze(g, {f: e.f});
+    const ms = Math.max(250, Math.hypot(e.x - s0.x, e.y - s0.y) / (v || rnd(.13, .3)));
+    await anim(g, [{transform: T(g.s)}, {transform: T(e)}], ms, e);
+  }
+  async function bogen(g, tx, ty, h, ms){
+    const f = blick(g, tx - g.s.x, ty - g.s.y); setze(g, {f});
+    const s0 = g.s, rr = s0.r * Math.PI / 180, ux = Math.sin(rr), uy = -Math.cos(rr), kf = [];
+    for(let i = 0; i <= 12; i++){ const u = i / 12, k = 4 * h * u * (1 - u); kf.push({transform: T({x: s0.x + (tx - s0.x) * u + ux * k, y: s0.y + (ty - s0.y) * u + uy * k, r: s0.r, f})}); }
+    await anim(g, kf, ms, {x: tx, y: ty, r: s0.r, f});
+  }
+  const sprung = (g, h) => bogen(g, g.s.x, g.s.y, h || 26, 460);
+  async function stehen(g, ms){ g.el.classList.add("stand"); await wait(ms); g.el.classList.remove("stand"); if(abbruch()) throw new Error("stop"); }
+  const drehen = g => setze(g, {f: -g.s.f});
+  function sag(g, txt, ms){
+    const b = document.createElement("div"); b.className = "runbub"; b.textContent = txt; b.setAttribute("aria-hidden", "true"); document.body.appendChild(b);
+    const d = dim(), rr = g.s.r * Math.PI / 180, cx = g.s.x + Math.sin(rr) * 44, cy = g.s.y - Math.cos(rr) * 44, w = b.offsetWidth, h = b.offsetHeight;
+    b.style.left = Math.max(4, Math.min(d.W - w - 4, cx - w / 2)) + "px"; b.style.top = Math.max(4, Math.min(d.H - h - 4, cy - h / 2)) + "px";
+    setTimeout(() => b.remove(), ms || 1600);
+  }
+  const spruch = (g, arr) => { if(R() < .65) sag(g, (arr || pick(SAG))[li]); };
+  function bahn(d, name, dir){
+    if(name === "boden") return {y: d.H - 30, r: 0, f: dir};
+    if(name === "decke") return {y: (R() < .5 || d.hb < 20) ? 24 : d.hb + 26, r: 180, f: -dir};
+    return {y: rnd(d.hb + 70, Math.max(d.hb + 90, d.H - 90)), r: 0, f: dir};
+  }
+  async function aktion(g){
+    const a = R();
+    if(a < .4) await sprung(g, rnd(24, 44));
+    else if(a < .7){ spruch(g); await stehen(g, 1500); }
+    else { await stehen(g, rnd(400, 1000)); await sprung(g); }
+  }
+  /* Auftritt 1: quer ueber den Bildschirm (Boden, Decke kopfueber oder mittendrin), mit 0 bis 2 Stopps */
+  async function quer(d){
+    const dir = pick([1, -1]), b = bahn(d, pick(["boden","boden","decke","mitte"]), dir);
+    const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: b.r, f: b.f});
+    const n = pick([0, 0, 1, 2]);
+    for(let i = 0; i < n; i++){ const x = (i + 1 + rnd(-.3, .3)) / (n + 1) * d.W; await gehe(g, dir > 0 ? x : d.W - x); await aktion(g); }
+    await gehe(g, dir > 0 ? d.W + 40 : -40);
+  }
+  /* Auftritt 2: dreht nach einer Strecke um, manchmal mehrfach */
+  async function umkehr(d){
+    const dir = pick([1, -1]), b = bahn(d, pick(["boden","decke","mitte"]), dir);
+    const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: b.r, f: b.f});
+    let richtung = dir;
+    for(let i = 0, n = pick([1, 1, 2, 3]); i < n; i++){
+      const cur = Math.max(0, Math.min(d.W, g.s.x)); let x;
+      if(richtung > 0){ const lo = cur + d.W * .15, hi = d.W * .9; x = lo < hi ? rnd(lo, hi) : hi; }
+      else { const lo = d.W * .1, hi = cur - d.W * .15; x = lo < hi ? rnd(lo, hi) : lo; }
+      await gehe(g, x);
+      await stehen(g, rnd(300, 700)); spruch(g, pick([SAG[0], SAG[2], SAG[3]])); await stehen(g, rnd(600, 1100));
+      drehen(g); richtung = -richtung; await stehen(g, 350);
+      if(R() < .3) await sprung(g);
+    }
+    await gehe(g, richtung > 0 ? d.W + 40 : -40);
+  }
+  /* Auftritt 3: klettert oder rutscht am linken oder rechten Rand, manchmal mit Umkehr */
+  async function wand(d){
+    const links = R() < .5, r = links ? 90 : -90, x = links ? 24 : d.W - 24, hoch = R() < .5;
+    const start = hoch ? d.H + 40 : -40, ende = hoch ? -40 : d.H + 40;
+    const g = neu({x, y: start, r, f: 1});
+    if(R() < .45){
+      await gehe(g, x, rnd(.3, .7) * d.H, rnd(.1, .2));
+      await stehen(g, 500); spruch(g, pick([SAG[0], SAG[2], SAG[4]])); await stehen(g, 1100);
+      drehen(g); await stehen(g, 400);
+      await gehe(g, x, start, rnd(.12, .25));
+    } else {
+      if(R() < .5){ await gehe(g, x, rnd(.3, .7) * d.H, rnd(.1, .2)); await aktion(g); }
+      await gehe(g, x, ende, rnd(.1, .22));
+    }
+  }
+  /* Auftritt 4: einmal rund um den Bildschirm (Boden, Wand, Decke kopfueber, Wand), rechts oder links herum */
+  async function rundherum(d){
+    const sp = R() < .5, W = d.W, H = d.H, yB = H - 30, yT = 24, xL = 24, xR = W - 24;
+    const X = x => sp ? W - x : x, Rr = r => sp ? (r === 90 ? -90 : r === -90 ? 90 : r) : r;
+    const pts = [{x: xR, y: yB, r: 0}, {x: xR, y: yT, r: -90}, {x: xL, y: yT, r: 180}, {x: xL, y: yB, r: 90}, {x: W + 40, y: yB, r: 0}];
+    const lauf = pts.slice(0, pick([2, 3, 4, 5])).map(p => Object.assign({}, p)), l = lauf[lauf.length - 1];
+    if(l.r === -90) l.y = -40; else if(l.r === 180) l.x = -40; else if(l.r === 90) l.y = H + 40;
+    const g = neu({x: X(-40), y: yB, r: Rr(0), f: 1});
+    for(const p of lauf){
+      if(R() < .35 && g.s.x > 0 && g.s.x < W) await sprung(g);
+      setze(g, {r: Rr(p.r)});
+      await gehe(g, X(p.x), p.y, rnd(.2, .35));
+    }
+  }
+  /* Auftritt 5: schaut nur kurz von einem Rand herein, manchmal springt er danach heraus und rennt los */
+  async function gucken(d){
+    const k = pick(["unten","unten","oben","links","rechts"]), W = d.W, H = d.H, yy = rnd(Math.min(H * .5, d.hb + 60), H * .8), xx = rnd(.1, .9) * W;
+    let s, p;
+    if(k === "unten"){ s = {x: xx, y: H + 50, r: 0, f: pick([1, -1])}; p = {x: xx, y: H + rnd(-6, 14)}; }
+    else if(k === "oben"){ s = {x: xx, y: -50, r: 180, f: pick([1, -1])}; p = {x: xx, y: rnd(-14, 6)}; }
+    else if(k === "links"){ s = {x: -50, y: yy, r: 0, f: 1}; p = {x: rnd(-6, 10), y: yy}; }
+    else { s = {x: W + 50, y: yy, r: 0, f: -1}; p = {x: W + rnd(-10, 6), y: yy}; }
+    const g = neu(s);
+    await gehe(g, p.x, p.y, .1);
+    const a = R();
+    if(a < .35){ await stehen(g, 500); drehen(g); await stehen(g, 600); drehen(g); await stehen(g, 500); }
+    else if(a < .7){ spruch(g, pick(PEEK)); await stehen(g, 1700); }
+    else await sprung(g, 30);
+    if(k === "unten" && R() < .3){
+      const dir = pick([1, -1]);
+      await gehe(g, g.s.x, H - 30, .15);
+      await gehe(g, dir > 0 ? W + 40 : -40, H - 30, rnd(.2, .3));
+    } else await gehe(g, s.x, s.y, .22);
+  }
+  /* Auftritt 6: huepft in Bogen ueber den Bildschirm, am Boden oder mittendrin */
+  async function huepfer(d){
+    const dir = pick([1, -1]), mitte = R() < .5, b = bahn(d, mitte ? "mitte" : "boden", dir);
+    const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: 0, f: b.f});
+    const n = Math.round(rnd(3, 7)), schritt = (d.W + 80) / n;
+    for(let i = 1; i <= n; i++){
+      const ty = mitte ? Math.max(d.hb + 60, Math.min(d.H - 60, g.s.y + rnd(-45, 45))) : b.y;
+      await bogen(g, dir > 0 ? -40 + schritt * i : d.W + 40 - schritt * i, ty, rnd(40, 90), rnd(520, 760));
+      if(R() < .2) await stehen(g, 400);
+    }
+  }
+  const MUSTER = {quer: [quer, 4], umkehr: [umkehr, 4], wand: [wand, 3], rundherum: [rundherum, 2], gucken: [gucken, 4], huepfer: [huepfer, 3]};
+  function waehle(name){
+    if(name && MUSTER[name]) return MUSTER[name][0];
+    const liste = []; for(const k in MUSTER) for(let i = 0; i < MUSTER[k][1]; i++) liste.push(MUSTER[k][0]);
+    return pick(liste);
+  }
+  async function auftritt(name){
+    if(abbruch()) return;
+    try{ await waehle(name)(dim()); } catch(e){ if(!e || e.message !== "stop") console.error("Figur:", e); }
+    aktiv.splice(0).forEach(e => e.remove()); document.querySelectorAll(".runbub").forEach(b => b.remove());
+  }
+  const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
+  (async function(){
+    await wait(test !== undefined ? 1200 : rnd(8000, 20000));
+    for(;;){ await auftritt(test || undefined); await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
+  })();
+})();
 </script>
 </body>
 </html>

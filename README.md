@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.18.7, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.19.0, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -80,6 +80,9 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
+- 1.19.0 (15.10.2026): Die Pixel-Figur hat jetzt ein Zufallssystem mit sechs Auftritten: quer über den Bildschirm (Boden, Decke kopfüber oder mittendrin, mit Stopps und Sprüngen), Umkehr nach einer Strecke (auch mehrfach), Klettern oder Rutschen am Seitenrand (auch von unten nach oben und von oben nach unten), einmal rund um den Bildschirm, kurz von einem Rand hereinschauen (manchmal springt sie danach heraus) und Hüpfen in Bögen. Start, Richtung, Tempo, Stopps und Sprechblasen („Hoppla!“, „Yahoo!“ …, dreisprachig) sind zufällig, Abstand 25 bis 80 Sekunden, manchmal nur 4 bis 9. Nicht im Quiz, nicht bei „Bewegung reduzieren“, nicht klickbar. Zum Testen: Adresse mit ?lauf=quer, umkehr, wand, rundherum, gucken oder huepfer öffnen.
+- 1.18.9 (15.10.2026): In einer abgeschlossenen Lektion gibt es keine feste Leiste mehr am unteren Rand. „Pokal ansehen“ und „Nochmal spielen“ stehen bereits in der Karte „Geschafft! Dein Pokal ist fertig.“ oben, die Leiste war doppelt. Bei noch nicht abgeschlossenen Lektionen bleibt „Quiz starten“ unten fest.
+- 1.18.8 (15.10.2026): Ab und zu (alle 30 bis 90 Sekunden, nicht im Quiz, nicht bei „Bewegung reduzieren“) läuft eine kleine Pixel-Figur mit roter Mütze am unteren Bildrand von einer Seite zur anderen. Eigene Zeichnung, rein dekorativ, nicht klickbar, reagiert nicht auf Eingaben.
 - 1.18.7 (15.10.2026): Fehler behoben: In den Humor-Pausen standen in der deutschen und englischen Ansicht japanische Schriftzeichen. Dort steht jetzt die Umschrift (z. B. „Hana yori dango“, „suitchi“), die Schriftzeichen erscheinen nur in der japanischen Ansicht.
 - 1.18.6 (15.10.2026): Die Humor-Pausen der sieben Lektionen sind jetzt japanisch gefärbt (Manzai mit Boke und Tsukkomi, Abkürzungskultur, 花より団子, Gunpei Yokois Leitsatz, 無口, スイッチ, お疲れ様でした), in Deutsch, Englisch und Japanisch. Es gibt wieder nur eine Sprechblase pro Lektion.
 - 1.18.4 (15.10.2026): Die feste Leiste unten in der Lektion („Quiz starten“, „Pokal ansehen“) ist jetzt durchgehend mit feiner Linie und Schatten statt eines Verlaufs. Vorher blendete der Verlauf die Humor-Pause und den Inhalt darüber halb aus, das sah abgeschnitten aus. Dazu mehr Abstand über der Leiste.
