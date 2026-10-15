@@ -346,7 +346,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.29.0", STAND = "16.10.2026";
+const VERSION = "1.30.0", STAND = "16.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -1519,17 +1519,27 @@ if(/[?&]diag\b/.test(location.search)){
   const ZEIGEN = [["Hier, mein Freund, trag dich ein! Ich zeige sogar extra darauf!","Right here, my friend, sign in! I'm even pointing at it!","ここだよ、友よ！ちゃんと指さしてるよ！"],["Psst, hier ist der Platz für den Helden: DU!","Psst, this is the spot for the hero: YOU!","しーっ、ここはヒーローの席：君だよ！"],["Dieses Feld wartet seit Jahren auf dich!","This field has been waiting for you for years!","この欄、何年も君を待ってたんだ！"],["Hier steht gleich ein berühmter Name. Deiner!","A famous name is about to appear here. Yours!","もうすぐここに有名な名前が入るよ。君の！"],["Sag mir, wie du heißt, und der Applaus geht auf mich!","Tell me your name and the applause is on me!","名前を教えてくれたら、拍手は僕のおごり！"],["Tipp hier deinen Namen ein, ich bin schon ganz aufgeregt!","Type your name here, I'm already so excited!","ここに名前を入れて、もうドキドキ！"]];
   const KLOPF = [["Klopf klopf! Hier zieht gleich dein Name ein!","Knock knock! Your name is about to move in here!","コンコン！もうすぐ君の名前が引っ越してくるよ！"],["Fragezeichen-Block? Nein, Namensfeld! Noch besser!","Question block? No, name field! Even better!","ハテナブロック？いや、名前欄！もっといい！"],["Ich habe extra für dich geklopft. Mit dem Kopf!","I knocked just for you. With my head!","君のために頭でノックしたよ！"],["Aua … egal, Hauptsache du tippst gleich!","Ouch … never mind, as long as you type now!","いてて…いいや、君が入力してくれれば！"],["Mein Kopf tut weh, dein Name macht es wieder gut!","My head hurts, your name would fix it!","頭が痛いけど、君の名前で治るよ！"],["Hier gibt's keine Münzen, nur Ruhm und einen Pokal mit deinem Namen!","No coins in here, just glory and a trophy with your name!","コインはないけど、栄光と君の名前入りトロフィーがあるよ！"]];
   const DRAENG = [["Na los, tipp schon! Ich werde langsam nervös!","Come on, type! I'm getting nervous!","ほら入力して！ドキドキしてきた！"],["Ich warte. Ich habe Zeit. Viel Zeit. Ich bin ein Pixel.","I'll wait. I have time. Lots of time. I'm a pixel.","待つよ。時間はたっぷり。僕はドット絵だから。"],["Mamma mia, so schwer ist das nicht. Nur ein Name!","Mamma mia, it's not hard. Just a name!","マンマミーア、難しくないよ。名前だけ！"],["Ohne Namen bist du für mich nur „Chef“. Mit Namen bist du eine Legende!","Without a name you're just “Boss” to me. With one, you're a legend!","名前がないと君は「ボス」のまま。あれば伝説！"],["Dein Name bleibt auf dem Gerät. Mario-Ehrenwort, Klempner-Ehrenwort!","Your name stays on your device. Mario's honor, plumber's honor!","名前はこの端末だけ。マリオに誓って、配管工に誓って！"],["Ein Name, ein Klick, ein Pokal. Besser wird's nicht!","One name, one click, one trophy. It doesn't get better!","名前ひとつ、クリックひとつ、トロフィーひとつ。最高！"]];
-  /* Sicherheit: Die Namensfrage laeuft nur, solange KEIN Name eingetragen ist und niemand gerade tippt. Wird waehrend der Szene ein Name gespeichert oder das Feld benutzt, bricht Mario sofort ab (Ausnahme: Testmodus ?lauf=). */
-  const tippt = () => { const i = document.getElementById("nmq"); return !!i && (document.activeElement === i || i.value.trim() !== ""); };
+  /* Sicherheit und Nerv-Modus: Mario kommt immer wieder und fordert zum Eintragen auf, solange KEIN Name gespeichert ist (der Zeitplan unten steuert das). Sobald ein Name gespeichert wird oder jemand ins Namensfeld klickt, bricht die laufende Szene sofort ab (Ausnahme: Testmodus ?lauf=). */
+  const feldEl = () => document.getElementById("nmq");
+  const tippt = () => { const i = feldEl(); return !!i && document.activeElement === i; };
   const nameDa = () => hasName() || tippt();
   const weiter = () => { if(test === undefined && nameDa()) throw new Error("stop"); };
-  /* Namensfeld nur nehmen, wenn es gerade gut sichtbar ist und unten genug Platz fuer Mario bleibt */
-  function namensFeld(d){
+  let nerv = 0;   /* wie oft Mario schon nachgefragt hat (ab dem 2. Mal kommen die "Ich bin's schon wieder"-Sprueche) */
+  const WIEDER = [["Ich bin's schon wieder! Dein Name fehlt immer noch.","It's me again! Your name is still missing.","また僕だよ！君の名前、まだ足りないよ。"],["Ich gebe nicht auf. Klempner bleiben dran!","I'm not giving up. Plumbers get things done!","あきらめないよ。配管工はしつこいんだ！"],["Hast du mich vermisst? Ich dich schon. Und deinen Namen!","Did you miss me? I missed you. And your name!","僕に会いたかった？僕は会いたかったよ。君の名前にもね！"],["Ding dong! Namens-Abholdienst! Bitte einmal eintippen.","Ding dong! Name pick-up service! Please type it in.","ピンポーン！名前のお届け…じゃなくて受け取りに来ました！"],["Ich kann das den ganzen Tag. Du auch?","I can do this all day. Can you?","一日中でもできるよ。君は？"],["Na, Lust auf deinen Namen? Ich warte schon seit Level 1!","Ready to add your name? I've been waiting since level 1!","名前を入れる気になった？レベル1からずっと待ってるよ！"]];
+  DRAENG.push(["Ich nerve so lange, bis dein Name drin ist. Das ist mein Superpower!","I'll keep bugging you until your name is in. It's my superpower!","名前が入るまでしつこくするよ。それが僕の特技！"],["Je länger du wartest, desto öfter komme ich!","The longer you wait, the more often I come!","待てば待つほど、僕が来る回数が増えるよ！"]);
+  /* Wenn schon etwas im Feld steht, aber noch nicht gespeichert wurde: Mario zeigt auf den Speichern-Knopf */
+  const SPEI1 = [["Dein Name steht schon drin! Jetzt nur noch den Knopf drücken!","Your name is already in! Now just press the button!","名前はもう入ってるよ！あとはボタンを押すだけ！"],["Fast geschafft! Der Knopf wartet auf dich!","Almost there! The button is waiting for you!","もう少し！ボタンが君を待ってるよ！"],["Schöner Name! Aber er ist noch nicht gespeichert.","Nice name! But it's not saved yet.","いい名前！でもまだ保存されてないよ。"]];
+  const SPEI2 = [["Drück den Knopf! Ich kann nicht, ich bin nur ein Pixel!","Press the button! I can't, I'm just a pixel!","ボタンを押して！僕はただのドットだから押せない！"],["Klopf klopf! Der Knopf macht auf, wenn du ihn drückst!","Knock knock! The button opens when you press it!","コンコン！押すと開くよ！"],["Ein Klick und du bist ein Champion!","One click and you're a champion!","ワンクリックでチャンピオン！"]];
+  const SPEI3 = [["Na los, drück ihn! Ich halte so lange den Atem an …","Go on, press it! I'll hold my breath until then …","ほら押して！それまで息を止めてるよ…"],["Ich bleibe hier stehen, bis du klickst. Ehrenwort!","I'll stand here until you click. Honest!","君がクリックするまでここにいるよ。ほんとに！"],["Mamma mia, nur noch ein Klick!","Mamma mia, just one more click!","マンマミーア、あとワンクリック！"]];
+  /* Ziel fuer Mario: Namensfeld (oder Speichern-Knopf bzw. "Name eintragen"-Knopf), nur wenn es gerade gut sichtbar ist und unten genug Platz fuer Mario bleibt */
+  function namensZiel(d){
     if(!(view && view.v === "home") || hasName()) return null;
-    const el = document.getElementById("nmq") || document.querySelector(".herobar .namebtn");
+    const inp = feldEl(); let el, modus = "feld";
+    if(inp){ if(inp.value.trim() !== ""){ el = inp.form && inp.form.querySelector('button[type="submit"]'); modus = "speichern"; } else el = inp; }
+    else el = document.querySelector(".herobar .namebtn");
     if(!el) return null;
     const r = el.getBoundingClientRect();
-    return (r.width > 0 && r.top >= d.hb + 4 && r.bottom <= d.H - 115 && r.left >= 0 && r.right <= d.W) ? el : null;
+    return (r.width > 0 && r.top >= d.hb + 4 && r.bottom <= d.H - 115 && r.left >= 0 && r.right <= d.W) ? {el, modus} : null;
   }
   /* Sprechblase unterhalb der Figur, damit sie das Feld nicht verdeckt (sag() setzt sie bei r=180 unter die Figur) */
   const sagUnten = (g, txt, ms) => sag({s: Object.assign({}, g.s, {r: 180})}, txt, ms, true);
@@ -1545,8 +1555,9 @@ if(/[?&]diag\b/.test(location.search)){
     const a = c.animate([{transform: "translateY(0)", opacity: 1}, {transform: "translateY(-44px)", opacity: 1, offset: .6}, {transform: "translateY(-66px)", opacity: 0}], {duration: 750, easing: "ease-out"});
     a.finished.then(() => c.remove(), () => c.remove());
   }
-  async function namezeigen(d, ziel){
+  async function namezeigen(d, z){
     weiter();
+    const ziel = z.el, sp = z.modus === "speichern", t1 = sp ? SPEI1 : (nerv > 1 ? WIEDER : ZEIGEN), t2 = sp ? SPEI2 : KLOPF, t3 = sp ? SPEI3 : DRAENG;
     const rc = ziel.getBoundingClientRect(), dir = rd(), y = rc.bottom + 40;
     const g = neu({x: rein(dir, d), y, r: 0, f: dir});
     const x = Math.max(26, Math.min(d.W - 26, rc.left + 26));   /* ganz am Anfang (linker Rand) des Feldes */
@@ -1554,22 +1565,23 @@ if(/[?&]diag\b/.test(location.search)){
     await stehen(g, 250); weiter();
     const hand = emojiAn("👆", x, y - 50);
     hand.animate([{transform: "translateY(0)"}, {transform: "translateY(-6px)"}], {duration: 380, iterations: Infinity, direction: "alternate", easing: "ease-in-out"});
-    sagUnten(g, pick(ZEIGEN)[li], 2800); await stehen(g, 2000); weiter();
+    sagUnten(g, pick(t1)[li], 2800); await stehen(g, 2000); weiter();
     hand.remove();
     let j = sprung(g, 22); setTimeout(() => stoss(ziel, rc, x), 230); await j; weiter();
-    sagUnten(g, pick(KLOPF)[li], 2800); await stehen(g, 1500); weiter();
+    sagUnten(g, pick(t2)[li], 2800); await stehen(g, 1500); weiter();
     j = sprung(g, 22); setTimeout(() => stoss(ziel, rc, x), 230); await j; weiter();
-    sagUnten(g, pick(DRAENG)[li], 2600); await stehen(g, 1800); weiter();
+    sagUnten(g, pick(t3)[li], 2600); await stehen(g, 1800); weiter();
     await gehe(g, raus(dir, d), undefined, .3);
   }
   async function namefrage(d){
     weiter();
-    const ziel = namensFeld(d);
-    if(ziel) return namezeigen(d, ziel);
+    const z = namensZiel(d);
+    if(z) return namezeigen(d, z);
+    const f = feldEl(), sp = !!f && f.value.trim() !== "", t1 = sp ? SPEI1 : (nerv > 1 ? WIEDER : FRAGE), t2 = sp ? SPEI3 : FRAGE2;
     const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
     await gehe(g, anteil(dir, d, rnd(.35, .65)), undefined, .28); weiter();
-    await stehen(g, 300); weiter(); sag(g, pick(FRAGE)[li], 2400, true); await sprung(g, 30); await stehen(g, 1900); weiter();
-    sag(g, pick(FRAGE2)[li], 3200, true); await sprung(g, 30); weiter(); await stehen(g, 300); await sprung(g, 30); await stehen(g, 2400); weiter();
+    await stehen(g, 300); weiter(); sag(g, pick(t1)[li], 2400, true); await sprung(g, 30); await stehen(g, 1900); weiter();
+    sag(g, pick(t2)[li], 3200, true); await sprung(g, 30); weiter(); await stehen(g, 300); await sprung(g, 30); await stehen(g, 2400); weiter();
     await gehe(g, raus(dir, d), undefined, .3);
   }
   /* Weitere Gags im Stil von Pilz: Groesse, Requisiten, Verwandlungen */
@@ -1666,7 +1678,17 @@ if(/[?&]diag\b/.test(location.search)){
   const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
   (async function(){
     await wait(test !== undefined ? 1200 : 5000);
-    let erster = test === undefined; for(;;){ const frage = test === undefined && !nameDa() && !(view && view.v === "quiz") && (erster || R() < .35); await auftritt(test || (frage ? "namefrage" : (erster && R() < .5 ? "hallo" : undefined))); erster = false; await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
+    let erster = test === undefined;
+    for(;;){
+      /* Wer gerade im Namensfeld tippt, hat Ruhe */
+      if(test === undefined && !hasName() && tippt()){ await wait(3000); continue; }
+      /* Nerv-Modus: solange kein Name gespeichert ist, kommt Mario bei jedem Auftritt mit der Namensfrage, immer oefter (nicht im Quiz und nicht auf der Namens-Abfrageseite vor dem Quiz) */
+      const nerven = test === undefined && !hasName() && !(view && (view.v === "quiz" || view.v === "namegate"));
+      if(nerven) nerv++;
+      await auftritt(test || (nerven ? "namefrage" : (erster && R() < .5 ? "hallo" : undefined)));
+      erster = false;
+      await wait(test !== undefined ? 1500 : (nerven ? Math.max(8000, 18000 - 2000 * nerv) + rnd(0, 4000) : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))));
+    }
   })();
 })();
 /* Feste Orientierungsleiste: Hoehen messen, Schatten nur wenn festgeheftet */
