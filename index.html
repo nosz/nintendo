@@ -247,6 +247,20 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 .field input{min-height:48px;font:inherit;font-size:1rem;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--card);color:var(--ink)}
 .certlist{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
 .certlist .btn{justify-content:flex-start;text-align:left;border-radius:16px;min-height:52px;width:100%}
+.steps{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0 0 16px}
+.steps li{display:flex;align-items:center;gap:8px;padding:5px 14px 5px 6px;border-radius:999px;background:var(--card);border:2px solid var(--line);font-weight:800;font-size:.9rem;color:var(--mute)}
+.steps .sn{width:24px;height:24px;border-radius:50%;background:var(--line);color:var(--ink);display:grid;place-items:center;font-size:.8rem}
+.steps li.cur{border-color:var(--red);color:var(--ink)}
+.steps li.cur .sn{background:var(--red-d);color:#fff}
+.steps li.done .sn{background:var(--ok);color:#fff}
+.donecard{display:flex;flex-wrap:wrap;gap:12px 16px;align-items:center;background:var(--card);border:2px solid var(--ok);border-radius:var(--r);padding:14px 18px;margin:0 0 16px;box-shadow:var(--shadow)}
+.donecard .dc-i{font-size:2rem;line-height:1}
+.donecard .dc-t{flex:1 1 220px;min-width:0}.donecard b{display:block;font-size:1.08rem}.donecard small{display:block;color:var(--mute);margin:2px 0 4px}
+.donecard .row{margin:0;justify-content:flex-start}
+.lcell{display:flex;flex-direction:column;gap:8px}.lcell .lcard{flex:1}
+.certbar{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;border-radius:14px;border:2px solid var(--ok);background:var(--card);color:var(--ink);font-weight:800;box-shadow:0 3px 0 rgba(0,0,0,.08);transition:background .15s,color .15s}
+.certbar:hover{background:var(--ok);color:#fff}
+.sticky.two{gap:10px}.sticky.two .btn{width:auto;max-width:none;flex:1;min-width:0}.sticky.two .btn:first-child{flex:2}
 .nlinks{grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr))}.nlinks .btn{gap:12px;padding:12px 16px;font-size:.95rem;align-items:center}.nlinks .btn>span:first-child{flex:none;font-size:1.4rem}.nlinks .btn>span:last-child{min-width:0;overflow-wrap:anywhere;hyphens:auto}.nlinks .btn small{font-size:.82rem;margin-top:2px}
 .btn.mastercard{background:#ffc800!important;color:#3b2d00;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2)}
 @page{size:A4 landscape;margin:8mm}
@@ -270,7 +284,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.15.1", STAND = "15.10.2026";
+const VERSION = "1.16.0", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -385,6 +399,14 @@ const S = {
  dl:["Als Bild speichern (PNG)","Save as image (PNG)","画像として保存（PNG）"],
  prt:["Drucken","Print","印刷"],
  certOf:["Zertifikat","Certificate","証明書"],
+ stRead:["Lesen","Read","読む"],
+ stQuiz:["Quiz","Quiz","クイズ"],
+ stCert:["Zertifikat","Certificate","証明書"],
+ lessonN:["Lektion {a} von {b}","Lesson {a} of {b}","レッスン {a} / {b}"],
+ dTitle:["Geschafft! Dein Zertifikat ist fertig.","Cleared! Your certificate is ready.","クリア！証明書ができています。"],
+ dSub:["Du kannst es ansehen, speichern oder drucken. Mit „Nochmal spielen“ holst du dir mehr Sterne.","View, save or print it. “Play again” lets you earn more stars.","表示・保存・印刷ができます。「もう一度」で星を増やせます。"],
+ certView:["Zertifikat ansehen","View certificate","証明書を見る"],
+ certAll:["Alle Zertifikate","All certificates","すべての証明書"],
  certMasterBadge:["Alle 7 Level geschafft!","All 7 levels cleared!","全7ステージクリア！"]
 };
 const RANKS = [
@@ -681,6 +703,7 @@ h("div", {class:"stats", role:"list"},
     m.append(h("div", {class:"choices"}, first, vet));
     m.append(h("p", {class:"pitch", text:"✨ " + (hasName() ? fill(t("greetN")) : t("pitch"))}));
   }  if(T.dn === LESSONS.length) m.append(h("div", {class:"bubble", role:"status"}, h("small", {text:"🎉"}), t("allDone")));
+  m.append(certList());
   m.append(h("h2", {class:"sec secrow"}, h("span", {text:t("lessons")}), h("span", {class:"cnt", text:T.dn + " / " + LESSONS.length + " " + t("done")})));
   const g = h("div", {class:"grid"});
   LESSONS.forEach((l, i) => {
@@ -690,10 +713,11 @@ h("div", {class:"stats", role:"list"},
       h("span", {class:"nr", text:(i+1) + " / " + LESSONS.length}),
       h("h3", {text:l.t[li]}), h("p", {text:l.sub[li]}),
       h("span", {class:"foot"}, h("span", {text:"⏱ " + l.min + " " + t("min")}), p ? starRow(s) : h("span", {text:t("start") + " →"})));
-    g.append(b);
+    const cell = h("div", {class:"lcell"}, b);
+    if(s >= 1) cell.append(h("button", {type:"button", class:"certbar", "aria-label":t("certView") + ": " + l.t[li], onclick:() => go("cert", l.id)}, "🏅 " + t("certView")));
+    g.append(cell);
   });
   m.append(g);
-  m.append(certList());
   m.append(installCard());
   m.append(nintendoLinks());
   m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
@@ -704,16 +728,35 @@ function crumbBar(label, fn, ctx){
   b.append(h("span", {text:label}));
   const bar = h("div", {class:"crumb"}, b); if(ctx) bar.append(h("span", {class:"ctx", "aria-hidden":"true", text:ctx})); return bar;
 }
+function stepper(n){
+  const S = [t("stRead"), t("stQuiz"), t("stCert")];
+  return h("ol", {class:"steps", "aria-label":S.join(" · ")}, S.map((x, i) => {
+    const at = {class: i + 1 === n ? "cur" : (i + 1 < n ? "done" : "")}; if(i + 1 === n) at["aria-current"] = "step";
+    return h("li", at, h("span", {class:"sn", "aria-hidden":"true", text: i + 1 < n ? "✓" : String(i + 1)}), x);
+  }));
+}
+const lessonNo = l => t("lessonN").replace("{a}", idxOf(l.id) + 1).replace("{b}", LESSONS.length);
+function toCerts(){ go("home"); setTimeout(() => { const c = $("#ch"); if(c){ const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; c.scrollIntoView({behavior: rm ? "auto" : "smooth", block:"start"}); } }, 80); }
 function renderLesson(l){
   const m = $("#main"); m.replaceChildren(); const i = idxOf(l.id);
   m.style.setProperty("--c", l.c);
-  m.append(crumbBar(t("back"), () => go("home")));
+  m.append(crumbBar(t("back"), () => go("home"), lessonNo(l)), stepper(1));
   m.append(h("div", {class:"lhead"}, h("span", {class:"big", "aria-hidden":"true"}, l.ico), h("div", null, h("h1", {id:"h1", text:l.t[li]}), h("p", {text:l.sub[li]}))));
+  if(earned(l)){
+    const sN = starsOf(prog[l.id], l.q.length);
+    m.append(h("section", {class:"donecard", "aria-labelledby":"dcT"},
+      h("span", {class:"dc-i", "aria-hidden":"true"}, "🏅"),
+      h("div", {class:"dc-t"}, h("b", {id:"dcT", text:t("dTitle")}), h("small", {text:t("dSub")}), starRow(sN)),
+      h("div", {class:"row"},
+        h("button", {type:"button", class:"btn", onclick:() => go("cert", l.id)}, "🏅 " + t("certView")),
+        h("button", {type:"button", class:"btn ghost", onclick:() => startQuiz(l)}, "↺ " + t("cont")))));
+  }
   l.cards.forEach((c, k) => { const d = h("section", {class:"card", style:"animation-delay:" + k*120 + "ms"}, h("h2", null, h("span", {class:"n", "aria-hidden":"true"}, k+1), c[0][li]), h("p", {text:c[1][li]})); m.append(d); });
   m.append(h("details", {class:"pro", style:"--c:" + l.c}, h("summary", {text:t("pro")}), h("p", {text:l.pro[li]})));
   m.append(h("div", {class:"bubble"}, h("small", {text:"😄 " + t("fun")}), l.fun[li]));
   m.append(h("div", {class:"src"}, h("strong", {text:t("src")}), h("ul", null, l.src.map(s => h("li", null, h("a", {href:s[1], rel:"noopener"}, s[0]))))));
-  m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => startQuiz(l)}, (prog[l.id] ? t("cont") : t("quiz")) + " →")));
+  if(earned(l)) m.append(h("div", {class:"sticky two"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => go("cert", l.id)}, "🏅 " + t("certView")), h("button", {type:"button", class:"btn ghost", onclick:() => startQuiz(l)}, "↺ " + t("cont"))));
+  else m.append(h("div", {class:"sticky"}, h("button", {type:"button", class:"btn", id:"go", onclick:() => startQuiz(l)}, (prog[l.id] ? t("cont") : t("quiz")) + " →")));
 }
 function shuffle(n){ const a = [...Array(n).keys()]; for(let i = n-1; i > 0; i--){ const j = Math.floor(Math.random()*(i+1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 function startQuiz(l){
@@ -722,7 +765,7 @@ function startQuiz(l){
 }
 function renderGate(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
-  m.append(crumbBar(t("backL"), () => go("lesson", l.id), l.t[li]));
+  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(2));
   const inp = h("input", {id:"nmg", type:"text", maxlength:"40", autocomplete:"given-name", placeholder:t("nameP2"), value:nm});
   const go2 = skip => { if(!skip) nm = inp.value.trim().slice(0, 40); ach.askedQuiz = true; if(nm) ach.skip = false; save(); beginQuiz(l); };
   const form = h("form", {class:"nameq", "aria-labelledby":"h1"},
@@ -738,7 +781,7 @@ function beginQuiz(l){ view = {v:"quiz", id:l.id, n:0, right:0, qs:l.q.map(q => 
 function renderQuiz(l){
   const m = $("#main"); m.replaceChildren(); m.style.setProperty("--c", l.c);
   const Q = l.q[view.n], st = view.qs[view.n], total = l.q.length; const done = st.picked !== null;
-  m.append(crumbBar(t("backL"), () => go("lesson", l.id), l.t[li]));
+  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(2));
   m.append(h("div", {class:"dots", role:"img", "aria-label": t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}, view.qs.map((s, i) => h("i", {class: s.picked !== null ? (s.order[s.picked] === 0 ? "on" : "no") : i === view.n ? "cur" : ""}))));
   m.append(h("p", {style:"margin:0 0 4px;color:var(--mute);font-weight:700", text:t("qof") + " " + (view.n+1) + " " + t("of") + " " + total}));
   if(hasName() && (view.n === 0 || view.n === total - 1)) m.append(h("p", {class:"qp", text:"🎯 " + fill(t(view.n === 0 && total > 1 ? "qFirst" : view.n === 0 ? "qFirst" : "qLast"))}));
@@ -773,6 +816,7 @@ function finishQuiz(l){
 function renderResult(l){
   const m = $("#main"); m.replaceChildren(); const n = l.q.length, s = view.right === n ? 3 : view.right/n >= .75 ? 2 : view.right/n >= .5 ? 1 : 0;
   const i = idxOf(l.id), nxt = LESSONS[i+1]; const pass = s >= 1;
+  m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(pass ? 3 : 2));
   m.append(h("section", {class:"res"},
     h("div", {class:"bigstars", role:"img", "aria-label": s + " / 3 " + t("starsOf")}, [0,1,2].map(k => h("span", {class:k < s ? "" : "off"}, "★"))),
     h("h1", {id:"h1", text:hasName() ? fill(t(pass ? "passN" : "tryN")) : (pass ? t("pass") : t("tryAgain"))}),
@@ -869,13 +913,16 @@ function certSVG(l){
 }
 function renderCert(l){
   const m = $("#main"); m.replaceChildren(); const M = !l;
-  m.append(crumbBar(t("back"), () => go("home")));
+  if(M) m.append(crumbBar(t("back"), () => go("home"), t("master")));
+  else m.append(crumbBar(t("backL"), () => go("lesson", l.id), lessonNo(l)), stepper(3));
   m.append(h("h1", {id:"h1", text:"🏅 " + (M ? t("master") : t("certOf") + ": " + l.t[li])}));
   const box = null; certBlock(m, l);
   const nameSafe = (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_");
   m.append(h("div", {class:"row"},
     h("button", {type:"button", class:"btn", onclick:() => savePng(certSVG(l), "nintendo_quest_" + (M ? "master" : l.id) + "_" + nameSafe + ".png")}, "⬇ " + t("dl")),
     h("button", {type:"button", class:"btn ghost", onclick:() => window.print()}, "🖨 " + t("prt")),
+    (!M && LESSONS[idxOf(l.id) + 1]) ? h("button", {type:"button", class:"btn ghost", onclick:() => go("lesson", LESSONS[idxOf(l.id) + 1].id)}, t("nextL") + " →") : null,
+    h("button", {type:"button", class:"btn ghost", onclick:toCerts}, "🏅 " + t("certAll")),
     h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"))));
   m.append(nLink());
   if(!matchMedia("(prefers-reduced-motion: reduce)").matches) confetti();

@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.15.1, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.16.0, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -80,6 +80,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
+- 1.16.0 (15.10.2026): Benutzerführung überarbeitet: Ablaufleiste „1 Lesen · 2 Quiz · 3 Zertifikat“ mit aktuellem Schritt in Lektion, Namensabfrage, Quiz, Ergebnis und Zertifikat; die Zurück-Leiste nennt den Standort („Lektion 3 von 7“). Wer eine Lektion schon geschafft hat, sieht in der Lektion oben eine Karte „Geschafft! Dein Zertifikat ist fertig“ mit den Knöpfen „Zertifikat ansehen“ und „Nochmal spielen“ (auch unten fest); auf der Startseite haben geschaffte Kacheln einen Knopf „Zertifikat ansehen“, und „Deine Zertifikate“ steht jetzt direkt über den Lektionen. Das Zertifikat führt zur nächsten Lektion und zu „Alle Zertifikate“.
 - 1.15.1 (15.10.2026): Fußbereich neu gestaltet: Hinweise (inoffiziell, Übersetzung) in einer Karte mit Info-Symbol, Version als Chip darunter. Der Link zur offiziellen Nintendo-Seite im Fuß entfällt, weil er schon im Bereich Mehr über Nintendo steht.
 - 1.15.0 (15.10.2026): Diagnose-Ansicht für die Installation: Adresse mit ?diag=1 öffnen, dann zeigt die Seite oben, ob der Browser die Installation anbietet (beforeinstallprompt), ob Manifest, Icons und Service Worker stimmen und welcher Browser läuft. Ohne ?diag=1 ist nichts davon sichtbar.
 - 1.14.1 (15.10.2026): Manifest: eigene App-ID (/nintendo/) statt "./". Vorher hatten alle Apps auf nosz.github.io dieselbe ID (die Ursprungsadresse) und Android meldete eine App als bereits installiert, obwohl eine andere gemeint war.
