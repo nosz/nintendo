@@ -85,7 +85,7 @@ button{font:inherit;cursor:pointer}
 .lang button[aria-pressed="true"]{background:#fff;color:var(--red-d)}
 .theme{font-size:1.1rem;padding:0;display:inline-flex;align-items:center;justify-content:center;line-height:1}.theme svg{display:block;flex:none}
 /* Layout */
-main{max-width:1060px;margin:0 auto;padding:20px 16px 90px;outline:none}
+main{max-width:1060px;margin:0 auto;padding:20px 16px 24px;outline:none}
 .hero{background:var(--card);border-radius:28px;box-shadow:var(--shadow);padding:22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;position:relative;overflow:hidden;border:2px solid var(--line)}
 .hero::before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:var(--red-l)}
 .hero>*{position:relative}
@@ -194,7 +194,7 @@ footer .fver span{display:inline-block;background:var(--card);border:2px solid v
 @media(max-width:560px){
   .brand{flex:1 1 0;min-width:0}.brand small{white-space:normal}.pill{display:none}.topin .lang{order:3;flex:1 1 100%}.lang button{flex:1;min-width:0}.spacer{display:none}.pill{margin-left:auto}.chip{padding:3px 11px;font-size:.84rem;min-height:40px}button.chip{min-height:40px}.stats{gap:8px}.hero::before{width:130px;height:130px;right:-46px;top:-46px;opacity:.75}.hero{padding:16px;gap:12px}.ring{width:72px;height:72px}.ring span{width:54px;height:54px;font-size:1rem}.hero p{font-size:.95rem}
   .topin{padding:8px 12px}
-  main{padding:14px 12px 90px}
+  main{padding:14px 12px 24px}
 }
 .choices{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0 4px}
 .choices:has(.choice:only-child){grid-template-columns:1fr}
@@ -289,8 +289,15 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 .runner svg{display:block;width:100%;height:100%;animation:runbob .22s steps(2) infinite}
 .runner.stand svg{animation-play-state:paused}
 @keyframes runbob{0%{transform:translateY(0)}100%{transform:translateY(-3px)}}
-.runbub{position:fixed;z-index:41;pointer-events:none;background:#fff;color:#222;border:2px solid #222;border-radius:12px;padding:4px 10px;font-family:inherit;font-weight:800;font-size:.85rem;line-height:1.25;white-space:nowrap;max-width:80vw;box-shadow:0 2px 0 rgba(0,0,0,.2);animation:pop .3s both}
-@media print{.runner,.runbub{display:none}}
+.runbub{position:fixed;z-index:41;pointer-events:none;background:#fff;color:#222;border:2px solid #222;border-radius:12px;padding:4px 10px;font-family:inherit;font-weight:800;font-size:.85rem;line-height:1.25;width:max-content;max-width:min(80vw,300px);box-shadow:0 2px 0 rgba(0,0,0,.2);animation:pop .3s both}
+.runprop{position:absolute;left:48px;top:6px;font-size:26px;line-height:1;animation:runbob .22s steps(2) infinite}
+.runner.stern svg{animation:runbob .22s steps(2) infinite,sternfarbe .5s linear infinite}
+@keyframes sternfarbe{from{filter:hue-rotate(0deg) saturate(2) brightness(1.3)}to{filter:hue-rotate(360deg) saturate(2) brightness(1.3)}}
+.runprop.ballon,.runprop.traeger{left:4px;top:-32px}
+.runrohr{position:fixed;bottom:0;width:64px;height:62px;z-index:42;pointer-events:none;background:linear-gradient(90deg,#1ea34a,#7be08f 40%,#1ea34a);border:3px solid #0b5d26;border-bottom:0;border-radius:4px 4px 0 0}
+.runrohr::before{content:"";position:absolute;left:-7px;right:-7px;top:-3px;height:20px;background:linear-gradient(90deg,#1ea34a,#7be08f 40%,#1ea34a);border:3px solid #0b5d26;border-radius:4px}
+.runcoin{position:fixed;left:0;top:0;font-size:26px;line-height:1;z-index:39;pointer-events:none}
+@media print{.runner,.runbub,.runcoin,.runrohr{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.top,.sticky,.lang{display:none}}
 </style>
@@ -310,7 +317,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.19.0", STAND = "15.10.2026";
+const VERSION = "1.21.0", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -1118,7 +1125,7 @@ if(/[?&]diag\b/.test(location.search)){
   };
   show(); setInterval(show, 1500);
 }
-/* Ab und zu schaut eine kleine Pixel-Figur vorbei: Zufallssystem mit vielen verschiedenen Auftritten (rein dekorativ, nicht klickbar). Test: Adresse mit ?lauf=quer|umkehr|wand|rundherum|gucken|huepfer */
+/* Ab und zu schaut eine kleine Pixel-Figur vorbei: Zufallssystem mit vielen verschiedenen Auftritten (rein dekorativ, nicht klickbar). Test: Adresse mit ?lauf=quer|umkehr|wand|rundherum|gucken|huepfer|stolpern|schlafen|moonwalk|turbo|schleichen|manzai|pilz|pokaljagd|verbeugung|muenze|hallo|karriere|stern|ballon|rohr|groesse|dieb */
 (function(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const MAP = ["....RRRRR....","...RRRRRRRRR.","...HHHSSHS...","..HSHSSSHSSS.","..HSHHSSSHSSS","..HHSSSSHHHH.","....SSSSSSS..","...RRBRRR....","..RRRBRRBRRR.",".RRRRBBBBRRRR",".SSRBYBBYBRSS",".SSSBBBBBBSSS","..SBBBBBBBBS.","...BBB..BBB..","..HHH....HHH.",".HHHH....HHHH"];
@@ -1126,9 +1133,37 @@ if(/[?&]diag\b/.test(location.search)){
   const NS = "http://www.w3.org/2000/svg";
   const R = Math.random, pick = a => a[Math.floor(R() * a.length)], rnd = (a, b) => a + R() * (b - a);
   const wait = ms => new Promise(r => setTimeout(r, ms));
-  const SAG = [["Hoppla!","Oops!","おっと！"],["Yahoo!","Yahoo!","ヤッホー！"],["Falsche Richtung!","Wrong way!","逆だった！"],["Wo ist der Pokal?","Where is the trophy?","トロフィーはどこ？"],["Hier ist ja was los!","Busy place!","ここ、にぎやかだね！"],["Kurze Pause.","Quick break.","ちょっと休憩。"]];
-  const PEEK = [["Nur kurz gucken …","Just a quick peek …","ちょっとのぞいてみました"],["Huhu!","Peekaboo!","いないいないばあ！"],["Alles in Ordnung hier?","Everything okay here?","ここは大丈夫？"]];
-  const aktiv = [];
+  const SAG = [["Hoppla!","Oops!","おっと！"],["Yahoo!","Yahoo!","ヤッホー！"],["Falsche Richtung!","Wrong way!","逆だった！"],["Wo ist der Pokal?","Where is the trophy?","トロフィーはどこ？"],["Hier ist was los!","Busy place!","にぎやかだね！"],["Kurze Pause.","Quick break.","ちょっと休憩。"],["Ich nehme die Abkürzung.","Taking the shortcut.","近道します。"],["Kaffee wäre jetzt gut.","Coffee, anyone?","コーヒー飲みたい。"],["Ich war das nicht.","It was not me.","私じゃないです。"],["Noch ein Pokal, dann Schluss.","One more trophy, then done.","あと1個で終わり。"],["Gleich ist Montag …","Monday is coming …","もうすぐ月曜…"],["Bei mir läuft es.","Works on my machine.","私の環境では動く。"],["Das Quiz lohnt sich!","The quiz is worth it!","クイズおすすめ！"],["5 Minuten früher = pünktlich.","5 minutes early = on time.","5分前行動です。"],["Mein Hobby: Rohre.","My hobby: pipes.","趣味は配管です。"],["Ich lächle wegen Onigiri.","Smiling because of onigiri.","おにぎりで笑ってます。"],["Kaizen: heute 1 % schneller.","Kaizen: 1 % faster today.","改善：今日は1％速い。"],["Kein Fehler. Ein Feature.","Not a bug. A feature.","バグじゃない。仕様です。"],["Endgegner: Meeting statt E-Mail.","Final boss: a meeting, not an email.","ラスボス：メールで済む会議。"],["Suche Warp-Röhre zum Feierabend.","Looking for a warp pipe home.","退勤ワープ土管を探し中。"],["Mein Team ist ein Pilz.","My team is a mushroom.","チームはキノコです。"]];
+  const AUA = ["Aua!","Ouch!","いてっ！"], ZZZ = ["Zzz …","Zzz …","ぐぅぐぅ…"], WACH = ["Ich bin wach!","I am awake!","起きてる！"], MOON = ["Moonwalk!","Moonwalk!","ムーンウォーク！"], PSST = ["Psst … ich bin nicht da.","Psst … I am not here.","しーっ…いません。"], TANZ = ["♪ Tralala ♫","♪ La la la ♫","♪ ララララ ♫"], TURBO = [["Schneller!","Faster!","もっと速く！"],["Turbo!","Turbo!","ターボ！"]];
+  const PEEK = [["Nur kurz gucken …","Just a quick peek …","ちょっとのぞいた。"],["Huhu!","Peekaboo!","いないいないばあ！"],["Alles okay hier?","All good here?","大丈夫？"]];
+  const NAMEN = [["%N, du schaffst das!","%N, you can do it!","%Nさん、できる！"],["Weiter so, %N!","Keep going, %N!","%Nさん、その調子！"],["%N, du bist ein Held!","%N, you are a hero!","%Nさん、ヒーロー！"],["Nächster Pokal, %N!","Next trophy, %N!","次のトロフィーへ、%Nさん！"],["%N, du rockst das!","%N, you rock!","%Nさん、最高！"],["Level up, %N!","Level up, %N!","レベルアップ、%Nさん！"],["Kopf hoch, %N. Pilze helfen.","Chin up, %N. Mushrooms help.","%Nさん、キノコが助けるよ。"],["%N, 1 % besser als gestern!","%N, 1 % better than yesterday!","%Nさん、昨日より1％成長！"],["Super, %N! *klatsch*","Great, %N! *clap*","お見事、%Nさん！"]];
+  const JAGD = [["Bleib stehen, Pokal!","Stop, trophy!","待て、トロフィー！"],["Der Pokal ist schneller.","The trophy is faster.","トロフィーの勝ち。"]];
+  const LEVEL = [["Pilz! Jetzt bin ich Senior.","Mushroom! Senior now.","キノコでシニアに！"],["Befristet.","Fixed-term.","期間限定。"]];
+  const MUENZE = [["Kaching! +1","Ka-ching! +1","チャリン！+1"],["Noch eine!","Another one!","もう1枚！"],["Ich bin reich!","I am rich!","お金持ち！"]];
+  const BOW = [["Sumimasen!","Sumimasen!","すみません！"],["Verzeihung, nur kurz im Bild.","Pardon, just passing.","お邪魔します。"],["Danke, danke!","Thank you, thank you!","どうも、どうも。"]];
+  const BOWEND = ["Ich gehe schon mal. Danke!","Heading out. Thanks!","お先に失礼します。"];
+  const KOPF = ["Von hier sieht alles anders aus.","Everything looks different here.","逆立ちで景色が変わる。"], HATSCHI = ["Hatschi!","Achoo!","ハクション！"];
+  /* Manzai-Solo: [Boke, Tsukkomi, Boke, Tsukkomi], die Figur ist beide Rollen */
+  const SZENEN = [
+    [["100 Pokale gesammelt!","Collected 100 trophies!","トロフィー100個集めた！"],["Du hast 3 Sterne!","You have 3 stars!","まだ星3つやろ！"],["Den Rest im Traum.","The rest in my dream.","残りは夢の中で。"],["Träume zählen nicht!","Dreams do not count!","夢は数に入らへん！"]],
+    [["Ich rate nur.","I just guess.","勘で行きます。"],["Lies die Lektion!","Read the lesson!","レッスン読めや！"],["Raten hat Stil.","Guessing has style.","勘にはスタイルがある。"],["Hat es nicht!","No, it does not!","ないわ！"]],
+    [["Ich mache Homeoffice.","I work from home.","在宅勤務中です。"],["Du läufst über meinen Bildschirm!","You run across my screen!","画面の上を走ってるやん！"],["Das ist mein Wohnzimmer.","This is my living room.","ここはリビングです。"],["Das ist ein Browser!","That is a browser!","ブラウザや！"]],
+    [["Level in 2 Sekunden!","Level cleared in 2 seconds!","2秒でクリア！"],["Übersprungen!","You skipped it!","スキップしただけやん！"],["Effizienz!","Efficiency!","効率です！"],["Das ist Schummeln!","That is cheating!","それはズルや！"]]];
+  const aktiv = []; let redet = true;
+  /* Profi-Zufallsmix: Mischbeutel statt reinem Zufall. Jedes Muster kommt pro Runde gemaess Gewicht vor und nie zweimal direkt hintereinander; genau einer von fuenf Auftritten redet; die Startrichtung wechselt meistens. */
+  let lastDir = 1, beutel = [], letzte = null, redeBeutel = [], redeLetzte = false;
+  const mische = a => { for(let i = a.length - 1; i > 0; i--){ const j = Math.floor(R() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const rd = () => { lastDir = R() < .7 ? -lastDir : lastDir; return lastDir; };
+  function naechstes(){
+    if(!beutel.length){ for(const k in MUSTER) for(let i = 0; i < MUSTER[k][1]; i++) beutel.push(k); mische(beutel); }
+    let i = beutel.findIndex(k => k !== letzte);
+    if(i < 0){ const mehr = []; for(const k in MUSTER) for(let n = 0; n < MUSTER[k][1]; n++) mehr.push(k); beutel.push(...mische(mehr)); i = beutel.findIndex(k => k !== letzte); }
+    letzte = beutel.splice(i, 1)[0]; return letzte;
+  }
+  function redetDiesmal(){
+    if(!redeBeutel.length){ redeBeutel = mische([true, false, false, false, false]); if(redeLetzte && redeBeutel[0]) redeBeutel.reverse(); }
+    redeLetzte = redeBeutel.shift(); return redeLetzte;
+  }
   function figur(){
     const s = document.createElementNS(NS, "svg");
     s.setAttribute("viewBox", "0 0 13 16"); s.setAttribute("shape-rendering", "crispEdges"); s.setAttribute("aria-hidden", "true");
@@ -1137,8 +1172,8 @@ if(/[?&]diag\b/.test(location.search)){
   }
   function dim(){ const t = document.querySelector(".top"); return {W: document.documentElement.clientWidth, H: innerHeight, hb: t ? t.getBoundingClientRect().bottom : 0}; }
   /* Zustand der Figur: Mittelpunkt x/y, Drehung r (0 Boden, 180 Decke, 90 linke Wand, -90 rechte Wand), Blickrichtung f (1 rechts, -1 links) */
-  function T(s){ return "translate(" + (s.x - 19.5) + "px," + (s.y - 24) + "px) rotate(" + s.r + "deg) scaleX(" + s.f + ")"; }
-  function abbruch(){ return document.hidden || (view && view.v === "quiz"); }
+  function T(s){ return "translate(" + (s.x - 19.5) + "px," + (s.y - 24) + "px) rotate(" + s.r + "deg) scale(" + (s.f * (s.z || 1)) + "," + (s.z || 1) + ")"; }
+  function abbruch(){ return document.hidden; }
   function neu(s){
     const el = document.createElement("div"); el.className = "runner"; el.setAttribute("aria-hidden", "true"); el.appendChild(figur());
     el.style.transform = T(s); document.body.appendChild(el); aktiv.push(el);
@@ -1148,7 +1183,11 @@ if(/[?&]diag\b/.test(location.search)){
   async function anim(g, kf, ms, ende){
     if(abbruch()) throw new Error("stop");
     const a = g.el.animate(kf, {duration: ms, easing: "linear", fill: "forwards"});
-    g.s = ende; await a.finished; g.el.style.transform = T(g.s); a.cancel();
+    g.s = ende;
+    /* Alle 300 ms pruefen, ob abgebrochen werden muss (Quiz gestartet, Tab im Hintergrund); der Pruefer beendet sich selbst */
+    const pruef = new Promise((_, nein) => { const iv = setInterval(() => { if(abbruch()){ clearInterval(iv); nein(new Error("stop")); } }, 300); a.finished.then(() => clearInterval(iv), () => clearInterval(iv)); });
+    try{ await Promise.race([a.finished, pruef]); } catch(e){ a.cancel(); throw e; }
+    g.el.style.transform = T(g.s); a.cancel();
   }
   function blick(g, dx, dy){
     const r = g.s.r; let f = g.s.f;
@@ -1157,7 +1196,7 @@ if(/[?&]diag\b/.test(location.search)){
     return f;
   }
   async function gehe(g, x, y, v){
-    const s0 = g.s, e = {x: x === undefined ? s0.x : x, y: y === undefined ? s0.y : y, r: s0.r};
+    const s0 = g.s, e = {x: x === undefined ? s0.x : x, y: y === undefined ? s0.y : y, r: s0.r, z: s0.z};
     e.f = blick(g, e.x - s0.x, e.y - s0.y); setze(g, {f: e.f});
     const ms = Math.max(250, Math.hypot(e.x - s0.x, e.y - s0.y) / (v || rnd(.13, .3)));
     await anim(g, [{transform: T(g.s)}, {transform: T(e)}], ms, e);
@@ -1165,33 +1204,36 @@ if(/[?&]diag\b/.test(location.search)){
   async function bogen(g, tx, ty, h, ms){
     const f = blick(g, tx - g.s.x, ty - g.s.y); setze(g, {f});
     const s0 = g.s, rr = s0.r * Math.PI / 180, ux = Math.sin(rr), uy = -Math.cos(rr), kf = [];
-    for(let i = 0; i <= 12; i++){ const u = i / 12, k = 4 * h * u * (1 - u); kf.push({transform: T({x: s0.x + (tx - s0.x) * u + ux * k, y: s0.y + (ty - s0.y) * u + uy * k, r: s0.r, f})}); }
-    await anim(g, kf, ms, {x: tx, y: ty, r: s0.r, f});
+    for(let i = 0; i <= 12; i++){ const u = i / 12, k = 4 * h * u * (1 - u); kf.push({transform: T({x: s0.x + (tx - s0.x) * u + ux * k, y: s0.y + (ty - s0.y) * u + uy * k, r: s0.r, f, z: s0.z})}); }
+    await anim(g, kf, ms, {x: tx, y: ty, r: s0.r, f, z: s0.z});
   }
   const sprung = (g, h) => bogen(g, g.s.x, g.s.y, h || 26, 460);
   async function stehen(g, ms){ g.el.classList.add("stand"); await wait(ms); g.el.classList.remove("stand"); if(abbruch()) throw new Error("stop"); }
   const drehen = g => setze(g, {f: -g.s.f});
-  function sag(g, txt, ms){
+  function sag(g, txt, ms, muss){
+    if(!muss && !redet) return;
+    document.querySelectorAll(".runbub").forEach(x => x.remove());
+    const vn = ((nm || "").trim().split(/\s+/)[0] || ""), nn = vn.slice(0, 12) + (vn.length > 12 ? "…" : "");
+    txt = txt.replace(/%N/g, nn || ["Chef","Boss","ボス"][li]);
     const b = document.createElement("div"); b.className = "runbub"; b.textContent = txt; b.setAttribute("aria-hidden", "true"); document.body.appendChild(b);
-    const d = dim(), rr = g.s.r * Math.PI / 180, cx = g.s.x + Math.sin(rr) * 44, cy = g.s.y - Math.cos(rr) * 44, w = b.offsetWidth, h = b.offsetHeight;
+    const d = dim(), rr = g.s.r * Math.PI / 180, cx = g.s.x + Math.sin(rr) * 44 * (g.s.z || 1), cy = g.s.y - Math.cos(rr) * 44 * (g.s.z || 1), w = b.offsetWidth, h = b.offsetHeight;
     b.style.left = Math.max(4, Math.min(d.W - w - 4, cx - w / 2)) + "px"; b.style.top = Math.max(4, Math.min(d.H - h - 4, cy - h / 2)) + "px";
     setTimeout(() => b.remove(), ms || 1600);
   }
-  const spruch = (g, arr) => { if(R() < .65) sag(g, (arr || pick(SAG))[li]); };
+  const spruch = (g, arr) => { if(R() < .65) sag(g, (arr || (R() < .35 ? pick(NAMEN) : pick(SAG)))[li]); };
   function bahn(d, name, dir){
     if(name === "boden") return {y: d.H - 30, r: 0, f: dir};
     if(name === "decke") return {y: (R() < .5 || d.hb < 20) ? 24 : d.hb + 26, r: 180, f: -dir};
     return {y: rnd(d.hb + 70, Math.max(d.hb + 90, d.H - 90)), r: 0, f: dir};
   }
   async function aktion(g){
-    const a = R();
-    if(a < .4) await sprung(g, rnd(24, 44));
-    else if(a < .7){ spruch(g); await stehen(g, 1500); }
-    else { await stehen(g, rnd(400, 1000)); await sprung(g); }
+    const l = [() => sprung(g, rnd(24, 44)), async () => { spruch(g); await stehen(g, 1500); }, () => salto(g), () => tanzen(g), async () => { await stehen(g, rnd(400, 1000)); await sprung(g); }];
+    if(g.s.r === 0) l.push(() => liegen(g, rnd(900, 1500), AUA), () => niesen(g), () => kopfstand(g), () => verbeugen(g, 2, pick(BOW)));
+    await pick(l)();
   }
   /* Auftritt 1: quer ueber den Bildschirm (Boden, Decke kopfueber oder mittendrin), mit 0 bis 2 Stopps */
   async function quer(d){
-    const dir = pick([1, -1]), b = bahn(d, pick(["boden","boden","decke","mitte"]), dir);
+    const dir = rd(), b = bahn(d, pick(["boden","boden","decke","mitte"]), dir);
     const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: b.r, f: b.f});
     const n = pick([0, 0, 1, 2]);
     for(let i = 0; i < n; i++){ const x = (i + 1 + rnd(-.3, .3)) / (n + 1) * d.W; await gehe(g, dir > 0 ? x : d.W - x); await aktion(g); }
@@ -1199,7 +1241,7 @@ if(/[?&]diag\b/.test(location.search)){
   }
   /* Auftritt 2: dreht nach einer Strecke um, manchmal mehrfach */
   async function umkehr(d){
-    const dir = pick([1, -1]), b = bahn(d, pick(["boden","decke","mitte"]), dir);
+    const dir = rd(), b = bahn(d, pick(["boden","decke","mitte"]), dir);
     const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: b.r, f: b.f});
     let richtung = dir;
     for(let i = 0, n = pick([1, 1, 2, 3]); i < n; i++){
@@ -1257,14 +1299,14 @@ if(/[?&]diag\b/.test(location.search)){
     else if(a < .7){ spruch(g, pick(PEEK)); await stehen(g, 1700); }
     else await sprung(g, 30);
     if(k === "unten" && R() < .3){
-      const dir = pick([1, -1]);
+      const dir = rd();
       await gehe(g, g.s.x, H - 30, .15);
       await gehe(g, dir > 0 ? W + 40 : -40, H - 30, rnd(.2, .3));
     } else await gehe(g, s.x, s.y, .22);
   }
   /* Auftritt 6: huepft in Bogen ueber den Bildschirm, am Boden oder mittendrin */
   async function huepfer(d){
-    const dir = pick([1, -1]), mitte = R() < .5, b = bahn(d, mitte ? "mitte" : "boden", dir);
+    const dir = rd(), mitte = R() < .5, b = bahn(d, mitte ? "mitte" : "boden", dir);
     const g = neu({x: dir > 0 ? -40 : d.W + 40, y: b.y, r: 0, f: b.f});
     const n = Math.round(rnd(3, 7)), schritt = (d.W + 80) / n;
     for(let i = 1; i <= n; i++){
@@ -1273,21 +1315,247 @@ if(/[?&]diag\b/.test(location.search)){
       if(R() < .2) await stehen(g, 400);
     }
   }
-  const MUSTER = {quer: [quer, 4], umkehr: [umkehr, 4], wand: [wand, 3], rundherum: [rundherum, 2], gucken: [gucken, 4], huepfer: [huepfer, 3]};
+  /* Salto: volle Drehung waehrend eines Sprungs an Ort und Stelle */
+  async function salto(g){
+    const s0 = g.s, rr = s0.r * Math.PI / 180, ux = Math.sin(rr), uy = -Math.cos(rr), kf = [];
+    for(let i = 0; i <= 16; i++){ const u = i / 16, k = 4 * 46 * u * (1 - u); kf.push({transform: T({x: s0.x + ux * k, y: s0.y + uy * k, r: s0.r + 360 * s0.f * u, f: s0.f})}); }
+    await anim(g, kf, 720, s0);
+  }
+  /* Hinfallen und liegen bleiben (nur am Boden), dann wieder aufstehen */
+  async function liegen(g, ms, text){
+    const s0 = g.s, w = Object.assign({}, s0, {r: s0.r + 80 * s0.f, y: s0.y + 5}), tot = 250 + ms + 350;
+    sag(g, text[li], ms + 400, text === ZZZ); g.el.classList.add("stand");
+    try{ await anim(g, [{transform: T(s0), offset: 0}, {transform: T(w), offset: 250 / tot}, {transform: T(w), offset: (250 + ms) / tot}, {transform: T(s0), offset: 1}], tot, s0); }
+    finally{ g.el.classList.remove("stand"); }
+  }
+  async function tanzen(g){
+    sag(g, TANZ[li], 2400);
+    for(let i = 0; i < 4; i++){ drehen(g); await sprung(g, 16); }
+  }
+  async function rueckwaerts(g, x, v){
+    const s0 = g.s, e = {x, y: s0.y, r: s0.r, z: s0.z}; e.f = -blick(g, e.x - s0.x, 0); setze(g, {f: e.f});
+    await anim(g, [{transform: T(g.s)}, {transform: T(e)}], Math.max(250, Math.abs(e.x - s0.x) / (v || rnd(.13, .25))), e);
+  }
+  const rein = (dir, d) => dir > 0 ? -40 : d.W + 40, raus = (dir, d) => dir > 0 ? d.W + 40 : -40, anteil = (dir, d, u) => dir > 0 ? u * d.W : d.W - u * d.W;
+  /* Auftritt 7: stolpert und faellt hin (ein- oder zweimal) */
+  async function stolpern(d){
+    const dir = rd(), b = bahn(d, pick(["boden","boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f}), n = pick([1, 1, 2]);
+    for(let i = 0; i < n; i++){
+      await gehe(g, anteil(dir, d, (i + 1 + rnd(-.25, .25)) / (n + 1)));
+      await liegen(g, rnd(900, 1600), AUA); await stehen(g, 300); spruch(g, pick([SAG[0], SAG[5], SAG[8]])); await stehen(g, 600);
+    }
+    await gehe(g, raus(dir, d));
+  }
+  /* Auftritt 8: legt sich hin und schlaeft, wacht erschrocken auf und rennt davon */
+  async function schlafen(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, rnd(.3, .7)));
+    await liegen(g, 2800, ZZZ);
+    sag(g, WACH[li], 1400); await sprung(g, 54); await stehen(g, 500);
+    await gehe(g, raus(dir, d), undefined, rnd(.4, .6));
+  }
+  /* Auftritt 9: Moonwalk, also rueckwaerts laufen */
+  async function moonwalk(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte","decke"]), dir), g = neu({x: rein(dir, d), y: b.y, r: b.r, f: -b.f});
+    await rueckwaerts(g, anteil(dir, d, rnd(.4, .6)));
+    sag(g, MOON[li], 1500); await stehen(g, 1200);
+    await rueckwaerts(g, raus(dir, d));
+  }
+  /* Auftritt 10: wird immer schneller */
+  async function turbo(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, .3), undefined, .1); sag(g, TURBO[0][li], 1300);
+    await gehe(g, anteil(dir, d, .55), undefined, .28); sag(g, TURBO[1][li], 1300);
+    await gehe(g, raus(dir, d), undefined, .8);
+  }
+  /* Auftritt 11: schleicht auf Zehenspitzen, schaut sich um und rennt dann los */
+  async function schleichen(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte","decke"]), dir), g = neu({x: rein(dir, d), y: b.y, r: b.r, f: b.f}), n = pick([3, 4, 5]);
+    for(let i = 0; i < n; i++){
+      await gehe(g, anteil(dir, d, (i + 1) / (n + 1)), undefined, .06);
+      if(i === 0){ sag(g, PSST[li], 1900); await stehen(g, 1900); } else await stehen(g, rnd(400, 900));
+      if(R() < .5){ drehen(g); await stehen(g, 500); drehen(g); }
+    }
+    await gehe(g, raus(dir, d), undefined, .6);
+  }
+  /* Verbeugen (nur am Boden): nach vorn kippen, kurz halten, aufrichten */
+  async function verbeugen(g, n, text){
+    const s0 = g.s, w = Object.assign({}, s0, {r: s0.r + 38 * s0.f}), kf = [{transform: T(s0), offset: 0}];
+    for(let i = 0; i < n; i++){ kf.push({transform: T(w), offset: (i + .35) / n}, {transform: T(w), offset: (i + .65) / n}, {transform: T(s0), offset: (i + 1) / n}); }
+    if(text) sag(g, text[li], n * 1100 + 400);
+    await anim(g, kf, n * 1100, s0);
+  }
+  /* Kopfstand mit Rolle zurueck */
+  async function kopfstand(g){
+    const s0 = g.s, h = Object.assign({}, s0, {r: s0.r + 180}), e = Object.assign({}, s0, {r: s0.r + 360});
+    sag(g, KOPF[li], 3000);
+    await anim(g, [{transform: T(s0), offset: 0}, {transform: T(h), offset: .15}, {transform: T(h), offset: .8}, {transform: T(e), offset: 1}], 3000, s0);
+  }
+  async function niesen(g){
+    await stehen(g, 400); sag(g, HATSCHI[li], 1200); await stehen(g, 700);
+    await rueckwaerts(g, g.s.x - g.s.f * 70, .6); await stehen(g, 400);
+  }
+  /* Auftritt 12: Manzai als Solo, eine einzige Figur spielt Boke (Quatsch) und Tsukkomi (haut drauf) und dreht sich dabei um */
+  async function manzai(d){
+    const dir = rd(), b = bahn(d, "boden", dir), sz = pick(SZENEN), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, rnd(.35, .65)), undefined, .25);
+    sag(g, sz[0][li], 2300, true); await stehen(g, 2300);
+    drehen(g); await stehen(g, 300); sag(g, sz[1][li], 2300, true); await sprung(g, 22); await stehen(g, 1900);
+    drehen(g); await stehen(g, 300); sag(g, sz[2][li], 2300, true); await stehen(g, 2300);
+    drehen(g); await stehen(g, 300); sag(g, sz[3][li], 2500, true);
+    await Promise.all([sprung(g, 36), stehen(g, 700)]);
+    await liegen(g, 900, AUA); await stehen(g, 400);
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 13: isst einen Pilz, wird gross, rennt, schrumpft wieder (befristet) */
+  async function pilz(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, .3));
+    const px = g.s.x + dir * 54, m = document.createElement("div"); m.className = "runcoin"; m.textContent = "🍄"; m.setAttribute("aria-hidden", "true");
+    m.style.left = (px - 13) + "px"; m.style.top = (b.y - 14) + "px"; document.body.appendChild(m); aktiv.push(m);
+    await gehe(g, px, undefined, .15); m.remove();
+    const boden = g.s.y + 24, gross = Object.assign({}, g.s, {z: 1.9, y: boden - 24 * 1.9});
+    sag(g, LEVEL[0][li], 2000);
+    await anim(g, [{transform: T(g.s)}, {transform: T(gross)}], 900, gross);
+    await gehe(g, anteil(dir, d, .7), undefined, .3);
+    sag(g, LEVEL[1][li], 1500); await stehen(g, 900);
+    const klein = Object.assign({}, g.s, {z: 1, y: boden - 24});
+    await anim(g, [{transform: T(g.s)}, {transform: T(klein)}], 600, klein);
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 14: jagt einen Pokal, der immer schneller davonrennt */
+  async function pokaljagd(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    const p = document.createElement("span"); p.className = "runprop"; p.textContent = "🏆"; p.setAttribute("aria-hidden", "true"); g.el.appendChild(p);
+    await gehe(g, anteil(dir, d, .3), undefined, .28);
+    sag(g, JAGD[0][li], 1500); await stehen(g, 500);
+    p.animate([{left: "48px"}, {left: "170px"}], {duration: 1800, fill: "forwards", easing: "ease-in"});
+    await gehe(g, anteil(dir, d, .65), undefined, .45);
+    p.animate([{opacity: 1}, {opacity: 0}], {duration: 600, fill: "forwards"});
+    await stehen(g, 500); sag(g, JAGD[1][li], 2000); await stehen(g, 2000);
+    await gehe(g, raus(dir, d), undefined, .15);
+  }
+  /* Auftritt 15: Verbeugungs-Wanderung, ganz hoeflich (Sumimasen) */
+  async function verbeugung(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f}), n = pick([2, 3]);
+    for(let i = 0; i < n; i++){ await gehe(g, anteil(dir, d, (i + 1) / (n + 1)), undefined, .2); await verbeugen(g, i === 0 ? 3 : 2, BOW[i % BOW.length]); }
+    sag(g, BOWEND[li], 2500); await verbeugen(g, 2); await stehen(g, 600);
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 16: Muenzen einsammeln, jeweils mit Kopfstoss im Sprung */
+  async function muenze(d){
+    const dir = rd(), b = bahn(d, "boden", dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f}), n = pick([2, 3]);
+    for(let i = 0; i < n; i++){
+      const x = anteil(dir, d, (i + 1) / (n + 1)), c = document.createElement("div"); c.className = "runcoin"; c.textContent = "🪙"; c.setAttribute("aria-hidden", "true");
+      c.style.left = (x - 13) + "px"; c.style.top = (b.y - 100) + "px"; document.body.appendChild(c); aktiv.push(c);
+      await gehe(g, x - dir * 4, undefined, rnd(.2, .35));
+      const j = sprung(g, 66); setTimeout(() => { c.remove(); sag(g, MUENZE[i === n - 1 ? 2 : (i === 0 ? 0 : 1)][li], 1700); }, 230); await j;
+      await stehen(g, 500);
+    }
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 17: begruesst die Person mit Namen und sagt etwas Kurzes */
+  async function hallo(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, rnd(.35, .65)), undefined, .28);
+    await stehen(g, 300); sag(g, pick(NAMEN)[li], 2600, true); await sprung(g, 30); await stehen(g, 300); await sprung(g, 30); await stehen(g, 1500);
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Weitere Gags im Stil von Pilz: Groesse, Requisiten, Verwandlungen */
+  const TITEL = [["Praktikant","Intern","インターン"],["Junior","Junior","ジュニア"],["Senior","Senior","シニア"],["Geschäftsführer","CEO","社長"]];
+  const URLAUB = ["Urlaub!","Vacation!","休暇！"], STERN = ["Unbesiegbar!","Unstoppable!","無敵！"], BALLON = [["Wheee!","Wheee!","わーい！"],["Tschüss!","Bye!","バイバイ！"]], ROHR = [["Gleich zurück!","Back in a sec!","すぐ戻る！"],["Überraschung!","Surprise!","サプライズ！"]], GROESSE = [["Mini-Modus!","Mini mode!","ミニモード！"],["Mega-Modus!","Mega mode!","メガモード！"]];
+  /* Groesse aendern, die Fuesse bleiben am Boden */
+  async function skaliere(g, z, ms){
+    const z0 = g.s.z || 1, boden = g.s.y + 24 * z0, e = Object.assign({}, g.s, {z, y: boden - 24 * z});
+    await anim(g, [{transform: T(g.s)}, {transform: T(e)}], ms || 700, e);
+  }
+  /* Etwas Essbares neben der Figur ablegen und hinlaufen */
+  async function esse(g, dir, emoji){
+    const px = g.s.x + dir * 54, boden = g.s.y + 24 * (g.s.z || 1), m = document.createElement("div");
+    m.className = "runcoin"; m.textContent = emoji || "🍄"; m.setAttribute("aria-hidden", "true");
+    m.style.left = (px - 13) + "px"; m.style.top = (boden - 28) + "px"; document.body.appendChild(m); aktiv.push(m);
+    await gehe(g, px, undefined, .15); m.remove();
+  }
+  /* Auftritt 18: Karriere in vier Pilzen vom Praktikanten zum Geschaeftsfuehrer, dann Urlaub */
+  async function karriere(d){
+    const dir = rd(), b = bahn(d, "boden", dir), zs = [.55, .9, 1.4, 2.1];
+    const g = neu({x: rein(dir, d), y: b.y + 24 - 24 * zs[0], r: 0, f: b.f, z: zs[0]});
+    await gehe(g, anteil(dir, d, .12), undefined, .25); sag(g, TITEL[0][li], 1600, true); await stehen(g, 1200);
+    for(let i = 0; i < 3; i++){
+      await gehe(g, anteil(dir, d, .2 + i * .18), undefined, .22);
+      await esse(g, dir); sag(g, TITEL[i + 1][li], 1600, true); await skaliere(g, zs[i + 1], 700); await stehen(g, 900);
+    }
+    sag(g, URLAUB[li], 1600, true); await sprung(g, 40);
+    await gehe(g, raus(dir, d), undefined, .5);
+  }
+  /* Auftritt 19: Stern, bunt blinkend und unbesiegbar, rennt sehr schnell */
+  async function stern(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, .3)); await esse(g, dir, "⭐");
+    g.el.classList.add("stern"); sag(g, STERN[li], 2000); await sprung(g, 30);
+    await gehe(g, raus(dir, d), undefined, .9);
+  }
+  /* Auftritt 20: haelt sich an einem Luftballon fest und schwebt davon */
+  async function ballon(d){
+    const dir = rd(), b = bahn(d, "boden", dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, rnd(.3, .6)));
+    const p = document.createElement("span"); p.className = "runprop ballon"; p.textContent = "🎈"; p.setAttribute("aria-hidden", "true"); g.el.appendChild(p);
+    await sprung(g, 24); sag(g, BALLON[0][li], 1500); await stehen(g, 500);
+    await gehe(g, g.s.x + dir * rnd(60, 140), -70, .08);
+  }
+  /* Auftritt 21: verschwindet in einem Warp-Rohr und taucht aus einem anderen wieder auf */
+  function rohrBauen(x){ const el = document.createElement("div"); el.className = "runrohr"; el.setAttribute("aria-hidden", "true"); el.style.left = (x - 32) + "px"; document.body.appendChild(el); aktiv.push(el); return el; }
+  async function rohr(d){
+    const dir = rd(), b = bahn(d, "boden", dir), H = d.H, x1 = anteil(dir, d, rnd(.25, .4)), x2 = anteil(dir, d, rnd(.6, .8));
+    const g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    rohrBauen(x1);
+    await gehe(g, x1 - dir * 62); await bogen(g, x1, H - 86, 40, 600);
+    sag(g, ROHR[0][li], 1500); await stehen(g, 700);
+    await gehe(g, x1, H - 30, .1);
+    rohrBauen(x2); setze(g, {x: x2, y: H - 30}); await stehen(g, 1000);
+    await gehe(g, x2, H - 86, .1);
+    sag(g, ROHR[1][li], 1500); await bogen(g, x2 + dir * 60, H - 30, 36, 500);
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 22: Mini-Modus, dann Mega-Modus */
+  async function groesse(d){
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, .25)); sag(g, GROESSE[0][li], 1400); await skaliere(g, .4, 500);
+    await gehe(g, anteil(dir, d, .5), undefined, .35);
+    sag(g, GROESSE[1][li], 1600); await skaliere(g, 2.4, 900);
+    await gehe(g, anteil(dir, d, .8), undefined, .25);
+    await skaliere(g, 1, 500); await gehe(g, raus(dir, d), undefined, .3);
+  }
+  /* Auftritt 23: schleicht sich an, klaut einen Pokal und rennt damit davon */
+  const DIEB = [["Psst … niemand schaut.","Psst … nobody is looking.","しーっ…誰も見てない。"],["Ich leihe ihn nur aus!","Just borrowing it!","ちょっと借りるだけ！"]];
+  async function dieb(d){
+    const dir = rd(), b = bahn(d, "boden", dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f}), x = anteil(dir, d, rnd(.4, .65)), boden = b.y + 24;
+    const tr = document.createElement("div"); tr.className = "runcoin"; tr.textContent = "🏆"; tr.setAttribute("aria-hidden", "true");
+    tr.style.left = (x - 13) + "px"; tr.style.top = (boden - 28) + "px"; document.body.appendChild(tr); aktiv.push(tr);
+    await gehe(g, x - dir * 130, undefined, .2);
+    sag(g, DIEB[0][li], 1800);
+    for(let i = 0; i < 2; i++){ await gehe(g, g.s.x + dir * 40, undefined, .05); await stehen(g, 300); drehen(g); await stehen(g, 450); drehen(g); }
+    await gehe(g, x - dir * 40, undefined, .06);
+    await sprung(g, 26); tr.remove();
+    const p = document.createElement("span"); p.className = "runprop traeger"; p.textContent = "🏆"; p.setAttribute("aria-hidden", "true"); g.el.appendChild(p);
+    sag(g, DIEB[1][li], 1800);
+    await gehe(g, raus(dir, d), undefined, .75);
+  }
+  const MUSTER = {quer: [quer, 4], umkehr: [umkehr, 4], wand: [wand, 3], rundherum: [rundherum, 2], gucken: [gucken, 4], huepfer: [huepfer, 3], stolpern: [stolpern, 3], schlafen: [schlafen, 2], moonwalk: [moonwalk, 2], turbo: [turbo, 2], schleichen: [schleichen, 2], manzai: [manzai, 1], pilz: [pilz, 2], pokaljagd: [pokaljagd, 2], verbeugung: [verbeugung, 2], muenze: [muenze, 2], hallo: [hallo, 1], karriere: [karriere, 2], stern: [stern, 2], ballon: [ballon, 2], rohr: [rohr, 2], groesse: [groesse, 2], dieb: [dieb, 2]};
   function waehle(name){
     if(name && MUSTER[name]) return MUSTER[name][0];
-    const liste = []; for(const k in MUSTER) for(let i = 0; i < MUSTER[k][1]; i++) liste.push(MUSTER[k][0]);
-    return pick(liste);
+    return MUSTER[naechstes()][0];
   }
   async function auftritt(name){
     if(abbruch()) return;
+    redet = !!name || redetDiesmal();
     try{ await waehle(name)(dim()); } catch(e){ if(!e || e.message !== "stop") console.error("Figur:", e); }
     aktiv.splice(0).forEach(e => e.remove()); document.querySelectorAll(".runbub").forEach(b => b.remove());
   }
   const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
   (async function(){
     await wait(test !== undefined ? 1200 : rnd(8000, 20000));
-    for(;;){ await auftritt(test || undefined); await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
+    let erster = test === undefined; for(;;){ await auftritt(test || (erster && R() < .5 ? "hallo" : undefined)); erster = false; await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
   })();
 })();
 </script>
