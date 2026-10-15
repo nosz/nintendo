@@ -130,7 +130,7 @@ h2.sec{margin:28px 0 12px;font-size:1.3rem}
 .card h2{margin:0 0 6px;font-size:1.1rem}
 .card p{margin:0}
 .card .n{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--red-d);color:#fff;font-weight:800;margin-right:8px;font-size:.9rem}
-.bubble{background:var(--gold);color:#3b2d00;border-radius:22px 22px 22px 6px;padding:14px 18px;margin:18px 0;font-weight:700;box-shadow:0 4px 0 rgba(0,0,0,.12);animation:pop .5s .25s both}
+.bubble{background:var(--gold);color:#3b2d00;border-radius:22px;padding:14px 18px;margin:18px 0 22px;font-weight:700;box-shadow:0 3px 10px rgba(0,0,0,.14);animation:pop .5s .25s both}
 :root[data-theme="dark"] .bubble{color:#2a2000}
 .bubble small{display:block;font-weight:800;letter-spacing:.5px;text-transform:uppercase;font-size:.75rem;margin-bottom:2px}
 details.pro{background:var(--card);border:2px dashed var(--c,var(--red));border-radius:var(--r);padding:0;margin:0 0 14px}
@@ -142,7 +142,7 @@ details.pro p{margin:0;padding:0 18px 16px}
 .src{font-size:.9rem;color:var(--mute);margin:16px 0}
 .src ul{margin:6px 0 0;padding-left:20px}
 .src li{margin:4px 0}
-.sticky{position:sticky;bottom:0;display:flex;justify-content:center;margin:18px -16px 0;padding:22px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to bottom,transparent,var(--bg) 34%);z-index:10}.next{margin:16px 0 0}.next .btn{width:100%;min-height:52px;font-size:1.05rem}.sticky .btn{width:100%;max-width:420px;min-height:52px;font-size:1.05rem}
+.sticky{position:sticky;bottom:0;display:flex;justify-content:center;margin:28px -16px 0;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--line);box-shadow:0 -8px 18px rgba(0,0,0,.07);z-index:10}.next{margin:16px 0 0}.next .btn{width:100%;min-height:52px;font-size:1.05rem}.sticky .btn{width:100%;max-width:420px;min-height:52px;font-size:1.05rem}
 /* Quiz */
 .dots{display:flex;gap:6px;margin:0 0 16px}
 .dots i{flex:1;height:10px;border-radius:99px;background:var(--line);transition:background .3s}
@@ -304,7 +304,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.18.2", STAND = "15.10.2026";
+const VERSION = "1.18.7", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -486,7 +486,7 @@ const LESSONS = [
    ["Oft zu lesen: „Überlasse das Glück dem Himmel“. Historisch belegt ist das nicht, selbst die Nachfahren der Gründerfamilie wissen es laut Wikipedia nicht sicher. Ein Namensrätsel seit über 130 Jahren.","You often read: “leave luck to heaven”. That is not historically verified; according to Wikipedia even the founder's descendants are unsure. A naming mystery for over 130 years.","よく「運を天に任せる」と説明されますが、歴史的な裏付けはなく、ウィキペディアによれば創業家の子孫にも確かなことは分かっていません。130年以上続く名前の謎です。"]]
  ],
  pro:["Mehr für Kenner: 1902 kamen die ersten westlichen Spielkarten in Japan, 1947 wurde die Marufuku Co., Ltd. gegründet (Vorgängerin der Nintendo Co., Ltd.), 1950 übernahm Hiroshi Yamauchi die Präsidentschaft, und 1953 gelang als erstem Unternehmen in Japan die Massenproduktion von Plastik-Spielkarten.","More for veterans: in 1902 the first Western-style playing cards appeared in Japan, in 1947 Marufuku Co., Ltd. was founded (predecessor of Nintendo Co., Ltd.), in 1950 Hiroshi Yamauchi became president, and in 1953 the company was first in Japan to mass-produce plastic playing cards.","ベテラン向け：1902年に日本初の西洋式トランプを発売、1947年に任天堂の前身である丸福株式会社を設立、1950年に山内溥が社長に就任、1953年には日本で初めてプラスチック製トランプの大量生産に成功しました。"],
- fun:["Eine Minute gelernt, Erfolg kassiert: effizienter wird Onboarding kaum.","One minute of learning, achievement unlocked: onboarding hardly gets more efficient.","1分学んで実績解除。これ以上効率のいいオンボーディングはなかなかありません。"],
+ fun:["Hanafuda heißt „Blumenkarten“. Im Büro gilt trotzdem das japanische Sprichwort Hana yori dango: Blumen sind schön, aber in der Kantine gewinnt der Reisknödel.","Hanafuda means “flower cards”. In the office the Japanese proverb Hana yori dango still applies: flowers are lovely, but in the canteen the dumpling wins.","花札は「花のカード」。でもオフィスでは花より団子、つまり見た目より中身。社員食堂ではお団子の勝ちです。"],
  src:[["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"],["Wikipedia: Nintendo",WP+"Nintendo"]],
  q:[
   {q:["Womit hat Nintendo 1889 angefangen?","What did Nintendo start with in 1889?","1889年に任天堂が始めたのは何でしょう？"],
@@ -506,7 +506,7 @@ const LESSONS = [
    ["Nintendo of America gibt es seit 1979 (New York). Nintendo of Europe startete im Juni 1990 in Großostheim in Deutschland. Deutsche Kolleginnen und Kollegen sind also früh dabei gewesen.","Nintendo of America has existed since 1979 (New York). Nintendo of Europe opened in June 1990 in Großostheim, Germany. German colleagues were there early.","任天堂のアメリカ法人は1979年にニューヨークで設立されました。ヨーロッパ法人は1990年6月にドイツのグロースオストハイムで始まりました。ドイツは早くから関わっていました。"]]
  ],
  pro:["Mehr für Kenner: „Famicom“ steht für „Family Computer“. Außerhalb Japans hieß die Konsole Nintendo Entertainment System (NES) und kam 1985 in Nordamerika auf den Markt. Famicom und NES zusammen verkauften sich rund 62 Millionen Mal.","More for veterans: “Famicom” stands for “Family Computer”. Outside Japan the console was called the Nintendo Entertainment System (NES) and reached North America in 1985. Famicom and NES together sold about 62 million units.","ベテラン向け：「ファミコン」は「ファミリーコンピュータ」の略です。日本国外ではNESという名前で、1985年に北米で発売されました。ファミコンとNESの合計販売台数は約6,200万台です。"],
- fun:["Vom Kartentisch zum Fernseher dauerte es nur etwa 94 Jahre. Für ein Traditionsunternehmen ist das Sprint-Tempo.","From card table to television took only about 94 years. For a traditional company that is sprint speed.","カードテーブルからテレビまで、たったの約94年。老舗企業としては短距離走のスピードです。"],
+ fun:["Japaner kürzen gern auf vier Silben: Famicom wird zu „Famikon“, Pokémon (Pocket Monsters) bleibt Pokémon und Super Smash Bros. heißt „Sumabura“. Die Abkürzungskultur kennt keine Gnade.","Japanese loves cutting words down to four syllables: Famicom becomes “Famikon”, Pocket Monsters becomes Pokémon and Super Smash Bros. is called “Sumabura”. Abbreviation culture shows no mercy.","日本語は何でも4文字に縮めます。ファミリーコンピュータは「ファミコン」、ポケットモンスターは「ポケモン」、スマッシュブラザーズは「スマブラ」。省略文化に容赦はありません。"],
  src:[["Wikipedia: Nintendo",WP+"Nintendo"],["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"]],
  q:[
   {q:["In welchem Jahr erschien das Famicom in Japan?","In which year was the Famicom released in Japan?","ファミコンが日本で発売されたのは何年ですか？"],
@@ -527,7 +527,7 @@ const LESSONS = [
    ["Charles Martinet sprach Mario von 1991 bis 2023, danach übernahm Kevin Afghani (ab „Super Mario Bros. Wonder“). Die Namensherkunft (Mario Segale) ist laut Wikipedia umstritten.","Charles Martinet voiced Mario from 1991 to 2023; Kevin Afghani took over from “Super Mario Bros. Wonder”. The origin of the name (Mario Segale) is disputed according to Wikipedia.","チャールズ・マルティネーが1991年から2023年までマリオの声を担当し、その後『スーパーマリオブラザーズ ワンダー』からケビン・アフガニが引き継ぎました。名前の由来（マリオ・セガール）は、ウィキペディアによると異論があります。"]]
  ],
  pro:["Die Jahresangabe 1991 bis 2023 stammt aus der Infobox von Wikipedia; der Text nennt als ersten offiziellen Sprechauftritt 1994. Quellen widersprechen sich also leicht.","The 1991 to 2023 span comes from the Wikipedia infobox; the article body names 1994 as the first official voice role. So sources differ slightly.","1991年から2023年という期間はウィキペディアの情報ボックスによるもので、本文では最初の公式な声の出演を1994年としています。出典の間で少し食い違いがあります。"],
- fun:["Er springt seit 1981 und hat trotzdem keine Rückenprobleme. Respekt.","He has been jumping since 1981 and still has no back pain. Respect.","1981年からずっとジャンプしているのに腰痛なし。すごい。"],
+ fun:["Manzai-Nummer. Boke: „Mario ist doch Klempner, oder?“ Tsukkomi: „Ich habe ihn noch nie ein Rohr reparieren sehen! Er benutzt sie als Aufzug!“","A manzai act. Boke: “Mario is a plumber, right?” Tsukkomi: “I have never seen him repair a pipe! He uses them as an elevator!”","漫才です。ボケ「マリオって配管工でしょ？」ツッコミ「パイプを直してるところ、見たことないよ！ エレベーター代わりじゃん！」"],
  src:[["Wikipedia: Mario",WP+"Mario"]],
  q:[
   {q:["In welchem Spiel hatte Mario seinen ersten Auftritt?","In which game did Mario first appear?","マリオが初めて登場したゲームは？"],
@@ -555,7 +555,7 @@ const LESSONS = [
    ["„Breath of the Wild“ erschien 2017, der Nachfolger „Tears of the Kingdom“ 2023. Die Reihe hat laut Wikipedia über 150 Millionen Exemplare verkauft (Stand September 2024).","“Breath of the Wild” came out in 2017, its sequel “Tears of the Kingdom” in 2023. According to Wikipedia the series has sold over 150 million copies (as of September 2024).","『ブレス オブ ザ ワイルド』は2017年、続編の『ティアーズ オブ ザ キングダム』は2023年に発売されました。ウィキペディアによると、シリーズの累計販売本数は1億5,000万本以上です（2024年9月時点）。"]]
  ],
  pro:["Exakte Erscheinungstage von „Breath of the Wild“ und „Tears of the Kingdom“ wurden hier nicht geprüft; angegeben sind deshalb nur die Jahre.","Exact release days of “Breath of the Wild” and “Tears of the Kingdom” were not verified here, so only the years are given.","『ブレス オブ ザ ワイルド』と『ティアーズ オブ ザ キングダム』の正確な発売日はここでは確認していないため、年のみを記載しています。"],
- fun:["Wer „Zelda“ ruft und den Typen mit der grünen Mütze meint, wird in jeder Kantine höflich korrigiert.","Anyone who shouts “Zelda” while pointing at the guy in the green cap gets politely corrected in every canteen.","緑の帽子の人を指して「ゼルダ！」と叫ぶと、どの食堂でも優しく訂正されます。"],
+ fun:["Link redet fast nie. Auf Japanisch wäre er ein mukuchi, ein wortkarger Typ. Ideal für Meetings: nicken, Truhe öffnen, weiter.","Link hardly ever speaks. In Japanese he would be a mukuchi, a man of few words. Ideal for meetings: nod, open the chest, move on.","リンクはほとんどしゃべりません。日本語でいう「無口」な男。会議向きです。うなずいて、宝箱を開けて、次へ。"],
  src:[["Wikipedia: The Legend of Zelda",WP+"The_Legend_of_Zelda"]],
  q:[
   {q:["Wie heißt die Hauptfigur der meisten Zelda-Spiele?","What is the main character of most Zelda games called?","ゼルダシリーズのほとんどの作品の主人公の名前は？"],
@@ -583,7 +583,7 @@ const LESSONS = [
    ["„Pocket Monsters Rot und Grün“ erschienen im Februar 1996 in Japan für den Game Boy, entwickelt von Game Freak. International wurden daraus „Pokémon Rot und Blau“ mit 31,37 Millionen verkauften Exemplaren.","“Pocket Monsters Red and Green” came out in February 1996 in Japan for the Game Boy, developed by Game Freak. Internationally they became “Pokémon Red and Blue” with 31.37 million copies sold.","『ポケットモンスター 赤・緑』は1996年2月に日本でゲームボーイ向けに発売され、開発はゲームフリークです。海外では『ポケモン 赤・青』となり、3,137万本が売れました。"]]
  ],
  pro:["Die 118,6 Millionen gelten für Game Boy und Game Boy Color gemeinsam; die Quelle trennt die beiden nicht.","The 118.6 million covers Game Boy and Game Boy Color together; the source does not separate them.","1億1,860万台はゲームボーイとゲームボーイカラーの合計で、出典では両者が分けられていません。"],
- fun:["Pokémon hat gezeigt: Taschen sind keine Größenbeschränkung, wenn das Monster nur klein genug ist.","Pokémon proved that pockets are no size limit as long as the monster is small enough.","ポケモンは、モンスターが十分小さければポケットは制限にならないことを証明しました。"],
+ fun:["Game-Boy-Erfinder Gunpei Yokoi nannte sein Prinzip Kareta gijutsu no suihei shikō (laterales Denken mit ausgereifter Technik): bewährte, günstige Technik auf neue Art nutzen. Jede IT-Abteilung träumt davon.","Game Boy creator Gunpei Yokoi called his principle kareta gijutsu no suihei shikō (lateral thinking with withered technology): use proven, cheap technology in a new way. Every IT department dreams of it.","ゲームボーイの生みの親・横井軍平さんの信条は「枯れた技術の水平思考」。実績のある安い技術を新しい形で使うこと。どのIT部門も憧れる考え方です。"],
  src:[["Wikipedia: Nintendo",WP+"Nintendo"]],
  q:[
   {q:["In welchem Jahr erschien der Game Boy?","In which year was the Game Boy released?","ゲームボーイが発売されたのは何年ですか？"],
@@ -611,7 +611,7 @@ const LESSONS = [
    ["Die Switch 2 kam am 5. Juni 2025. „Animal Crossing: New Horizons“ erschien am 20. März 2020 und verkaufte laut Wikipedia 50,29 Millionen Mal (Stand 30. Juni 2026).","The Switch 2 arrived on 5 June 2025. “Animal Crossing: New Horizons” released on 20 March 2020 and, per Wikipedia, sold 50.29 million copies (as of 30 June 2026).","Switch 2は2025年6月5日に発売されました。『あつまれ どうぶつの森』は2020年3月20日に発売され、ウィキペディアによると5,029万本が売れています（2026年6月30日時点）。"]]
  ],
  pro:["Verkaufszahlen ändern sich mit jedem Quartal. Für offizielle Zahlen den Investoren-Bereich von Nintendo prüfen, die Werte hier sind Momentaufnahmen aus Presse und Wikipedia.","Sales figures change every quarter. For official numbers check Nintendo's investor relations pages; the values here are snapshots from press and Wikipedia.","販売数は四半期ごとに変わります。公式の数値は任天堂のIR情報で確認してください。ここの値は報道とウィキペディアのスナップショットです。"],
- fun:["Die Switch ist Konsole und Handheld in einem, also quasi das Schweizer Taschenmesser mit Joy-Con.","The Switch is a console and a handheld in one, basically the Swiss army knife with Joy-Cons.","Switchは据え置き機と携帯機の二刀流。いわばJoy-Con付きの十徳ナイフです。"],
+ fun:["Auf Japanisch heißt „Switch“ suitchi, und so nennt man auch den Lichtschalter. Wer im Büro „Mach mal den Switch an“ sagt, bekommt eventuell den Hausmeister.","In Japanese “Switch” is suitchi, which is also the word for a light switch. Say “turn on the Switch” in the office and you may get the caretaker.","「スイッチ」は照明のスイッチも指します。オフィスで「スイッチ入れて」と言うと、ゲーム機ではなく電気がつくかもしれません。"],
  src:[["VGC: Switch 2 Zahlen / sales","https://www.videogameschronicle.com/news/switch-2-continues-to-be-nintendos-fastest-selling-system-latest-financial-results-show/"],["Wikipedia: Animal Crossing",WP+"Animal_Crossing"],["Wikipedia: Nintendo",WP+"Nintendo"]],
  q:[
   {q:["Wann erschien die Switch 2?","When was the Switch 2 released?","Switch 2が発売されたのはいつですか？"],
@@ -639,7 +639,7 @@ const LESSONS = [
    ["Fünf Fragen, quer durch alle Lektionen. Tipp: Wer die Kenner-Boxen gelesen hat, ist klar im Vorteil.","Five questions across all lessons. Tip: anyone who read the veteran boxes has a clear advantage.","全レッスンから5問。ヒント：ベテラン向けボックスを読んだ人が有利です。"]]
  ],
  pro:["Zum Schluss ein ehrlicher Hinweis: Alle Daten stammen aus den verlinkten Quellen und sind mit Stand versehen; bei Abweichungen gilt die offizielle Nintendo-Quelle.","A final honest note: all data comes from the linked sources and carries an as-of date; where they differ, the official Nintendo source applies.","最後に正直な注記：すべてのデータはリンク先の出典に基づき、時点を付けています。食い違う場合は任天堂の公式情報が優先されます。"],
- fun:["Boss besiegt? Dann gilt: Der wahre Endgegner ist das Montags-Meeting.","Boss defeated? Then remember: the real final boss is the Monday meeting.","ボスを倒した？本当のラスボスは月曜朝の会議です。"],
+ fun:["Nach dem Endgegner sagt man in Japan nicht „GG“, sondern otsukaresama deshita: „Danke für deine Mühe“. Gilt auch nach dem Montags-Meeting.","After the final boss, Japan does not say “GG” but otsukaresama deshita: “thank you for your hard work”. It also applies after the Monday meeting.","ラスボスを倒したら「GG」ではなく「お疲れ様でした」。月曜朝の会議のあとにもぴったりの言葉です。"],
  src:[["Wikipedia: Nintendo",WP+"Nintendo"],["Nintendo: Company History","https://www.nintendo.co.jp/en/corporate/en/history/index.html"]],
  q:[
   {q:["Wer war von 2002 bis 2015 Präsident von Nintendo?","Who was Nintendo's president from 2002 to 2015?","2002年から2015年まで任天堂の社長だったのは誰ですか？"],
@@ -988,12 +988,12 @@ function chrome(){
   const T = totals(); $("#coins").textContent = "¢ " + T.co;
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
   const sl = view.id ? LESSONS[idxOf(view.id)] : null;
-  const f = $("#foot"); f.replaceChildren(
+  const f = $("#foot"); f.replaceChildren(...[
     (sl && view.v !== "home") ? h("section", {class:"srccard", "aria-labelledby":"srcT"},
       h("div", {class:"srch"}, h("span", {class:"si", "aria-hidden":"true"}, "📚"), h("b", {id:"srcT", text:t("src")})),
       h("ul", {class:"srclist"}, sl.src.map(s => h("li", null, h("a", {href:s[1], rel:"noopener"}, s[0]))))) : null,
     h("div", {class:"fcard"}, h("span", {class:"fic", "aria-hidden":"true"}, "ℹ️"), h("div", null, h("p", {class:"fdisc", text:t("disc")}), h("p", {class:"ftrans", text:t("trans")}))),
-    h("p", {class:"fver"}, h("span", {text:t("ver") + " " + VERSION + " · " + STAND})));
+    h("p", {class:"fver"}, h("span", {text:t("ver") + " " + VERSION + " · " + STAND}))].filter(Boolean));
 }
 $("#brand").onclick = () => {
   if(view.v === "home"){ const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0, behavior: rm ? "auto" : "smooth"}); $("#main").focus({preventScroll:true}); }

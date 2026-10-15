@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.18.2, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.18.7, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -80,6 +80,10 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
+- 1.18.7 (15.10.2026): Fehler behoben: In den Humor-Pausen standen in der deutschen und englischen Ansicht japanische Schriftzeichen. Dort steht jetzt die Umschrift (z. B. „Hana yori dango“, „suitchi“), die Schriftzeichen erscheinen nur in der japanischen Ansicht.
+- 1.18.6 (15.10.2026): Die Humor-Pausen der sieben Lektionen sind jetzt japanisch gefärbt (Manzai mit Boke und Tsukkomi, Abkürzungskultur, 花より団子, Gunpei Yokois Leitsatz, 無口, スイッチ, お疲れ様でした), in Deutsch, Englisch und Japanisch. Es gibt wieder nur eine Sprechblase pro Lektion.
+- 1.18.4 (15.10.2026): Die feste Leiste unten in der Lektion („Quiz starten“, „Pokal ansehen“) ist jetzt durchgehend mit feiner Linie und Schatten statt eines Verlaufs. Vorher blendete der Verlauf die Humor-Pause und den Inhalt darüber halb aus, das sah abgeschnitten aus. Dazu mehr Abstand über der Leiste.
+- 1.18.3 (15.10.2026): Fehler behoben: Auf der Startseite stand über dem Hinweis „Inoffizielles Lernprojekt“ der Text „null“ (die Funktion zum Füllen des Fußbereichs wandelt einen leeren Eintrag in dieses Wort um). Leere Einträge werden jetzt entfernt.
 - 1.18.2 (15.10.2026): Die Quellen („Quellen (Stand 14.10.2026)“) stehen nicht mehr als Liste im Lektionstext, sondern unten als Karte mit Knöpfen direkt über dem Hinweis „Inoffizielles Lernprojekt“ (in Lektion, Namensabfrage, Quiz, Ergebnis und Pokal der jeweiligen Lektion; nicht auf der Startseite).
 - 1.18.1 (15.10.2026): Der Link „Mehr über Nintendo entdecken“ unter Ergebnis und Pokal ist jetzt eine Karte mit Controller-Symbol, Titel, Adresse und Pfeil (statt eines unterstrichenen Textlinks).
 - 1.18.0 (15.10.2026): Umbenannt: Aus „Zertifikat“ wird „Pokal“, aus „Meister-Zertifikat“ „Meister-Pokal“ (Knopf oben „🏆 Meine Pokale“, Bereich „Deine Pokale“, Ablaufleiste „3 Pokal“, „Pokal ansehen“, „Alle Pokale“, Überschrift auf dem Bild „POKAL“ und „MEISTER-POKAL“; Englisch „trophy“, Japanisch „トロフィー“). Hinweis: Das Vorschaubild `nintendo_vorschau.jpg` zeigt noch den alten Chip „Zertifikate“.
