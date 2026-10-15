@@ -1677,7 +1677,7 @@ if(/[?&]diag\b/.test(location.search)){
   }
   const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
   (async function(){
-    await wait(test !== undefined ? 1200 : 2000);
+    await wait(test !== undefined ? 1200 : 1500);
     let erster = test === undefined;
     for(;;){
       /* Wer gerade im Namensfeld tippt, hat Ruhe */
