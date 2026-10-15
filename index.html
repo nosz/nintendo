@@ -192,7 +192,7 @@ footer p{margin:6px 0}
 .choice small{display:block;font-size:.92rem;opacity:.92}
 .choice.pri{background:var(--red-d);color:#fff;border-color:transparent}
 .ach{margin-top:10px;padding:10px 14px;border-radius:14px;background:var(--gold);color:#3b2d00;font-weight:800;animation:pop .5s both}
-.nameq{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0 0;box-shadow:var(--shadow);display:grid;gap:6px;animation:pop .5s both}
+.nameq{scroll-margin:90px 0 24px;background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:16px 18px;margin:14px 0 0;box-shadow:var(--shadow);display:grid;gap:6px;animation:pop .5s both}
 .nameq label{font-weight:800;font-size:1.1rem}
 .nameq small{color:var(--mute)}
 .nameq input{min-height:48px;font:inherit;font-size:1rem;padding:10px 14px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);margin-top:4px}
@@ -263,7 +263,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.12.2", STAND = "15.10.2026";
+const VERSION = "1.13.0", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -410,7 +410,7 @@ const t = k => S[k][li];
 const fname = () => { const f = (nm || "").trim().split(/\s+/)[0] || ""; let w = 0, o = ""; for(const c of f){ w += /[\u3000-\u9fff\uff00-\uffef]/.test(c) ? 2 : 1; if(w > 16) break; o += c; } return o; };
 const fill = s => s.replace(/\{n\}/g, fname());
 const hasName = () => fname() !== "";
-let editName = false;
+let editName = false, focusName = false;
 const NURL = [["https://www.nintendo.com/de-de/","nintendo.com/de-de"],["https://www.nintendo.com/en-gb/","nintendo.com/en-gb"],["https://www.nintendo.co.jp/","nintendo.co.jp"]];
 
 
@@ -641,8 +641,8 @@ h("div", {class:"stats", role:"list"},
         h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"🏅 " + rankName(T.st)}), h("span", {class:"sl", text:t("rank")})),
         h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"¢ " + T.co}), h("span", {class:"sl", text:t("coins")})),
         h("div", {class:"stat", role:"listitem"}, h("span", {class:"sv", text:"★ " + T.st + "/" + LESSONS.length*3}), h("span", {class:"sl", text:t("starsOf")}))),
-    hasName() ? h("button", {type:"button", class:"namebtn", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; render(true); }}, h("span", {"aria-hidden":"true"}, "✎"), h("span", {text:fname() + " · " + t("nameChange")}))
-      : (!editName ? h("button", {type:"button", class:"namebtn", onclick:() => { editName = true; render(true); }}, h("span", {"aria-hidden":"true"}, "✎"), h("span", {text:t("nameAdd")})) : null)));
+    hasName() ? h("button", {type:"button", class:"namebtn", "aria-label":t("nameChange") + ": " + fname(), onclick:() => { editName = true; focusName = true; render(true); }}, h("span", {"aria-hidden":"true"}, "✎"), h("span", {text:fname() + " · " + t("nameChange")}))
+      : (!editName ? h("button", {type:"button", class:"namebtn", onclick:() => { editName = true; focusName = true; render(true); }}, h("span", {"aria-hidden":"true"}, "✎"), h("span", {text:t("nameAdd")})) : null)));
   if((!hasName() && !ach.skip) || editName){
     const inp = h("input", {id:"nmq", type:"text", maxlength:"40", autocomplete:"given-name", placeholder:t("nameP2"), value:nm});
     const done = v => { nm = v.trim().slice(0, 40); editName = false; ach.skip = !nm; save(); render(true); };
@@ -653,6 +653,11 @@ h("div", {class:"stats", role:"list"},
         h("button", {type:"button", class:"btn ghost", onclick:() => { editName = false; ach.skip = true; if(!hasName()) nm = ""; save(); render(true); }}, t("nameSkip"))));
     form.onsubmit = e => { e.preventDefault(); done(inp.value); };
     m.append(form);
+    if(focusName){   // nur nach Klick auf "Name ändern": Formular in den sichtbaren Bereich holen und Eingabefeld aktivieren
+      focusName = false;
+      const rm = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      requestAnimationFrame(() => { form.scrollIntoView({behavior: rm ? "auto" : "smooth", block:"center"}); inp.focus({preventScroll:true}); inp.select(); });
+    }
   }
   if(nextL){
     const first = started ? h("button", {type:"button", class:"choice pri", onclick:() => go("lesson", nextL.id)}, h("span", {class:"ci", "aria-hidden":"true"}, nextL.ico), h("span", null, h("b", {text:t("contB")}), h("small", {text:nextL.t[li]})))

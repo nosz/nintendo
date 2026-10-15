@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.12.2, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.13.0, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -80,6 +80,7 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
+- 1.13.0 (15.10.2026): Klick auf Name ändern oder Name eintragen scrollt das Namensfeld automatisch in den sichtbaren Bereich und setzt den Cursor hinein.
 - 1.12.2 (15.10.2026): Aufräumen: zwei überzählige Zeichen im Quelltext entfernt (ohne sichtbare Änderung).
 - 1.12.1 (15.10.2026): Teilen-Symbol und Hell/Dunkel-Knopf in der Kopfzeile exakt zentriert.
 - 1.12.0 (15.10.2026): Klick auf Logo oder „Nintendo Quest“ oben links bringt nach oben zum Start (Startseite: sanft nach oben scrollen, sonst zurück zur Startseite).
