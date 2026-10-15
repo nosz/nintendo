@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.21.0, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.21.2, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -80,6 +80,8 @@ Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache,
 - 1.4.0 / 1.4.1 (14.10.2026): Nintendo auf dem Zertifikat (Marke, Webadresse) und Nintendo-Links auf der Oberfläche.
 - 1.3.1 (14.10.2026): Überschriftenebene in Lektionen korrigiert (h2), leerer Fortschritt bei 0 richtig vermieden; Link-Vorschau (Open Graph, Twitter Card), Vorschaubild, Favicon; Datei in index.html umbenannt.
 - 1.3.0 (14.10.2026): Lektion 1 und 2 auf je 2 Karten und 2 Fragen gekürzt, Erfolg bei der ersten richtigen Antwort, Zertifikat direkt auf der Ergebnisseite, goldene Sterne im Ergebnis.
+- 1.21.2 (15.10.2026): Fehler behoben: Beim Sprung zur Liste der Zertifikate bzw. Pokale (Knopf neben „Name ändern“, nach einem Ergebnis) lag die Überschrift auf dem Handy unter der festen Kopfzeile (122 px hoch, Abstand war nur 90 px). Auf schmalen Bildschirmen (bis 640 px) sind es jetzt 152 px.
+- 1.21.1 (15.10.2026): Die Figur stört im Quiz nicht mehr: Während einer Quizfrage kommen nur noch Auftritte am Rand (kurz Hereinschauen, an der Seitenwand entlang), nie quer über Antworten oder den „Weiter“-Knopf, und ohne Sprechblasen. Außerhalb des Quiz bleibt alles wie in 1.21.0. Dazu UX-Prüfung mit abgeschlossenen Lektionen: 42 Ansichten (Start, Lektion, Namensabfrage, Quiz, Ergebnis, Pokal, Meister-Pokal in drei Sprachen, hell und dunkel, 360 px) ohne Befund, Klickziel-Test bei 360, 768 und 1280 px bestanden, Tastaturfokus sichtbar.
 - 1.21.0 (15.10.2026): Sechs weitere Gags im Stil des Pilz-Auftritts: Pokal-Dieb (schleicht sich an, schaut sich um, klaut einen Pokal und rennt davon), Karriere (vier Pilze machen die Figur vom Praktikanten zum Geschäftsführer immer größer, dann „Urlaub!“), Stern (bunt blinkend, unbesiegbar, rennt sehr schnell), Luftballon (schwebt davon), Warp-Rohr (verschwindet in einem Rohr und taucht aus einem anderen auf) und Mini-/Mega-Modus (erst winzig, dann riesig). Test per ?lauf=dieb, karriere, stern, ballon, rohr oder groesse. Der Mischbeutel enthält jetzt 23 Muster.
 - 1.20.6 (15.10.2026): Zufallsmix überarbeitet. Die Auftritte werden aus einem Mischbeutel gezogen (jedes der 17 Muster kommt pro Runde entsprechend seinem Gewicht vor, nie zweimal direkt hintereinander), die Startrichtung wechselt meistens, und nur noch genau einer von fünf Auftritten redet (statt etwa jedem dritten, nie zwei redende in Folge). Ausnahmen mit festem Text bleiben Manzai, die Begrüßung mit Namen und das Schnarchen; beide Auftritte sind jetzt seltener (Gewicht 1).
 - 1.20.5 (15.10.2026): Die Figur redet nur noch bei etwa jedem dritten Auftritt (Zufall); ohne Text läuft sie einfach durchs Bild. Ausnahmen mit Text: Manzai, die Begrüßung mit Namen und das Schnarchen. Angesprochen wird mit dem Vornamen (erstes Wort, höchstens 12 Zeichen). Die Namenssprüche sind kurz, lustig und motivierend („Weiter so, Name!“, „Level up, Name!“). Die erste Begrüßung nach dem Öffnen kommt nur noch in der Hälfte der Fälle.

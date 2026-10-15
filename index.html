@@ -230,7 +230,7 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
 .namebtn{grid-column:1/-1;justify-self:start;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:6px 16px;border-radius:999px;border:2px solid var(--blue);background:var(--card);color:var(--blue);font-weight:800;font-size:.92rem;text-decoration:none;max-width:100%}.namebtn span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .namebtn:hover{background:var(--blue);color:#fff}
 .herobar{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:10px}
-#ch{scroll-margin-top:90px}
+#ch{scroll-margin-top:90px}@media (max-width:640px){#ch{scroll-margin-top:152px}}
 @media (max-width:480px){.herobar{gap:6px}.herobar .namebtn{padding:6px 10px;gap:6px;font-size:.84rem}.herobar .bpre{display:none}}
 .shdlg{border:2px solid var(--line);border-radius:var(--r);padding:18px;background:var(--card);color:var(--ink);box-shadow:0 12px 40px rgba(0,0,0,.35);width:min(92vw,460px);max-width:none}.shdlg::backdrop{background:rgba(0,0,0,.5)}.shdlg .shx{float:right;min-height:44px;min-width:44px;border-radius:999px;border:2px solid var(--line);background:var(--card);color:var(--ink);font-size:1.1rem}.sharecard{margin:0}
 .sharecard .sh{display:flex;gap:14px;align-items:center}.sharecard .si{font-size:1.8rem}.sharecard b{display:block}.sharecard small{color:var(--mute)}
@@ -317,7 +317,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.21.0", STAND = "15.10.2026";
+const VERSION = "1.21.2", STAND = "15.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -1156,7 +1156,9 @@ if(/[?&]diag\b/.test(location.search)){
   const rd = () => { lastDir = R() < .7 ? -lastDir : lastDir; return lastDir; };
   function naechstes(){
     if(!beutel.length){ for(const k in MUSTER) for(let i = 0; i < MUSTER[k][1]; i++) beutel.push(k); mische(beutel); }
-    let i = beutel.findIndex(k => k !== letzte);
+    const erlaubt = (view && view.v === "quiz") ? ["gucken", "wand"] : null, ok = k => k !== letzte && (!erlaubt || erlaubt.includes(k));
+    if(erlaubt && !beutel.some(ok)){ letzte = pick(erlaubt.filter(k => k !== letzte)); return letzte; }
+    let i = beutel.findIndex(ok);
     if(i < 0){ const mehr = []; for(const k in MUSTER) for(let n = 0; n < MUSTER[k][1]; n++) mehr.push(k); beutel.push(...mische(mehr)); i = beutel.findIndex(k => k !== letzte); }
     letzte = beutel.splice(i, 1)[0]; return letzte;
   }
@@ -1548,7 +1550,7 @@ if(/[?&]diag\b/.test(location.search)){
   }
   async function auftritt(name){
     if(abbruch()) return;
-    redet = !!name || redetDiesmal();
+    redet = !!name || (!(view && view.v === "quiz") && redetDiesmal());
     try{ await waehle(name)(dim()); } catch(e){ if(!e || e.message !== "stop") console.error("Figur:", e); }
     aktiv.splice(0).forEach(e => e.remove()); document.querySelectorAll(".runbub").forEach(b => b.remove());
   }
