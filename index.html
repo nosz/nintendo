@@ -346,7 +346,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.24.0", STAND = "16.10.2026";
+const VERSION = "1.29.0", STAND = "16.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -1175,7 +1175,7 @@ if(/[?&]diag\b/.test(location.search)){
   };
   show(); setInterval(show, 1500);
 }
-/* Ab und zu schaut eine kleine Pixel-Figur vorbei: Zufallssystem mit vielen verschiedenen Auftritten (rein dekorativ, nicht klickbar). Test: Adresse mit ?lauf=quer|umkehr|wand|rundherum|gucken|huepfer|stolpern|schlafen|moonwalk|turbo|schleichen|manzai|pilz|pokaljagd|verbeugung|muenze|hallo|karriere|stern|ballon|rohr|groesse|dieb */
+/* Ab und zu schaut eine kleine Pixel-Figur vorbei: Zufallssystem mit vielen verschiedenen Auftritten (rein dekorativ, nicht klickbar). Test: Adresse mit ?lauf=quer|umkehr|wand|rundherum|gucken|huepfer|stolpern|schlafen|moonwalk|turbo|schleichen|manzai|pilz|pokaljagd|verbeugung|muenze|hallo|karriere|stern|ballon|rohr|groesse|dieb|namefrage */
 (function(){
   if(matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   const MAP = ["....RRRRR....","...RRRRRRRRR.","...HHHSSHS...","..HSHSSSHSSS.","..HSHHSSSHSSS","..HHSSSSHHHH.","....SSSSSSS..","...RRBRRR....","..RRRBRRBRRR.",".RRRRBBBBRRRR",".SSRBYBBYBRSS",".SSSBBBBBBSSS","..SBBBBBBBBS.","...BBB..BBB..","..HHH....HHH.",".HHHH....HHHH"];
@@ -1513,6 +1513,65 @@ if(/[?&]diag\b/.test(location.search)){
     await stehen(g, 300); sag(g, pick(NAMEN)[li], 2600, true); await sprung(g, 30); await stehen(g, 300); await sprung(g, 30); await stehen(g, 1500);
     await gehe(g, raus(dir, d), undefined, .3);
   }
+  /* Namensfrage: nur wenn noch kein Name eingetragen ist (wird im Zeitplan unten ausgewaehlt, nicht ueber den Zufallsbeutel). Ist das Eingabefeld sichtbar, laeuft Mario darunter, zeigt darauf und stoesst von unten dagegen wie bei einem Fragezeichen-Block; sonst fragt er nur frei im Bild. */
+  const FRAGE = [["Hey, wie heißt du?","Hey, what's your name?","ねえ、お名前は？"],["Mamma mia, wie heißt du eigentlich?","Mamma mia, what's your name?","マンマミーア、お名前は？"],["Psst! Wie heißt du?","Psst! What's your name?","しーっ！お名前は？"],["Ich bin Mario! Und du, du Prachtexemplar?","I'm Mario! And you, you magnificent human?","僕はマリオ！君は？すてきな人！"]];
+  const FRAGE2 = [["Ich bin Mario. Und du?","I'm Mario. And you?","僕はマリオ。君は？"],["Ohne Namen kann ich dich nicht auf den Pokal schreiben!","I can't put you on the trophy without a name!","名前がないとトロフィーに書けないよ！"],["Sonst nenne ich dich weiter Chef.","Otherwise I'll keep calling you Boss.","じゃないとずっとボスって呼ぶよ。"],["Ich bin Klempner, kein Hellseher!","I'm a plumber, not a mind reader!","僕は配管工、エスパーじゃないよ！"],["Namen sind kostenlos. Ehrlich!","Names are free. Honest!","名前は無料だよ。ほんとに！"],["Trag ihn ein, das dauert 3 Sekunden.","Add it, it takes 3 seconds.","入力は3秒で終わるよ。"],["Ein Pokal mit deinem Namen sieht einfach viel besser aus!","A trophy with your name just looks way better!","名前入りのトロフィーのほうが絶対かっこいい！"],["Der Name bleibt auf deinem Gerät. Mario-Ehrenwort!","Your name stays on your device. Mario's honor!","名前はこの端末だけ。マリオに誓って！"]];
+  const ZEIGEN = [["Hier, mein Freund, trag dich ein! Ich zeige sogar extra darauf!","Right here, my friend, sign in! I'm even pointing at it!","ここだよ、友よ！ちゃんと指さしてるよ！"],["Psst, hier ist der Platz für den Helden: DU!","Psst, this is the spot for the hero: YOU!","しーっ、ここはヒーローの席：君だよ！"],["Dieses Feld wartet seit Jahren auf dich!","This field has been waiting for you for years!","この欄、何年も君を待ってたんだ！"],["Hier steht gleich ein berühmter Name. Deiner!","A famous name is about to appear here. Yours!","もうすぐここに有名な名前が入るよ。君の！"],["Sag mir, wie du heißt, und der Applaus geht auf mich!","Tell me your name and the applause is on me!","名前を教えてくれたら、拍手は僕のおごり！"],["Tipp hier deinen Namen ein, ich bin schon ganz aufgeregt!","Type your name here, I'm already so excited!","ここに名前を入れて、もうドキドキ！"]];
+  const KLOPF = [["Klopf klopf! Hier zieht gleich dein Name ein!","Knock knock! Your name is about to move in here!","コンコン！もうすぐ君の名前が引っ越してくるよ！"],["Fragezeichen-Block? Nein, Namensfeld! Noch besser!","Question block? No, name field! Even better!","ハテナブロック？いや、名前欄！もっといい！"],["Ich habe extra für dich geklopft. Mit dem Kopf!","I knocked just for you. With my head!","君のために頭でノックしたよ！"],["Aua … egal, Hauptsache du tippst gleich!","Ouch … never mind, as long as you type now!","いてて…いいや、君が入力してくれれば！"],["Mein Kopf tut weh, dein Name macht es wieder gut!","My head hurts, your name would fix it!","頭が痛いけど、君の名前で治るよ！"],["Hier gibt's keine Münzen, nur Ruhm und einen Pokal mit deinem Namen!","No coins in here, just glory and a trophy with your name!","コインはないけど、栄光と君の名前入りトロフィーがあるよ！"]];
+  const DRAENG = [["Na los, tipp schon! Ich werde langsam nervös!","Come on, type! I'm getting nervous!","ほら入力して！ドキドキしてきた！"],["Ich warte. Ich habe Zeit. Viel Zeit. Ich bin ein Pixel.","I'll wait. I have time. Lots of time. I'm a pixel.","待つよ。時間はたっぷり。僕はドット絵だから。"],["Mamma mia, so schwer ist das nicht. Nur ein Name!","Mamma mia, it's not hard. Just a name!","マンマミーア、難しくないよ。名前だけ！"],["Ohne Namen bist du für mich nur „Chef“. Mit Namen bist du eine Legende!","Without a name you're just “Boss” to me. With one, you're a legend!","名前がないと君は「ボス」のまま。あれば伝説！"],["Dein Name bleibt auf dem Gerät. Mario-Ehrenwort, Klempner-Ehrenwort!","Your name stays on your device. Mario's honor, plumber's honor!","名前はこの端末だけ。マリオに誓って、配管工に誓って！"],["Ein Name, ein Klick, ein Pokal. Besser wird's nicht!","One name, one click, one trophy. It doesn't get better!","名前ひとつ、クリックひとつ、トロフィーひとつ。最高！"]];
+  /* Sicherheit: Die Namensfrage laeuft nur, solange KEIN Name eingetragen ist und niemand gerade tippt. Wird waehrend der Szene ein Name gespeichert oder das Feld benutzt, bricht Mario sofort ab (Ausnahme: Testmodus ?lauf=). */
+  const tippt = () => { const i = document.getElementById("nmq"); return !!i && (document.activeElement === i || i.value.trim() !== ""); };
+  const nameDa = () => hasName() || tippt();
+  const weiter = () => { if(test === undefined && nameDa()) throw new Error("stop"); };
+  /* Namensfeld nur nehmen, wenn es gerade gut sichtbar ist und unten genug Platz fuer Mario bleibt */
+  function namensFeld(d){
+    if(!(view && view.v === "home") || hasName()) return null;
+    const el = document.getElementById("nmq") || document.querySelector(".herobar .namebtn");
+    if(!el) return null;
+    const r = el.getBoundingClientRect();
+    return (r.width > 0 && r.top >= d.hb + 4 && r.bottom <= d.H - 115 && r.left >= 0 && r.right <= d.W) ? el : null;
+  }
+  /* Sprechblase unterhalb der Figur, damit sie das Feld nicht verdeckt (sag() setzt sie bei r=180 unter die Figur) */
+  const sagUnten = (g, txt, ms) => sag({s: Object.assign({}, g.s, {r: 180})}, txt, ms, true);
+  function emojiAn(txt, x, y){
+    const e = document.createElement("div"); e.className = "runcoin"; e.textContent = txt; e.setAttribute("aria-hidden", "true");
+    e.style.left = (x - 13) + "px"; e.style.top = y + "px"; document.body.appendChild(e); aktiv.push(e); return e;
+  }
+  /* Kopfstoss von unten: Feld huepft, leuchtet kurz gelb und eine Muenze springt heraus */
+  function stoss(el, rc, x){
+    el.animate([{transform: "translateY(0)"}, {transform: "translateY(-7px)"}, {transform: "translateY(0)"}], {duration: 280, easing: "ease-out"});
+    el.animate([{boxShadow: "0 0 0 0 rgba(255,200,0,.95)"}, {boxShadow: "0 0 0 12px rgba(255,200,0,0)"}], {duration: 700});
+    const c = emojiAn("🪙", x, rc.top - 14);
+    const a = c.animate([{transform: "translateY(0)", opacity: 1}, {transform: "translateY(-44px)", opacity: 1, offset: .6}, {transform: "translateY(-66px)", opacity: 0}], {duration: 750, easing: "ease-out"});
+    a.finished.then(() => c.remove(), () => c.remove());
+  }
+  async function namezeigen(d, ziel){
+    weiter();
+    const rc = ziel.getBoundingClientRect(), dir = rd(), y = rc.bottom + 40;
+    const g = neu({x: rein(dir, d), y, r: 0, f: dir});
+    const x = Math.max(26, Math.min(d.W - 26, rc.left + 26));   /* ganz am Anfang (linker Rand) des Feldes */
+    await gehe(g, x, undefined, .28); weiter();
+    await stehen(g, 250); weiter();
+    const hand = emojiAn("👆", x, y - 50);
+    hand.animate([{transform: "translateY(0)"}, {transform: "translateY(-6px)"}], {duration: 380, iterations: Infinity, direction: "alternate", easing: "ease-in-out"});
+    sagUnten(g, pick(ZEIGEN)[li], 2800); await stehen(g, 2000); weiter();
+    hand.remove();
+    let j = sprung(g, 22); setTimeout(() => stoss(ziel, rc, x), 230); await j; weiter();
+    sagUnten(g, pick(KLOPF)[li], 2800); await stehen(g, 1500); weiter();
+    j = sprung(g, 22); setTimeout(() => stoss(ziel, rc, x), 230); await j; weiter();
+    sagUnten(g, pick(DRAENG)[li], 2600); await stehen(g, 1800); weiter();
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
+  async function namefrage(d){
+    weiter();
+    const ziel = namensFeld(d);
+    if(ziel) return namezeigen(d, ziel);
+    const dir = rd(), b = bahn(d, pick(["boden","mitte"]), dir), g = neu({x: rein(dir, d), y: b.y, r: 0, f: b.f});
+    await gehe(g, anteil(dir, d, rnd(.35, .65)), undefined, .28); weiter();
+    await stehen(g, 300); weiter(); sag(g, pick(FRAGE)[li], 2400, true); await sprung(g, 30); await stehen(g, 1900); weiter();
+    sag(g, pick(FRAGE2)[li], 3200, true); await sprung(g, 30); weiter(); await stehen(g, 300); await sprung(g, 30); await stehen(g, 2400); weiter();
+    await gehe(g, raus(dir, d), undefined, .3);
+  }
   /* Weitere Gags im Stil von Pilz: Groesse, Requisiten, Verwandlungen */
   const TITEL = [["Praktikant","Intern","インターン"],["Junior","Junior","ジュニア"],["Senior","Senior","シニア"],["Geschäftsführer","CEO","社長"]];
   const URLAUB = ["Urlaub!","Vacation!","休暇！"], STERN = ["Unbesiegbar!","Unstoppable!","無敵！"], BALLON = [["Wheee!","Wheee!","わーい！"],["Tschüss!","Bye!","バイバイ！"]], ROHR = [["Gleich zurück!","Back in a sec!","すぐ戻る！"],["Überraschung!","Surprise!","サプライズ！"]], GROESSE = [["Mini-Modus!","Mini mode!","ミニモード！"],["Mega-Modus!","Mega mode!","メガモード！"]];
@@ -1593,7 +1652,7 @@ if(/[?&]diag\b/.test(location.search)){
     sag(g, DIEB[1][li], 1800);
     await gehe(g, raus(dir, d), undefined, .75);
   }
-  const MUSTER = {quer: [quer, 4], umkehr: [umkehr, 4], wand: [wand, 3], rundherum: [rundherum, 2], gucken: [gucken, 4], huepfer: [huepfer, 3], stolpern: [stolpern, 3], schlafen: [schlafen, 2], moonwalk: [moonwalk, 2], turbo: [turbo, 2], schleichen: [schleichen, 2], manzai: [manzai, 1], pilz: [pilz, 2], pokaljagd: [pokaljagd, 2], verbeugung: [verbeugung, 2], muenze: [muenze, 2], hallo: [hallo, 1], karriere: [karriere, 2], stern: [stern, 2], ballon: [ballon, 2], rohr: [rohr, 2], groesse: [groesse, 2], dieb: [dieb, 2]};
+  const MUSTER = {quer: [quer, 4], umkehr: [umkehr, 4], wand: [wand, 3], rundherum: [rundherum, 2], gucken: [gucken, 4], huepfer: [huepfer, 3], stolpern: [stolpern, 3], schlafen: [schlafen, 2], moonwalk: [moonwalk, 2], turbo: [turbo, 2], schleichen: [schleichen, 2], manzai: [manzai, 1], pilz: [pilz, 2], pokaljagd: [pokaljagd, 2], verbeugung: [verbeugung, 2], muenze: [muenze, 2], hallo: [hallo, 1], namefrage: [namefrage, 0], karriere: [karriere, 2], stern: [stern, 2], ballon: [ballon, 2], rohr: [rohr, 2], groesse: [groesse, 2], dieb: [dieb, 2]};
   function waehle(name){
     if(name && MUSTER[name]) return MUSTER[name][0];
     return MUSTER[naechstes()][0];
@@ -1607,7 +1666,7 @@ if(/[?&]diag\b/.test(location.search)){
   const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
   (async function(){
     await wait(test !== undefined ? 1200 : 5000);
-    let erster = test === undefined; for(;;){ await auftritt(test || (erster && R() < .5 ? "hallo" : undefined)); erster = false; await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
+    let erster = test === undefined; for(;;){ const frage = test === undefined && !nameDa() && !(view && view.v === "quiz") && (erster || R() < .35); await auftritt(test || (frage ? "namefrage" : (erster && R() < .5 ? "hallo" : undefined))); erster = false; await wait(test !== undefined ? 1500 : (R() < .15 ? rnd(4000, 9000) : rnd(25000, 80000))); }
   })();
 })();
 /* Feste Orientierungsleiste: Hoehen messen, Schatten nur wenn festgeheftet */
