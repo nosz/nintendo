@@ -6,7 +6,7 @@
 
 **Inoffizielles Lernprojekt von Leonie Szpak**
 
-**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.23.0, Stand 15.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
+**Datei:** `index.html` (eine Datei, offline lauffähig, Version 1.31.0, Stand 18.10.2026). Einfach im Browser öffnen oder auf einem Webserver ablegen.
 
 ## Inhalt
 Dashboard mit 7 Lektionen (je 3 Info-Karten, ein Kenner-Bonus für Langjährige, Humor-Pause, Quellen, 4 bis 5 Quizfragen), Sprachen **Deutsch, Englisch, Japanisch** (Umschalter oben, wird gespeichert).
@@ -66,6 +66,7 @@ Stil angelehnt an die Ausrichtung von Nintendo (Rot/Weiß, runde Karten, verspie
 Daten (alle Texte in DE/EN/JA, 4 Antworten je Frage), Quiz-Durchlauf je Sprache, Sprachwechsel mitten im Quiz, Rang/Fortschritt, keine `target`-Links, alle 6 externen Links HTTP 200; Zertifikate (gültiges SVG in 3 Sprachen, Text innerhalb des Rands, PNG-Erzeugung, Name live), Startseite (Einstiege, Fortschrittslogik), Blitzlektionen (Erfolg nur einmal, Zertifikat sofort, 0 richtig = kein Zertifikat); UX-Suite U1 bis U10 mobil (375 px) hell und dunkel bestanden. Das Speichern als PNG wurde per Canvas geprüft, nicht der Download-Dialog. Nicht getestet: echtes Gerät, Server-Betrieb, Offline-Cache (kein Service Worker eingebaut).
 
 ## Änderungsprotokoll
+- 1.31.0 (18.10.2026): Basis ist die Live-Version 1.30.3 (Änderungen 1.24.0 bis 1.30.3 stehen hier nicht im Protokoll, weil sie außerhalb dieses Ordners entstanden sind). Neu: Auf der Startseite steht direkt nach Begrüßung und Namensfrage der Knopf „Mir gefällt die App, ich möchte sie installieren“ (nur solange die App nicht installiert ist, startet die Installation oder zeigt die Anleitung für iPhone, Android und Computer). Die alte Installieren-Karte ganz unten entfällt. „Installiert“ wird nicht dauerhaft gespeichert, damit der Knopf nach dem Deinstallieren wieder erscheint.
 - 1.0.0 (14.10.2026): Erstfassung.
 - 1.1.0 (14.10.2026): Zertifikate je Lektion und Meister-Zertifikat (DE/EN/JA, PNG, Druck).
 - 1.2.0 (14.10.2026): Neue Startseite: Einstiegsfrage, zwei Wege (neu / lange dabei), kompakter Kopfbereich.

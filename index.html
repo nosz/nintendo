@@ -222,6 +222,10 @@ button.chip{font:inherit;font-weight:700;color:var(--ink);cursor:pointer;min-hei
 .instcard{background:var(--card);border:2px solid var(--line);border-radius:var(--r);padding:14px 18px;margin:26px 0 0;box-shadow:var(--shadow);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .instol{margin:10px 0 0;padding-left:22px}.instol li{margin:8px 0}
 .instcard .ii{font-size:1.8rem}.instcard div{flex:1;min-width:200px}.instcard b{display:block}.instcard small{color:var(--mute)}
+.install-cta{display:flex;align-items:center;gap:12px;width:100%;margin:14px 0 0;padding:12px 14px;text-align:left;border-radius:var(--r);border:2px solid var(--red);background:var(--red-l);color:var(--ink);box-shadow:var(--shadow);cursor:pointer;font:inherit;min-height:48px}
+.install-cta:hover{border-color:var(--red-d)}.install-cta:focus-visible{outline:3px solid var(--red);outline-offset:2px}
+.install-cta .ic-ico{flex:none;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:var(--card)}
+.install-cta .ic-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}.install-cta .ic-text b{font-size:1rem;line-height:1.3}.install-cta .ic-text small{font-size:.85rem;color:var(--mute);line-height:1.35}.install-cta .ic-go{flex:none;font-weight:800;color:var(--red-d)}
 .byline{background:var(--red-l);color:var(--ink);text-align:center;font-weight:700;font-size:.85rem;padding:7px 12px;border-bottom:2px solid var(--line)}
 .stats{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;margin-top:2px;grid-column:1/-1}
 .stat{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:8px 10px;min-width:0}
@@ -327,6 +331,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 .runrohr::before{content:"";position:absolute;left:-7px;right:-7px;top:-3px;height:20px;background:linear-gradient(90deg,#1ea34a,#7be08f 40%,#1ea34a);border:3px solid #0b5d26;border-radius:4px}
 .runcoin{position:fixed;left:0;top:0;font-size:26px;line-height:1;z-index:39;pointer-events:none}
 @media print{.runner,.runbub,.runcoin,.runrohr{display:none}}
+@media print{.install-cta{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.top,.sticky,.lang{display:none}}
 </style>
@@ -346,7 +351,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.30.3", STAND = "16.10.2026";
+const VERSION = "1.31.0", STAND = "18.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -404,7 +409,9 @@ const S = {
  instB:["Installieren","Install","インストール"],
  instIos:["Auf dem iPhone geht das über das Teilen-Menü von Safari. Tippe auf „So geht’s“.","On iPhone this works through Safari’s Share menu. Tap “How to”.","iPhoneではSafariの共有メニューから追加します。「手順」をタップしてください。"],
  instHow:["So geht’s","How to","手順"],
- instIosT:["App auf dem iPhone installieren","Install the app on iPhone","iPhoneにアプリをインストール"],
+ instCta:["Mir gefällt die App, ich möchte sie installieren","I like the app, I want to install it","気に入ったので、アプリをインストールしたい"],
+ instCtaS:["Ein Tipp, und sie liegt auf deinem Startbildschirm. Gratis, auch ohne Internet.","One tap and it sits on your home screen. Free, and it works offline too.","ワンタップでホーム画面に追加。無料で、オフラインでも使えます。"],
+ instMenuT:["App installieren","Install the app","アプリをインストール"], instIosT:["App auf dem iPhone installieren","Install the app on iPhone","iPhoneにアプリをインストール"],
  instI1:["Tippe in Safari auf das Teilen-Symbol des Browsers (Quadrat mit Pfeil nach oben, in der unteren oder oberen Leiste).","In Safari, tap the browser’s Share icon (square with an arrow pointing up, in the bottom or top bar).","Safariでブラウザの共有ボタン（四角から上向きの矢印）をタップします。"],
  instI2:["Scrolle im Menü und wähle „Zum Home-Bildschirm“.","Scroll the menu and choose “Add to Home Screen”.","メニューをスクロールして「ホーム画面に追加」を選びます。"],
  instI3:["Tippe oben rechts auf „Hinzufügen“. Danach startet Nintendo Quest wie eine App.","Tap “Add” at the top right. Nintendo Quest then opens like an app.","右上の「追加」をタップします。以後はアプリのように起動します。"],
@@ -764,6 +771,7 @@ h("div", {class:"stats", role:"list"},
       requestAnimationFrame(() => { form.scrollIntoView({behavior: rm ? "auto" : "smooth", block:"center"}); inp.focus({preventScroll:true}); inp.select(); });
     }
   }
+  m.append(installCta());
   if(nextL){
     const first = started ? h("button", {type:"button", class:"choice pri", onclick:() => go("lesson", nextL.id)}, h("span", {class:"ci", "aria-hidden":"true"}, nextL.ico), h("span", null, h("b", {text:t("contB")}), h("small", {text:nextL.t[li]})))
                           : h("button", {type:"button", class:"choice pri", onclick:() => go("lesson", LESSONS[0].id)}, h("span", {class:"ci", "aria-hidden":"true"}, "🌱"), h("span", null, h("b", {text:t("newB")}), h("small", {text:t("newS")})));
@@ -786,7 +794,6 @@ h("div", {class:"stats", role:"list"},
     g.append(cell);
   });
   m.append(g);
-  m.append(installCard());
   m.append(nintendoLinks());
   m.append(h("p", {style:"margin-top:26px;text-align:center"}, h("button", {type:"button", class:"btn ghost", onclick:() => { if(confirm(t("resetQ"))){ prog = {}; save(); render(); } }}, "↺ " + t("reset"))));
 }
@@ -1083,21 +1090,19 @@ async function doInstall(){
   try{ await e.prompt(); res = await e.userChoice; }catch(x){}
   deferredInstall = null; installState = res && res.outcome === "accepted" ? "done" : "cancelled"; render(true);
 }
-function installCard(){
-  if(isStandalone() || installState === "done") return h("span");
-  const ios = isIOS();
-  if(!deferredInstall && !ios && installState !== "cancelled" && !(noEventHint && isAndroid())) return h("span");
-  let sub, act = null;
-  if(deferredInstall){ sub = t("instS"); act = h("button", {type:"button", class:"btn", onclick:doInstall}, t("instB")); }
-  else if(installState === "cancelled"){ sub = t("instCancel"); }
-  else if(ios){ sub = t("instIos"); act = h("button", {type:"button", class:"btn", onclick:iosHelp}, t("instHow")); }
-  else { sub = t("instMenu"); }
-  const c = h("section", {class:"instcard", "aria-labelledby":"it"}, h("span", {class:"ii", "aria-hidden":"true"}, "📲"),
-    h("div", null, h("b", {id:"it", text:t("instT")}), h("small", {text:sub})));
-  if(act) c.append(act);
-  return c;
+function menuHelp(){
+  document.querySelectorAll(".shdlg").forEach(d => d.remove());
+  const d = h("dialog", {class:"shdlg", "aria-labelledby":"iht"}, h("button", {type:"button", class:"shx", "aria-label":t("shX"), onclick:() => d.close()}, "✕"), h("p", {class:"shh"}, h("b", {id:"iht", text:t("instMenuT")})), h("p", {text:(installState === "cancelled" ? t("instCancel") + " " : "") + t("instMenu")}));
+  d.addEventListener("click", ev => { if(ev.target === d) d.close(); }); d.addEventListener("close", () => d.remove());
+  document.body.append(d); d.showModal();
 }
-const SHARE_URL = "https://nosz.github.io/nintendo/";
+/* Knopf auf der Startseite: nur solange die App nicht installiert ist, damit niemand in Einstellungen suchen muss */
+const installAction = () => { if(deferredInstall) doInstall(); else if(isIOS()) iosHelp(); else menuHelp(); };
+function installCta(){
+  if(isStandalone() || installState === "done") return h("span");
+  return h("button", {type:"button", class:"install-cta", id:"installCta", "aria-haspopup":"dialog", onclick:installAction},
+    h("span", {class:"ic-ico", "aria-hidden":"true"}, "📲"), h("span", {class:"ic-text"}, h("b", {text:t("instCta")}), h("small", {text:t("instCtaS")})), h("span", {class:"ic-go", "aria-hidden":"true"}, "→"));
+}const SHARE_URL = "https://nosz.github.io/nintendo/";
 function openShare(){
   if(navigator.share){ navigator.share({title:t("shSubj"), text:t("shMsg"), url:SHARE_URL}).catch(() => {}); return; }
   document.querySelectorAll(".shdlg").forEach(d => d.remove());
@@ -1166,7 +1171,7 @@ if(/[?&]diag\b/.test(location.search)){
       "Manifest: " + (man ? (man._fehler ? "FEHLER " + man._fehler : "HTTP " + man._status + ", id=" + man.id + ", start_url=" + man.start_url + ", scope=" + man.scope + ", display=" + man.display) : "wird geladen ..."),
       "Icons: " + (icons.length ? icons.join(" | ") : "..."),
       "Installationsangebot des Browsers (beforeinstallprompt): " + bip,
-      "App-Karte in der Seite: " + (document.querySelector(".instcard") ? "sichtbar" : "nicht sichtbar") + " | Zustand: " + (installState || "-") + " | Android-Hinweis: " + (noEventHint ? "ja" : "nein"),
+      "App-Karte in der Seite: " + (document.querySelector("#installCta") ? "sichtbar" : "nicht sichtbar") + " | Zustand: " + (installState || "-") + " | Android-Hinweis: " + (noEventHint ? "ja" : "nein"),
       "Browser: " + navigator.userAgent,
       "",
       "Wenn beforeinstallprompt NEIN bleibt (mindestens 10 s warten): Der Browser haelt die App fuer bereits installiert oder fuer nicht installierbar. Dann im Browser-Menue (3 Punkte) nachsehen, ob dort 'App installieren' oder 'App oeffnen' steht."
