@@ -334,6 +334,13 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 @media print{.install-cta{display:none}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media print{.top,.sticky,.lang{display:none}}
+.theme.off{position:relative;opacity:.75}.theme.off::after{content:"";position:absolute;left:9px;right:9px;top:50%;height:3px;border-radius:2px;background:#fff;box-shadow:0 0 0 1.5px var(--red);transform:rotate(-45deg)}
+.certitem{display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}.certrow{display:flex;gap:8px;align-items:stretch}.certrow .certbar{flex:1}.sharecert.sm{min-height:44px;padding:6px 14px;white-space:nowrap}
+.nextcol{display:flex;flex-direction:column;gap:10px;align-items:stretch;flex:1 1 100%;max-width:560px}.nextcol .btn{justify-content:center}
+.sharecert{gap:10px;display:inline-flex;align-items:center}.sharecert .shico{display:inline-flex;flex:none}.sharecert .shico svg{display:block}
+.sharecert.big{min-height:64px;padding:12px 28px;font-size:1.15rem;font-weight:800;line-height:1.25;text-align:center;box-shadow:0 5px 0 rgba(0,0,0,.22),0 12px 28px rgba(230,0,18,.38)}
+.sharecert.big:hover{transform:translateY(-1px)}
+.btn.mini{min-height:40px;padding:6px 16px;font-size:.92rem;font-weight:700;box-shadow:none;opacity:.92}
 </style>
 </head>
 <body>
@@ -344,6 +351,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
   <span class="pill" id="coins" aria-live="polite"></span>
   <div class="lang" role="group" id="langs"></div>
   <button type="button" class="theme" id="share" aria-label="Teilen"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg></button>
+  <button type="button" class="theme" id="dinoBtn" aria-pressed="true">🍄</button>
   <button type="button" class="theme" id="theme" aria-label="Hell/Dunkel">◐</button>
 </div></header>
 <main id="main" tabindex="-1"></main>
@@ -351,7 +359,7 @@ h2.secrow .cnt{font-size:.9rem;color:var(--mute);font-weight:700}
 <div id="live" class="sr" aria-live="polite"></div>
 <script>
 "use strict";
-const VERSION = "1.31.0", STAND = "18.10.2026";
+const VERSION = "1.32.0", STAND = "18.10.2026";
 const LANGS = [["de","DE","Deutsch"],["en","EN","English"],["ja","日本語","日本語"]];
 const KEY = "nintendo_quest_v1";
 let li = 0, prog = {}, nm = "", ach = {}, view = {v:"home"};
@@ -391,6 +399,14 @@ const S = {
  shCopied:["Link kopiert","Link copied","コピーしました"],
  shFail:["Kopieren nicht möglich. Link bitte markieren und kopieren.","Could not copy. Please select and copy the link.","コピーできませんでした。リンクを選択してコピーしてください。"],
  shMsg:["Probier mal Nintendo Quest: ein kostenloses Quiz-Lernspiel über Nintendo. Läuft im Browser, ohne Anmeldung.","Try Nintendo Quest: a free quiz game about Nintendo. Runs in your browser, no sign-up.","Nintendo Questを試してみて：Nintendoについての無料クイズ。ブラウザで動き、登録は不要です。"],
+ shCert:["Pokal den Freunden zeigen (Angeben erlaubt)","Show your trophy to friends (bragging allowed)","トロフィーを友だちに見せよう（自慢OK）"],
+ shShort:["Teilen","Share","シェア"],
+ shCertSubj:["Mein Pokal bei Nintendo Quest (inoffiziell)","My trophy in Nintendo Quest (unofficial)","任天堂クエストのトロフィー（非公式）"],
+ shCertNoImg:["Tipp: Dein Gerät teilt hier nur den Text mit Link. Speichere den Pokal als Bild und hänge ihn an.","Tip: your device only shares the text with the link here. Save the trophy as an image and attach it.","ヒント：この端末ではテキストとリンクだけが共有されます。トロフィーを画像として保存して添付してください。"],
+ dinoHide:["Pixel-Held ausblenden","Hide the pixel hero","ピクセルヒーローを隠す"],
+ dinoShow:["Pixel-Held einblenden","Show the pixel hero","ピクセルヒーローを表示"],
+ dinoGone:["Der Pixel-Held bleibt jetzt weg. Du kannst ihn oben mit dem Symbol wieder einblenden.","The pixel hero will stay away now. You can bring him back with the icon at the top.","ピクセルヒーローはお休みします。上のアイコンでまた表示できます。"],
+ dinoBack:["Der Pixel-Held ist wieder da!","The pixel hero is back!","ピクセルヒーローが戻ってきました！"],
  shSubj:["Nintendo Quest: kostenloses Quiz","Nintendo Quest: free quiz","Nintendo Quest：無料クイズ"],
  helloN:["Hey {n}, was weißt du über Nintendo?","Hey {n}, what do you know about Nintendo?","{n}さん、任天堂のこと、どれくらい知ってる？"],
  greetN:["Schön, dich zu sehen, {n}. Die Münzen warten schon.","Nice to meet you, {n}. The coins are already waiting.","はじめまして、{n}さん。コインが待っています。"],
@@ -790,7 +806,7 @@ h("div", {class:"stats", role:"list"},
       h("h3", {text:l.t[li]}), h("p", {text:l.sub[li]}),
       h("span", {class:"foot"}, h("span", {text:"⏱ " + l.min + " " + t("min")}), p ? starRow(s) : h("span", {text:t("start") + " →"})));
     const cell = h("div", {class:"lcell"}, b);
-    if(s >= 1) cell.append(h("button", {type:"button", class:"certbar", "aria-label":t("certView") + ": " + l.t[li], onclick:() => go("cert", l.id)}, "🏆 " + t("certView")));
+    if(s >= 1) cell.append(h("div", {class:"certrow"}, h("button", {type:"button", class:"certbar", "aria-label":t("certView") + ": " + l.t[li], onclick:() => go("cert", l.id)}, "🏆 " + t("certView")), certShareButton(l, true)));
     g.append(cell);
   });
   m.append(g);
@@ -913,13 +929,61 @@ function renderResult(l){
     h("h1", {id:"h1", text:hasName() ? fill(t(pass ? "passN" : "tryN")) : (pass ? t("pass") : t("tryAgain"))}),
     h("p", {text:t("res") + ": " + view.right + " " + t("of") + " " + n + " · " + view.right*10 + " " + t("coins")})));
   if(pass){ m.append(h("p", {class:"pitch", style:"margin:0 0 6px", text:"🏆 " + t("certNow")})); certBlock(m, l); }
-  const save1 = () => savePng(certSVG(l), "nintendo_quest_" + l.id + "_" + (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_") + ".png");
-  const bNext = nxt && pass ? h("button", {type:"button", class:"btn", onclick:() => go("lesson", nxt.id)}, t("nextL") + " →") : null;
-  const bSave = pass ? h("button", {type:"button", class:"btn" + (bNext ? " ghost" : ""), onclick:save1}, "⬇ " + t("dl")) : null;
-  const bRetry = h("button", {type:"button", class:"btn" + (pass ? " ghost" : ""), onclick:() => startQuiz(l)}, "↺ " + t("retry"));
-  const bHome = h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"));
-  m.append(h("div", {class:"row"}, bNext, bSave, bRetry, bHome));  m.append(nLink());
+  const save1 = () => savePng(certSVG(l), certFileName(l));
+  const bNext = nxt && pass ? h("button", {type:"button", class:"btn ghost", onclick:() => go("lesson", nxt.id)}, t("nextL") + " →") : null;
+  const bShare = pass ? certShareButton(l) : null;
+  const bSave = pass ? h("button", {type:"button", class:"btn ghost mini", onclick:save1}, "⬇ " + t("dl")) : null;
+  const bRetry = h("button", {type:"button", class:"btn" + (pass ? " ghost mini" : ""), onclick:() => startQuiz(l)}, "↺ " + t("retry"));
+  const bHome = h("button", {type:"button", class:"btn ghost mini", onclick:() => go("home")}, t("over"));   // Teilen ist der auffälligste Knopf und steht ganz oben, darunter "Nächster Spieltag"; Speichern und Drucken sind klein
+  m.append(h("div", {class:"row", style:"align-items:flex-start"}, bShare ? h("div", {class:"nextcol"}, bShare, bNext) : null, bSave, bRetry, bHome));  m.append(nLink());
   if(pass) confetti();
+}
+/* ---------- Zertifikat teilen: Text je nach Spieltag, mit Link zur App ---------- */
+/* Platzhalter: {r} richtige Antworten, {n} Fragen. Der Link zur App wird beim Teilen angehängt. */
+const SHT = {
+ karten:["Lektion „Blitzstart“ bei Nintendo Quest geschafft: {r} von {n} richtig. Nintendo startete 1889 mit Spielkarten, ich immerhin mit einem Pokal. Spiel mit und finde heraus, was du weißt:","Lesson “Quick start” done in Nintendo Quest: {r} of {n} correct. Nintendo began with playing cards in 1889, I at least began with a trophy. Join in and see what you know:","任天堂クエストのレッスン「クイックスタート」クリア：{n}問中{r}問正解。任天堂は花札から、私はトロフィーから始めました。あなたもどうぞ："],
+ konsole:["Lektion „Famicom und Europa“ bei Nintendo Quest bestanden: {r} von {n} richtig. Ab in den Fernseher, und das ganz ohne Kabelsalat. Spiel mit und teste dein Wissen:","Lesson “Famicom and Europe” passed in Nintendo Quest: {r} of {n} correct. Straight into the TV, and without any cable mess. Join in and test your knowledge:","任天堂クエストのレッスン「ファミコンとヨーロッパ」合格：{n}問中{r}問正解。テレビの中へ、ケーブルの山なしで。あなたも挑戦："],
+ mario:["Lektion „Schnauzbart“ bei Nintendo Quest gemeistert: {r} von {n} richtig. Ich kenne Jumpman beim Namen. Spiel mit und zeig, was du über Mario weißt:","Lesson “Moustache” mastered in Nintendo Quest: {r} of {n} correct. I know Jumpman by name. Join in and show what you know about Mario:","任天堂クエストのレッスン「ヒゲ」をマスター：{n}問中{r}問正解。ジャンプマンの名前もばっちり。マリオ通のあなたもどうぞ："],
+ zelda:["Lektion „Link ist nicht Zelda“ bei Nintendo Quest bestanden: {r} von {n} richtig. Ab sofort verwechsle ich Held und Prinzessin nie wieder. Und du? Spiel mit:","Lesson “Link is not Zelda” passed in Nintendo Quest: {r} of {n} correct. From now on I will never mix up hero and princess. And you? Join in:","任天堂クエストのレッスン「リンクはゼルダではない」合格：{n}問中{r}問正解。もう勇者と姫は間違えません。あなたも挑戦："],
+ handheld:["Lektion „Taschenspiel & Taschenmonster“ bei Nintendo Quest geschafft: {r} von {n} richtig. Game Boy, DS und Pokémon passen in jede Hosentasche, mein Wissen jetzt auch. Spiel mit:","Lesson “Pocket play & pocket monsters” done in Nintendo Quest: {r} of {n} correct. Game Boy, DS and Pokémon fit into any pocket, and so does my knowledge now. Join in:","任天堂クエストのレッスン「ポケットで遊ぶ」クリア：{n}問中{r}問正解。ゲームボーイもDSもポケモンも、知識もポケットサイズ。あなたもどうぞ："],
+ switch:["Lektion „Wii, Switch und die große Zwei“ bei Nintendo Quest bestanden: {r} von {n} richtig. Von der Wii bis zur Switch 2 bin ich auf Stand. Bist du es auch? Spiel mit:","Lesson “Wii, Switch and the big Two” passed in Nintendo Quest: {r} of {n} correct. From the Wii to the Switch 2 I am up to date. Are you? Join in:","任天堂クエストのレッスン「Wii、Switch、そして大きな2」合格：{n}問中{r}問正解。WiiからSwitch 2まで、私は最新です。あなたは？"],
+ boss:["Bossrunde bei Nintendo Quest bezwungen: {r} von {n} richtig. Der Endgegner ist besiegt, jetzt brauche ich nur noch Feierabend. Traust du dir das auch zu? Spiel mit:","Boss round beaten in Nintendo Quest: {r} of {n} correct. The final boss is down, now all I need is the end of the workday. Do you fancy your chances too? Join in:","任天堂クエストのボス戦、撃破：{n}問中{r}問正解。ラスボスは倒したので、あとは定時退社だけ。あなたも挑戦しませんか？"],
+ master:["Alle sieben Lektionen bei Nintendo Quest gemeistert: Der Meister-Pokal gehört mir, inoffiziell, aber mit Stolz. Wer fordert mich heraus?","All seven lessons mastered in Nintendo Quest: the master trophy is mine, unofficially but proudly. Who dares to challenge me?","任天堂クエストの全7レッスンをマスター：マスタートロフィーは私のもの。非公式だけど誇らしい。挑戦者は誰？"]
+};
+const certShareText = l => {   // Text hängt vom Zertifikat ab: Meister-Zertifikat oder Spieltag (nur direkt nach dem letzten Quiz zählt das Meister-Zertifikat)
+  const k = !l || (view.v === "result" && allEarned()) ? "master" : l.id, tx = (SHT[k] || SHT.master)[li], p = (l && prog[l.id]) || {};
+  return tx.replace(/\{r\}/g, p.best != null ? p.best : (view.right || 0)).replace(/\{n\}/g, l ? l.q.length : LESSONS.length);
+};
+const certFileName = l => "nintendo_quest_" + (l ? l.id : "master") + "_" + (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_") + ".png";
+function certPngBlob(svg){
+  return new Promise((ok, fail) => {
+    const url = URL.createObjectURL(new Blob([svg], {type:"image/svg+xml;charset=utf-8"})), img = new Image();
+    img.onload = () => { const c = document.createElement("canvas"); c.width = 1123; c.height = 794; const x = c.getContext("2d"); x.fillStyle = "#fff"; x.fillRect(0, 0, 1123, 794); x.drawImage(img, 0, 0); URL.revokeObjectURL(url); c.toBlob(b => b ? ok(b) : fail(new Error("png")), "image/png"); };
+    img.onerror = () => { URL.revokeObjectURL(url); fail(new Error("svg")); };
+    img.src = url;
+  });
+}
+/* Teilen: erst Bild + Text über das Teilen-Menü des Geräts, sonst nur Text mit Link, sonst Fenster mit WhatsApp, E-Mail und Link kopieren */
+/* Teilen-Symbol: dasselbe wie oben in der Kopfzeile (drei verbundene Punkte) */
+const shareIcon = size => { const s = document.createElement("span"); s.className = "shico"; s.setAttribute("aria-hidden", "true"); s.innerHTML = '<svg viewBox="0 0 24 24" width="' + size + '" height="' + size + '" focusable="false" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.5l6.8-4M8.6 13.5l6.8 4"/></svg>'; return s; };
+function certShareButton(l, compact){
+  let pre = null, preLang = -1;   // Bild schon beim Anzeigen vorbereiten, damit der Klick sofort teilen kann (Safari verlangt das); gilt nur für die aktuell eingestellte Sprache
+  const prep = () => { if(pre && preLang === li) return pre; preLang = li; return (pre = certPngBlob(certSVG(l)).then(b => new File([b], certFileName(l), {type:"image/png"}))); };
+  if(!compact) prep().catch(() => { pre = null; });
+  const btn = h("button", {type:"button", class:"btn sharecert" + (compact ? " sm" : " big"), "aria-label":t("shCert"), title:t("shCert"), onclick:async () => {
+    const text = certShareText(l), full = text + "\n\n" + SHARE_URL, title = t("shCertSubj");
+    if(navigator.share){
+      try{ const f = await prep(); if(navigator.canShare && navigator.canShare({files:[f]})){ await navigator.share({files:[f], title, text:full}); return; } }catch(e){ if(e && e.name === "AbortError") return; }
+      try{ await navigator.share({title, text, url:SHARE_URL}); snack(t("shCertNoImg"), null, null, 6000); return; }catch(e){ if(e && e.name === "AbortError") return; }
+    }
+    document.querySelectorAll(".shdlg").forEach(d => d.remove());
+    const d = h("dialog", {class:"shdlg", "aria-labelledby":"sht"}), x = h("button", {type:"button", class:"shx", "aria-label":t("shX"), onclick:() => d.close()}, "✕");
+    d.append(x, shareCard(text, title), h("p", {class:"small", style:"margin:10px 0 0;color:var(--mute)", text:t("shCertNoImg")}));
+    d.addEventListener("close", () => d.remove()); d.addEventListener("click", e => { if(e.target === d) d.close(); });
+    document.body.append(d); d.showModal();
+  }}, shareIcon(compact ? 20 : 28), h("span", {class:"shl", text:t(compact ? "shShort" : "shCert")}));
+  if(compact){ const warm = () => { prep().catch(() => { pre = null; }); }; btn.addEventListener("pointerdown", warm); btn.addEventListener("focus", warm); }
+  return btn;
 }
 const NHIST = "https://www.nintendo.co.jp/en/corporate/en/history/index.html", NCORP = "https://www.nintendo.co.jp/corporate/en/index.html";
 function nintendoLinks(){
@@ -942,6 +1006,8 @@ const CT = {
  did:["die Lektion gemeistert hat:","has mastered the lesson:","次のレッスンをマスターしました："],
  didM:["alle sieben Lektionen gemeistert hat und damit Nintendo-Wissen auf Profi-Niveau besitzt.","has mastered all seven lessons and now holds pro-level Nintendo knowledge.","全7レッスンをマスターし、任天堂の知識をプロ級に身につけました。"],
  score:["richtig","correct","正解"],
+ qHead:["Das habe ich gewusst:","What I knew:","私が知っていたこと："],
+ qHeadM:["Alle sieben Lektionen gemeistert:","All seven lessons mastered:","全7レッスンをマスター："],
  lines:[["Geschafft! Jede Legende hat mal als Pilz-Praktikant angefangen.","Done! Every legend started out as a mushroom intern.","クリア！どんな伝説もキノコ見習いから始まります。"],
         ["Stark! Das nächste Level wartet schon auf dich.","Strong! The next level is already waiting for you.","お見事！次のステージがあなたを待っています。"],
         ["Perfekt! Die Münzen klingeln immer noch.","Perfect! The coins are still jingling.","パーフェクト！コインがまだチャリンと鳴っています。"]],
@@ -963,6 +1029,45 @@ function wrap(s, n){
 }
 const earned = l => starsOf(prog[l.id], l.q.length) >= 1;
 const allEarned = () => LESSONS.every(earned);
+/* ---------- Urkunde: Infos aus dem Quiz (Fragen und richtige Antworten) als Tabelle im Kasten ---------- */
+/* Zu lange Texte: erst kleinere Schrift (15 bis 11 px, bis zu 2 Zeilen je Eintrag), dann nur 1 Zeile mit "…" */
+function wrapN(s, max, maxLines){
+  const w = String(s).split(/\s+/), out = []; let cur = "";
+  w.forEach(x => { if(cur && (cur + " " + x).length > max){ out.push(cur); cur = x; } else cur = cur ? cur + " " + x : x; });
+  if(cur) out.push(cur);
+  if(out.length > maxLines){ const keep = out.slice(0, maxLines); let last = keep[maxLines - 1]; if(last.length > max - 1) last = last.slice(0, max - 1); keep[maxLines - 1] = last.replace(/[\s,.;:]+$/, "") + "…"; return keep; }
+  return out;
+}
+function certQLayout(l){
+  const items = l ? l.q.map(x => [x.q[li], x.a[0][li]]) : LESSONS.map((x, i) => [(i + 1) + ". " + x.t[li], ""]);
+  const QW = 540, AW = 290, BUDGET = 136;
+  for(const [maxLines, sizes] of [[2, [15, 14, 13, 12, 11]], [1, [12, 11]]]){
+    for(const f of sizes){
+      const lh = Math.round(f * 1.28), rows = items.map(([q, a]) => { const ql = wrapN(q, Math.floor(QW / (f * .53)), maxLines), al = a ? wrapN(a, Math.floor(AW / (f * .56)), maxLines) : []; return {q: ql, a: al, h: Math.max(ql.length, al.length) * lh + 6}; });
+      const total = rows.reduce((s, r) => s + r.h, 0);
+      if(total <= BUDGET || (maxLines === 1 && f === 11)) return {f, lh, rows, total};
+    }
+  }
+}
+function certQBlock(l, F){
+  const M = !l, items = certQLayout(l);
+  if(M){   // Meister-Zertifikat: die sieben Spieltage in zwei Spalten
+    const col = i => LESSONS.slice(i * 4, i * 4 + 4).map((x, k) => { const s = (i * 4 + k + 1) + ". " + x.t[li], r = wrapN(s, 44, 1)[0]; return '<text x="' + (i ? 596 : 150) + '" y="' + (556 + k * 21) + '" font-size="14.5" fill="#2c2f36" ' + F + '><tspan fill="#1b7a3d" font-weight="800">✓ </tspan>' + esc(r) + '</text>'; }).join("");
+    return '<rect x="110" y="502" width="903" height="116" rx="14" fill="#fef0f1" stroke="#fad1d4" stroke-width="2"/>'
+      + '<text x="561.5" y="526" text-anchor="middle" font-size="14" font-weight="800" letter-spacing="3" fill="#0b6aa8" ' + F + '>' + esc(CT.qHeadM[li].toUpperCase()) + '</text>' + col(0) + col(1);
+  }
+  const {f, lh, rows, total} = items, top = 460, hdr = 32, H = hdr + total + 10;
+  let y = top + hdr + 2, out = '<rect x="110" y="' + top + '" width="903" height="' + H + '" rx="14" fill="#fef0f1" stroke="#fad1d4" stroke-width="2"/>'
+    + '<text x="561.5" y="' + (top + 23) + '" text-anchor="middle" font-size="14" font-weight="800" letter-spacing="3" fill="#0b6aa8" ' + F + '>' + esc(CT.qHead[li].toUpperCase()) + '</text>'
+    + '<line x1="134" y1="' + (top + hdr - 4) + '" x2="989" y2="' + (top + hdr - 4) + '" stroke="#fad1d4" stroke-width="1.5"/>';
+  rows.forEach((r, i) => {
+    out += '<text x="138" y="' + (y + f) + '" font-size="' + f + '" font-weight="800" fill="#1b7a3d" ' + F + '>✓</text>'
+      + r.q.map((s, k) => '<text x="162" y="' + (y + f + k * lh) + '" font-size="' + f + '" fill="#2c2f36" ' + F + '>' + esc(s) + '</text>').join("")
+      + r.a.map((s, k) => '<text x="700" y="' + (y + f + k * lh) + '" font-size="' + f + '" font-weight="700" fill="#e60012" ' + F + '>' + (k === 0 ? '→ ' : '  ') + esc(s) + '</text>').join("");
+    y += r.h; if(i < rows.length - 1) out += '<line x1="162" y1="' + (y - 3) + '" x2="989" y2="' + (y - 3) + '" stroke="#fce6e7" stroke-width="1"/>';
+  });
+  return out;
+}
 function certSVG(l){
   const M = !l, g = k => CT[k][li], n = nm.trim();
   const T = totals(), st = M ? T.st : starsOf(prog[l.id], l.q.length), right = M ? 0 : prog[l.id].best;
@@ -970,36 +1075,41 @@ function certSVG(l){
   const F = 'font-family="Trebuchet MS, Segoe UI, Hiragino Maru Gothic ProN, Yu Gothic UI, Meiryo, sans-serif"';
   const ew = [...n].reduce((s, c) => s + (/[WMm@]/.test(c) ? 1.05 : /\s/.test(c) ? .3 : /[\u3000-\u9fff\uff00-\uffef]/.test(c) ? 1.25 : /[A-ZÄÖÜ]/.test(c) ? .74 : /[ilj.,'!|]/.test(c) ? .3 : .58), 0);
   const nsz = n ? Math.max(16, Math.min(64, Math.floor(860 / Math.max(6, ew)))) : 34;
-  const ja = LANGS[li][0] === "ja", tl = M ? wrap(g("didM"), ja ? 30 : 52) : wrap(l.t[li], ja ? 22 : 38);
-  const stars = [0,1,2].map(k => '<text x="' + (561.5 + (k-1)*70) + '" y="' + (M ? 575 : 585) + '" font-size="58" text-anchor="middle" fill="' + (M || k < st ? "#ffc800" : "#d9d9de") + '" stroke="' + (M || k < st ? "#b58900" : "#b8b9bd") + '" stroke-width="2">★</text>').join("");
+  const ja = LANGS[li][0] === "ja", tl = M ? wrap(g("didM"), ja ? 30 : 52) : [l.t[li]], tsz = M ? 26 : Math.max(20, Math.min(34, Math.floor(860 / Math.max(1, l.t[li].length * .6))));
+  const qB = certQBlock(M ? null : l, F), o = M ? 0 : -14;
+  const footTxt = g("foot") + " · v" + VERSION, footSz = Math.max(11, Math.min(15, Math.floor(860 / (footTxt.length * .53))));
+  const stars = [0,1,2].map(k => '<text x="' + (561.5 + (k-1)*70) + '" y="' + (M ? 490 : 440) + '" font-size="' + (M ? 58 : 54) + '" text-anchor="middle" fill="' + (M || k < st ? "#ffc800" : "#d9d9de") + '" stroke="' + (M || k < st ? "#b58900" : "#b8b9bd") + '" stroke-width="2">★</text>').join("");
   const band = ["#e60012","#0b6aa8","#ffc800","#1b7a3d","#6b3fa0"].map((c, i) => '<rect x="' + (60 + i*200.6) + '" y="36" width="200.6" height="16" fill="' + c + '"/>').join("");
   const conf = [[110,150,"#0b6aa8"],[1010,170,"#ffc800"],[130,640,"#1b7a3d"],[1000,650,"#6b3fa0"],[90,330,"#ffc800"],[1030,360,"#e60012"],[160,230,"#e60012"],[960,250,"#1b7a3d"]].map(a => '<rect x="' + a[0] + '" y="' + a[1] + '" width="16" height="16" rx="3" transform="rotate(' + (a[0]%40-20) + ' ' + a[0] + ' ' + a[1] + ')" fill="' + a[2] + '"/>').join("");
   const head = M ? g("headM") : g("head");
   const hs = Math.min(72, Math.floor(860 / (head.length * 0.78)));
   const line = hasName() ? fill(M ? CT.lineMN[li] : CT.linesN[Math.max(0, st-1)][li]) : (M ? g("lineM") : CT.lines[Math.max(0, st-1)][li]);
   const rank = rankName(T.st);
+  const lw = [...line].reduce((s, c) => s + (/[WMm@]/.test(c) ? 1.05 : /\s/.test(c) ? .3 : /[A-ZÄÖÜ]/.test(c) ? .74 : /[ilj.,'!|]/.test(c) ? .3 : .56), 0), lsz = Math.max(13, Math.min(22, Math.floor(960 / lw)));
   return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1123 794" width="1123" height="794" role="img" aria-label="' + esc(head + (n ? " – " + n : "") + (M ? "" : " – " + l.t[li])) + '">'
    + '<rect width="1123" height="794" rx="28" fill="#ffffff"/>'
    + '<rect x="14" y="14" width="1095" height="766" rx="22" fill="none" stroke="#e60012" stroke-width="10"/>'
+   + '<rect x="25" y="25" width="1073" height="744" rx="17" fill="none" stroke="#ffc800" stroke-width="2.5"/>'
    + '<rect x="34" y="34" width="1055" height="726" rx="14" fill="none" stroke="#e1e2e5" stroke-width="2" stroke-dasharray="10 8"/>'
    + band + conf
-   + '<text x="561.5" y="140" text-anchor="middle" font-size="' + hs + '" font-weight="800" letter-spacing="4" fill="#e60012" ' + F + '>' + esc(head) + '</text>'
-   + '<text x="561.5" y="172" text-anchor="middle" font-size="16" font-weight="700" letter-spacing="4" fill="#0b6aa8" ' + F + '>NINTENDO QUEST</text>'
-   + '<text x="561.5" y="203" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("conf")) + '</text>'
-   + '<text x="561.5" y="270" text-anchor="middle" font-size="' + nsz + '" font-weight="800" fill="' + (n ? "#1f2026" : "#b8b9bd") + '" ' + F + '>' + esc(n || t("nameP")) + '</text>'
-   + '<line x1="250" y1="290" x2="873" y2="290" stroke="#e60012" stroke-width="4" stroke-linecap="round"/>'
-   + (M ? '' : '<text x="561.5" y="338" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("did")) + '</text>')
-   + tl.map((x, i) => '<text x="561.5" y="' + ((M ? 350 : 392) + i*40) + '" text-anchor="middle" font-size="' + (M ? 26 : 34) + '" font-weight="700" fill="#0b6aa8" ' + F + '>' + esc(x) + '</text>').join("")
-   + (M ? '<text x="561.5" y="440" text-anchor="middle" font-size="26" font-weight="800" fill="#1b7a3d" ' + F + '>' + esc(t("certMasterBadge")) + '</text>' : '<text x="561.5" y="' + (392 + (tl.length-1)*40 + 50) + '" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2026" ' + F + '>' + esc(right + " / " + l.q.length + " " + g("score")) + '</text>')
-   + stars
-   + '<text x="561.5" y="640" text-anchor="middle" font-size="22" font-style="italic" fill="#4d4f54" ' + F + '>' + esc(line) + '</text>'
-   + '<text x="110" y="712" font-size="15" fill="#565860" ' + F + '>' + esc(g("date") + ": " + d) + '</text>'
-   + '<text x="110" y="736" font-size="15" fill="#565860" ' + F + '>' + esc(g("rankL") + ": " + rank) + '</text>'
-   + '<circle cx="561.5" cy="695" r="38" fill="#ffffff" stroke="#e60012" stroke-width="5"/><g transform="translate(535.5 677) scale(3.25)">' + logoRects() + '</g>'
-   + '<text x="1013" y="712" text-anchor="end" font-size="16" font-style="italic" fill="#1f2026" ' + F + '>' + esc(g("sign")) + '</text>'
-   + '<line x1="760" y1="720" x2="1013" y2="720" stroke="#1f2026" stroke-width="1.5"/>'
-   + '<text x="561.5" y="759" text-anchor="middle" font-size="16" font-weight="700" fill="#0b6aa8" ' + F + '>' + esc(NURL[li][1]) + '</text>'
-   + '<text x="561.5" y="778" text-anchor="middle" font-size="12" fill="#6b6d73" ' + F + '>' + esc(g("foot") + " · v" + VERSION) + '</text>'
+   + '<text x="561.5" y="' + (140 + o) + '" text-anchor="middle" font-size="' + hs + '" font-weight="800" letter-spacing="4" fill="#e60012" ' + F + '>' + esc(head) + '</text>'
+   + '<text x="561.5" y="' + (172 + o) + '" text-anchor="middle" font-size="16" font-weight="700" letter-spacing="4" fill="#0b6aa8" ' + F + '>NINTENDO QUEST</text>'
+   + '<text x="561.5" y="' + (203 + o) + '" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("conf")) + '</text>'
+   + '<text x="561.5" y="' + (270 + o) + '" text-anchor="middle" font-size="' + nsz + '" font-weight="800" fill="' + (n ? "#1f2026" : "#b8b9bd") + '" ' + F + '>' + esc(n || t("nameP")) + '</text>'
+   + '<line x1="250" y1="' + (290 + o) + '" x2="873" y2="' + (290 + o) + '" stroke="#e60012" stroke-width="4" stroke-linecap="round"/>'
+   + (M ? '' : '<text x="561.5" y="' + (332 + o) + '" text-anchor="middle" font-size="22" fill="#4d4f54" ' + F + '>' + esc(g("did")) + '</text>')
+   + tl.map((x, i) => '<text x="561.5" y="' + ((M ? 350 : 376 + o) + i*40) + '" text-anchor="middle" font-size="' + tsz + '" font-weight="700" fill="#0b6aa8" ' + F + '>' + esc(x) + '</text>').join("")
+   + (M ? '<text x="561.5" y="440" text-anchor="middle" font-size="26" font-weight="800" fill="#1b7a3d" ' + F + '>' + esc(t("certMasterBadge")) + '</text>' : '<text x="561.5" y="' + (418 + o) + '" text-anchor="middle" font-size="24" font-weight="700" fill="#1f2026" ' + F + '>' + esc(right + " / " + l.q.length + " " + g("score")) + '</text>')
+   + stars + qB
+   + '<text x="561.5" y="646" text-anchor="middle" font-size="' + lsz + '" font-style="italic" fill="#4d4f54" ' + F + '>' + esc(line) + '</text>'
+   + '<text x="110" y="700" font-size="15" fill="#565860" ' + F + '>' + esc(g("date") + ": " + d) + '</text>'
+   + '<text x="110" y="722" font-size="15" fill="#565860" ' + F + '>' + esc(g("rankL") + ": " + rank) + '</text>'
+   + '<circle cx="561.5" cy="686" r="30" fill="#ffffff" stroke="#e60012" stroke-width="4.5"/><g transform="translate(541.5 672.2) scale(2.5)">' + logoRects() + '</g>'
+   + '<text x="1013" y="696" text-anchor="end" font-size="16" font-style="italic" fill="#1f2026" ' + F + '>' + esc(g("sign")) + '</text>'
+   + '<line x1="760" y1="704" x2="1013" y2="704" stroke="#1f2026" stroke-width="1.5"/>'
+   + '<text x="561.5" y="734" text-anchor="middle" font-size="17" font-weight="800" fill="#0b6aa8" ' + F + '>' + esc(NURL[li][1]) + '</text>'
+   + '<line x1="110" y1="740" x2="1013" y2="740" stroke="#d6e4f5" stroke-width="1.5"/>'
+   + '<text x="561.5" y="754" text-anchor="middle" font-size="' + footSz + '" font-weight="600" fill="#2c2f36" ' + F + '>' + esc(footTxt) + '</text>'
    + '</svg>';
 }
 function renderCert(l){
@@ -1009,12 +1119,13 @@ function renderCert(l){
   m.append(h("h1", {id:"h1", text:"🏆 " + (M ? t("master") : t("certOf") + ": " + l.t[li])}));
   const box = null; certBlock(m, l);
   const nameSafe = (nm.trim() || "name").replace(/[^\p{L}\p{N}]+/gu, "_");
-  m.append(h("div", {class:"row"},
-    h("button", {type:"button", class:"btn", onclick:() => savePng(certSVG(l), "nintendo_quest_" + (M ? "master" : l.id) + "_" + nameSafe + ".png")}, "⬇ " + t("dl")),
-    h("button", {type:"button", class:"btn ghost", onclick:() => window.print()}, "🖨 " + t("prt")),
-    (!M && LESSONS[idxOf(l.id) + 1]) ? h("button", {type:"button", class:"btn ghost", onclick:() => go("lesson", LESSONS[idxOf(l.id) + 1].id)}, t("nextL") + " →") : null,
-    h("button", {type:"button", class:"btn ghost", onclick:toCerts}, "🏆 " + t("certAll")),
-    h("button", {type:"button", class:"btn ghost", onclick:() => go("home")}, t("over"))));
+  const nxtL = !M && LESSONS[idxOf(l.id) + 1], bShare = certShareButton(l), bNextL = nxtL ? h("button", {type:"button", class:"btn ghost", onclick:() => go("lesson", nxtL.id)}, t("nextL") + " →") : null;
+  m.append(h("div", {class:"row", style:"align-items:flex-start"},
+    h("div", {class:"nextcol"}, bShare, bNextL),
+    h("button", {type:"button", class:"btn ghost mini", onclick:() => savePng(certSVG(l), "nintendo_quest_" + (M ? "master" : l.id) + "_" + nameSafe + ".png")}, "⬇ " + t("dl")),
+    h("button", {type:"button", class:"btn ghost mini", onclick:() => window.print()}, "🖨 " + t("prt")),
+    h("button", {type:"button", class:"btn ghost mini", onclick:toCerts}, "🏆 " + t("certAll")),
+    h("button", {type:"button", class:"btn ghost mini", onclick:() => go("home")}, t("over"))));
   m.append(nLink());
   if(!matchMedia("(prefers-reduced-motion: reduce)").matches) confetti();
 }
@@ -1027,8 +1138,8 @@ function certList(){
   const got = LESSONS.filter(earned); const w = h("section", {"aria-labelledby":"ch"}); 
   w.append(h("h2", {class:"sec", id:"ch", text:"🏆 " + t("certs")}), h("p", {style:"margin:0 0 12px;color:var(--mute)", text:t("certsHint")}));
   const g = h("div", {class:"certlist"});
-  if(allEarned()) g.append(h("button", {type:"button", class:"btn mastercard", onclick:() => go("cert", "master")}, "👑 " + t("master")));
-  got.forEach(l => g.append(h("button", {type:"button", class:"btn ghost", onclick:() => go("cert", l.id)}, l.ico + " " + l.t[li])));
+  if(allEarned()) g.append(h("div", {class:"certitem"}, h("button", {type:"button", class:"btn mastercard", onclick:() => go("cert", "master")}, "👑 " + t("master")), certShareButton(null, true)));
+  got.forEach(l => g.append(h("div", {class:"certitem"}, h("button", {type:"button", class:"btn ghost", onclick:() => go("cert", l.id)}, l.ico + " " + l.t[li]), certShareButton(l, true))));
   w.append(g); return got.length ? w : h("section");
 }/* ---------- Routing ---------- */
 function go(v, id){ view = {v, id}; location.hash = v === "home" ? "home" : v + "-" + id; render(); }
@@ -1052,7 +1163,7 @@ function chrome(){
   document.documentElement.lang = LANGS[li][0];
   document.title = t("title");
   $(".brand .dot").innerHTML = logoSvg(); $("#bt").textContent = t("title"); $("#bs").textContent = t("by"); $("#brand").setAttribute("aria-label", t("title") + " – " + t("over"));
-  $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL")); $("#share").setAttribute("aria-label", t("shT")); $("#share").setAttribute("title", t("shT"));
+  $("#skip").textContent = t("skip"); $("#theme").setAttribute("aria-label", t("themeL")); $("#theme").setAttribute("title", t("themeL")); dinoBtnUpdate(); $("#share").setAttribute("aria-label", t("shT")); $("#share").setAttribute("title", t("shT"));
   const T = totals(); $("#coins").textContent = "¢ " + T.co;
   const lg = $("#langs"); lg.replaceChildren(); LANGS.forEach((x, i) => lg.append(h("button", {type:"button", lang:x[0], "aria-pressed": String(i === li), "aria-label":x[2], onclick:() => { li = i; save(); render(true); }}, x[1])));
   const sl = view.id ? LESSONS[idxOf(view.id)] : null;
@@ -1068,6 +1179,8 @@ $("#brand").onclick = () => {
   if(view.v === "home"){ const rm = matchMedia("(prefers-reduced-motion: reduce)").matches; window.scrollTo({top:0, behavior: rm ? "auto" : "smooth"}); $("#main").focus({preventScroll:true}); }
   else go("home");
 };
+function dinoBtnUpdate(){ const b = $("#dinoBtn"), an = !ach.noDino, l = t(an ? "dinoHide" : "dinoShow"); b.classList.toggle("off", !an); b.setAttribute("aria-pressed", String(an)); b.setAttribute("aria-label", l); b.setAttribute("title", l); }
+$("#dinoBtn").onclick = () => { ach.noDino = !ach.noDino; save(); dinoBtnUpdate(); snack(t(ach.noDino ? "dinoGone" : "dinoBack"), null, null, ach.noDino ? 5000 : 2500); };
 $("#share").onclick = openShare;
 $("#theme").onclick = () => { const r = document.documentElement; const dark = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; r.dataset.theme = dark ? "light" : "dark"; };
 window.addEventListener("hashchange", () => { fromHash(); render(); });
@@ -1110,12 +1223,12 @@ function openShare(){
   d.append(x, shareCard()); d.addEventListener("close", () => d.remove()); d.addEventListener("click", e => { if(e.target === d) d.close(); });
   document.body.append(d); d.showModal();
 }
-function shareCard(){
-  const txt = t("shMsg"), enc = encodeURIComponent;
+function shareCard(txt = t("shMsg"), subj = t("shSubj")){
+  const enc = encodeURIComponent;
   const c = h("section", {class:"sharecard", "aria-labelledby":"sht"}, h("div", {class:"sh"}, h("span", {class:"si", "aria-hidden":"true"}, "🔗"), h("div", null, h("b", {id:"sht", text:t("shT")}), h("small", {text:t("shS")}))));
   const row = h("div", {class:"sharerow"});
   row.append(h("a", {class:"btn", href:"https://wa.me/?text=" + enc(txt + " " + SHARE_URL), target:"_blank", rel:"noopener noreferrer"}, "💬 " + t("shWa")));
-  row.append(h("a", {class:"btn ghost", href:"mailto:?subject=" + enc(t("shSubj")) + "&body=" + enc(txt + "\r\n\r\n" + SHARE_URL)}, "✉️ " + t("shMail")));
+  row.append(h("a", {class:"btn ghost", href:"mailto:?subject=" + enc(subj) + "&body=" + enc(txt + "\r\n\r\n" + SHARE_URL)}, "✉️ " + t("shMail")));
   row.append(h("button", {type:"button", class:"btn ghost", onclick:async () => {
     let ok = false;
     try{ await navigator.clipboard.writeText(SHARE_URL); ok = true; }catch(x){
@@ -1230,7 +1343,7 @@ if(/[?&]diag\b/.test(location.search)){
   function dim(){ const t = document.querySelector(".top"); return {W: document.documentElement.clientWidth, H: innerHeight, hb: t ? t.getBoundingClientRect().bottom : 0}; }
   /* Zustand der Figur: Mittelpunkt x/y, Drehung r (0 Boden, 180 Decke, 90 linke Wand, -90 rechte Wand), Blickrichtung f (1 rechts, -1 links) */
   function T(s){ return "translate(" + (s.x - 19.5) + "px," + (s.y - 24) + "px) rotate(" + s.r + "deg) scale(" + (s.f * (s.z || 1)) + "," + (s.z || 1) + ")"; }
-  function abbruch(){ return document.hidden; }
+  function abbruch(){ return document.hidden || !!ach.noDino; }
   function neu(s){
     const el = document.createElement("div"); el.className = "runner"; el.setAttribute("aria-hidden", "true"); el.appendChild(figur());
     el.style.transform = T(s); document.body.appendChild(el); aktiv.push(el);
@@ -1683,8 +1796,10 @@ if(/[?&]diag\b/.test(location.search)){
   const test = (location.search.match(/[?&]lauf=([a-z]*)/) || [])[1];
   (async function(){
     await wait(test !== undefined ? 1200 : 1500);
-    let erster = test === undefined;
+    let erster = test === undefined, zurueck = false;
     for(;;){
+      if(ach.noDino){ zurueck = true; await wait(1000); continue; }   // abgeschaltet: Figur pausiert, beim Einblenden meldet sie sich mit hallo
+      if(zurueck){ zurueck = false; await wait(800); await auftritt("hallo"); await wait(1500); continue; }
       /* Wer gerade im Namensfeld tippt, hat Ruhe */
       if(test === undefined && !hasName() && tippt()){ await wait(3000); continue; }
       /* Nerv-Modus: solange kein Name gespeichert ist, kommt Mario bei jedem Auftritt mit der Namensfrage, immer oefter (nicht im Quiz und nicht auf der Namens-Abfrageseite vor dem Quiz) */
